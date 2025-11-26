@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+header {
+    height: 8%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 0;
+    padding: 8px;
+    background-color: white;
+}
+
+.icons {
+    height: 100%;
+}
+
+.input-container {
+    width: 80%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    border: solid 1px #9E9B9B;
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 12px;
+}
+
+.input-container input {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    font-size: 2rem;
+    border: none;
+    outline: none;
+}
+
+.input-container .lupa {
+    height: 42px;
+}
+
+main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 24px;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.postagem {
+    height: auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    border: solid #9E9B9B 1px;
+    gap: 18px;
+    padding: 12px;
+}
+
+.superiorPostagem {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.superiorPostagem .imagemPerfil {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.superiorPostagem .nome {
+    font-size: 1.5rem;
+}
+
+.superiorPostagem .data {
+    margin-left: auto;
+    font-size: 1rem;
+    padding-top: 3px;
+}
+
+.postagem .imagemPostagem {
+    height: 75%;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.inferiorPostagem {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.inferiorPostagem img {
+    height: 40%;
+}
+

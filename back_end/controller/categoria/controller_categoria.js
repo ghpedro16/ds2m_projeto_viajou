@@ -12,4 +12,109 @@ const categoriaDAO = require('../../model/categoria.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
 
+//Retorna uma lista de todas categorias
+const listaCategoria = async () => {
+    let resultCategoria = await categoriaDAO.getSelectAllCategorias ()
+
+    try {
+    if (resultCategoria) {
+        if (resultCategoria.length > 0) {
+            messages.HEADER.status            = messages.SUCESS_REQUEST.status
+            messages.HEADER.status_code       = messages.SUCESS_REQUEST.status_code
+            messages.HEADER.itens.categoria   = resultCategoria
+
+            return messages.HEADER
+        }else{
+            return messages.ERROR_NOT_FOUND
+        }
+
+        } else {
+            return messages.ERROR_INTERNAL_SERVER_MODEL
+        }
+    } catch (error){
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+//Retorna uma caegoria filtrada pelo ID 
+const buscarCategoriaId = async (id) => {
+    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        if (!isNaN(id)){
+
+            let resultCategoria = await categoriaDAO.getSelectByIdCategoria(Number(id))
+
+        if (resultCategoria){
+            if (resultCategoria.length > 0) {
+                messages.HEADER.status           = messages.SUCCESS_REQUEST.status
+                messages.HEADER.status_code      = messages.SUCCESS_REQUEST.status_code
+                messages.HEADER.itens.categoria  = resultCategoria
+
+                return messages.HEADER
+
+            } else {
+                return messages.ERROR_NOT_FOUND
+            }
+
+        } else {
+            return messages.ERROR_INTERNAL_SERVER_MODEL
+        }
+
+    } else {
+        return messages.ERROR_REQUIRED_FIELDS
+    }
+
+} catch (error) {
+    return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+
+    }
+}
+
+//Inserir uma nova categoria 
+
+const inserirCategoria = async function (categoria,contentType) { 
+  
+    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            
+            let validar = await validarDadosCategoria(categoria)
+
+            if (!validar) {
+
+               
+                //Chama a função para inserir uma nova categoria no BD
+                let resultCategoria = await categoriaDAO.setInsertCategoria(categoria)
+                if (resultCategoria) {
+                    let lastID = await categoriaDAO.getSelectLastID()
+                    if(lastID){
+
+                        //Adiciona o ID no JSON com os dados da categoria 
+                        categoria.id = lastID
+                        messages.HEADER.status      = messages.SUCCESS_CREATED_ITEM.status
+                        messages.HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.HEADER.message     = messages.SUCCESS_CREATED_ITEM.message
+                        messages.HEADER.itens.categoria  = categoria
+
+                        return messages.HEADER //201
+                    }else{
+                        return messages.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+                } else {
+                    return messages.ERROR_INTERNAL_SERVER_MODEL //500
+                }
+            } else {
+                return validar //400
+            }
+        } else {
+            return messages.ERROR_CONTENT_TYPE //415
+        }
+
+    } catch (error) {
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER //500
+    }
+}
 

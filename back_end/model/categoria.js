@@ -10,7 +10,7 @@ const getSelectLastID = async function (){
 
     try{
 
-        //script SQL para retornar o ultimo id inseido no BD
+        //script SQL para retornar o ultimo id inserido no BD
         let sql = "select * from tbl_categoria order by id desc"
 
         //encaminha para o banco de dados o script SQL

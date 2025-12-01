@@ -17,7 +17,7 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     padding: 8px;
     background-color: white;

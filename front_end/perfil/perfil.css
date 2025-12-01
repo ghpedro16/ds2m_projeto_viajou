@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+header {
+    height: 8%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    padding: 8px;
+    background-color: white;
+}
+
+.icons {
+    height: 100%;
+}
+
+.dadosPerfil {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 16px;
+}
+
+.dadosPerfil img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.alinhamento {
+    display: flex;
+    flex-direction: column;
+}
+
+.nomes {
+    display: flex;
+    flex-direction: column;
+}
+
+.nomes .nomeExibicao {
+    font-size: 2rem;
+}

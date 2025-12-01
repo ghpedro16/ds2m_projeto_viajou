@@ -11,6 +11,6 @@ Dependencias que seram utilizadas
 npm install express      ->    
 npm install cors         ->   
 npm install body-parser  ->
-
+npm install prisma@6.15.0 @prisma/client@6.15.0 ->
 */ 
 

@@ -5,7 +5,7 @@
 * Versao: 1.0 (CRUD do projeto Viajou!, sem as relações com outras tabelas)
 ***************************************************************************************************/
 
-//Import da MODEL do DAO do filme
+//Import da MODEL do DAO 
 const categoriaDAO = require('../../model/categoria.js')
 
 //Import do arquivo de mensagens

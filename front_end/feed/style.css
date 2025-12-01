@@ -10,6 +10,7 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: 'Poppins';
 }
 
 header {
@@ -61,6 +62,7 @@ main {
     padding-top: 24px;
     gap: 24px;
     overflow-y: auto;
+    padding-bottom: 72px;
 }
 
 .postagem {

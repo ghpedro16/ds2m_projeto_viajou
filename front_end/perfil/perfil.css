@@ -10,6 +10,7 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: 'Poppins';
 }
 
 header {
@@ -27,14 +28,26 @@ header {
     height: 100%;
 }
 
-.dadosPerfil {
-    height: 20%;
+main {
+    height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 16px;
+    flex-direction: column;
+    padding-top: 24px;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.dadosPerfil {
+    height: 15%;
+    width: 96%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    border-bottom: solid #A8A8A8 1px;
+
 }
 
 .dadosPerfil img {
@@ -44,15 +57,118 @@ header {
 }
 
 .alinhamento {
+    width: auto;
     display: flex;
     flex-direction: column;
+    gap: 2px;
+    font-size: 0.7rem;
 }
 
 .nomes {
     display: flex;
     flex-direction: column;
+    gap: 0px;
 }
 
 .nomes .nomeExibicao {
     font-size: 2rem;
+    height: 2rem;
+}
+
+.nomes .nomeUsuario {
+    font-size: 0.7rem;
+    padding-left: 2px;
+}
+
+.dadosPerfil .interacoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 2px;
+    text-align: center;
+}
+
+.dadosPerfil .botoes {
+    display: flex;
+    color: white;
+}
+
+.botoes button {
+    width: 60px;
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+}
+
+.filtros {
+    height: 5%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filtros button {
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+}
+
+.filtros .popular {
+    width: 100px;
+}
+
+.filtros .filtroData {
+    width: 125px;
+}
+
+.filtros select {
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+}
+
+.conjuntoPostagens {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    padding-bottom: 72px;
+}
+
+.postagem {
+    height: auto;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    border: solid #9E9B9B 1px;
+    gap: 18px;
+    padding: 12px;
+}
+
+.postagem .imagemPostagem {
+    height: 150px;
+    width: 150px;
+    border-radius: 15px;
+}
+
+.inferiorPostagem {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+    font-size: 0.7rem;
+}
+
+.inferiorPostagem img {
+    height: 12px;
 }

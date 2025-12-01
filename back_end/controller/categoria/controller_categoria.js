@@ -73,7 +73,7 @@ const buscarCategoriaId = async (id) => {
 
 //Inserir uma nova categoria 
 
-const inserirCategoria = async function (categoria,contentType) { 
+const inserirCategoria = async function (categoria, contentType) { 
   
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 

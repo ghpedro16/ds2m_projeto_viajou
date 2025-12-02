@@ -17,20 +17,20 @@ async function carregarPerfil() {
 }
 
 function criarPerfil(user) {
-    const dadosPerfil = document.querySelector('.dadosPerfil')
+    const dadosPerfil = document.getElementById('dadosPerfil')
 
-    // FOTO
+    // Foto
     const imagemPerfil = document.createElement('img')
     imagemPerfil.src = user.url_foto
     imagemPerfil.onerror = () => {
         imagemPerfil.src = '../img/no_image.jpg';
     };
 
-    // DIV PARA ALINHAMENTO
+    // Div somente de alinhamento
     const alinhamento = document.createElement('div')
     alinhamento.classList.add('alinhamento')
 
-    // NOMES
+    // Nomes
     const nomes = document.createElement('div')
     nomes.classList.add('nomes')
 
@@ -45,7 +45,7 @@ function criarPerfil(user) {
     nomes.appendChild(nomeExibicao)
     nomes.appendChild(nomeUsuario)
 
-    // INTERAÇÕES
+    // Interações
     const interacoes = document.createElement('div')
     interacoes.classList.add('interacoes')
 
@@ -62,7 +62,7 @@ function criarPerfil(user) {
     interacoes.appendChild(seguindo)
     interacoes.appendChild(viagens)
 
-    // BIOGRAFIA
+    // Biografia
     const biografia = document.createElement('div')
     biografia.classList.add('biografia')
     biografia.textContent = user.biografia
@@ -72,12 +72,15 @@ function criarPerfil(user) {
     alinhamento.appendChild(interacoes)
     alinhamento.appendChild(biografia)
 
-    // BOTÃO
+    // Botão
     const divBotao = document.createElement('div')
     divBotao.classList.add('botoes')
 
     const btnEditar = document.createElement('button')
-    btnEditar.textContent = 'editar'
+    btnEditar.textContent = 'Editar'
+    btnEditar.addEventListener('click', () => {
+        abrirModalEditar(user)
+    })
 
     divBotao.appendChild(btnEditar)
 
@@ -111,19 +114,19 @@ async function carregarPostagem() {
 }
 
 
-// CRIAR UMA POSTAGEM
+// criando a postagem
 function criarPostagem(dadosPostagem) {
     const conjuntoPostagens = document.getElementById("conjuntoPostagens")
 
-    // DIV PRINCIPAL
+    // div principal
     const postagem = document.createElement('div')
     postagem.classList.add('postagem')
 
-    //DIV da imagem mais do overlay
+    //div da imagem mais do overlay
     const imagemContainer = document.createElement("div")
     imagemContainer.classList.add("imagemContainer")
 
-    // IMAGEM
+    // Imagem
     const imagem = document.createElement('img')
     imagem.classList.add('imagemPostagem')
     imagem.src = dadosPostagem.midia[0]   // primeira imagem da lista
@@ -132,7 +135,7 @@ function criarPostagem(dadosPostagem) {
         imagem.src = '../img/no_image.jpg';
     };
 
-    // PARTE INFERIOR
+    // Parte inferior
     const inferior = document.createElement('div')
     inferior.classList.add('inferiorPostagem')
 
@@ -165,14 +168,41 @@ function criarPostagem(dadosPostagem) {
     imagemContainer.appendChild(imagem)
     imagemContainer.appendChild(overlay)
 
+    if (dadosPostagem.publico == false) {
+        //Imagem do cadeado
+        const imagemCadeado = document.createElement('img')
+        imagemCadeado.classList.add('cadeado')
+        imagemCadeado.src = '../img/lock.svg'
+
+        postagem.appendChild(imagemCadeado)
+    }
+
     postagem.appendChild(imagemContainer)
     postagem.appendChild(inferior)
 
     conjuntoPostagens.appendChild(postagem)
 }
-
-// CHAMAR FUNÇÃO
 carregarPostagem()
 
 
 //Editando o perfil
+// Abrir modal preenchendo com os dados do usuário
+function abrirModalEditar(user) {
+    document.getElementById('inputNome').value = user.nome
+    document.getElementById('inputUser').value = user.nome_usuario
+    document.getElementById('inputBiografia').value = user.biografia
+
+    document.getElementById('fundoModal').style.display = 'flex'
+}
+
+// Fechar modal
+function fecharModal() {
+    document.getElementById('fundoModal').style.display = 'none'
+}
+
+// Botões
+document.getElementById('botaoCancelar').addEventListener('click', fecharModal)
+document.getElementById('botaoSalvar').addEventListener('click', () => {
+    // salvar aqui
+    fecharModal()
+})

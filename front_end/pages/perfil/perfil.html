@@ -26,7 +26,7 @@
 
     <main>
 
-        <div class="dadosPerfil">
+        <div id="dadosPerfil" class="dadosPerfil">
             <!-- <img src="https://blog.mrhgestao.com.br/wp-content/uploads/2018/05/199358-perfil-profissional-existe-um-que-e-mais-desejado-pelo-mercado.jpg"
                 alt="">
             <div class="alinhamento">
@@ -161,6 +161,45 @@
 
 
     </main>
+
+    <!-- Fundo escuro -->
+    <div id="fundoModal" class="fundoModal">
+
+        <!-- Conteúdo do modal -->
+        <div class="modal">
+
+            <div class="informacoes">
+
+                <!-- Pensando como implementar isso ainda! -->
+                <section class="arquivos">
+                    <input class="preview-input" id="foto" type="file" accept="image/*">
+                    <label class="preview-label" for="foto"></label>
+                    <img class="preview-image" id="preview-image" src="./img/preview-icon.png">
+                </section>
+
+                <div class="campos">
+                    <div>
+                        <label>Nome</label>
+                        <input type="text" id="inputNome">
+                    </div>
+                    <div>
+                        <label>Nome de usuário</label>
+                        <input type="text" id="inputUser">
+                    </div>
+                    <div>
+                        <label>Biografia</label>
+                        <textarea id="inputBiografia" class="biografia"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="botoesModal">
+                <button id="botaoCancelar">Cancelar</button>
+                <button id="botaoSalvar">Salvar</button>
+            </div>
+
+        </div>
+    </div>
 
 </body>
 

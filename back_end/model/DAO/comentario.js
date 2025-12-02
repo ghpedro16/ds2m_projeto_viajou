@@ -47,6 +47,28 @@ const getSelectCommentById = async function(id){
 
 }
 
+const getSelectCommentsByIdPost = async function(id_postagem){
+    try{
+        //Script SQL
+        let sql = `SELECT tbl_postagem.id, tbl_comentario.texto, tbl_comentario.data_comentario
+        FROM tbl_postagem INNER JOIN tbl_comentario ON tbl_postagem.id = tbl_comentario.id_postagem
+        WHERE tbl_comentario.id_postagem = ${id_postagem}`
+
+        //Encaminha para o banco de dados o script SQL
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if (result) {
+            return result
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+
+}
+
 const getSelectLastId = async function(){
     try{
         //script SQL para retornar o ultimo id inserido no BD
@@ -126,6 +148,7 @@ const setDeleteComment = async function(id){
 module.exports = {
     getSelectAllComments,
     getSelectCommentById,
+    getSelectCommentsByIdPost,
     getSelectLastId,
     setInsertComment,
     setUpdateComment,

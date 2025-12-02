@@ -71,8 +71,8 @@ main {
 }
 
 .nomes .nomeExibicao {
-    font-size: 2rem;
-    height: 2rem;
+    font-size: 1.5rem;
+    height: 1.5rem;
 }
 
 .nomes .nomeUsuario {
@@ -150,7 +150,7 @@ main {
     align-items: center;
     border-radius: 12px;
     border: solid #9E9B9B 1px;
-    gap: 18px;
+    gap: 6px;
     padding: 12px;
 }
 
@@ -165,7 +165,7 @@ main {
     width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 1px;
+    gap: 3px;
     font-size: 0.7rem;
 }
 

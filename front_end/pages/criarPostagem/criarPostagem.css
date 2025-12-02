@@ -159,6 +159,7 @@ input, select, textarea{
 }
 
 .botoes button {
+    height: 32px;
     width: 100px;
     color: white;
     background-color: #C79A8A;

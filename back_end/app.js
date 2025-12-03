@@ -11,7 +11,6 @@ Dependencias que seram utilizadas
 npm install express      ->    
 npm install cors         ->   
 npm install body-parser  ->
-npm install prisma@6.15.0 @prisma/client@6.15.0 ->
 */ 
 
 const express       =    require('express')
@@ -37,10 +36,11 @@ app.use((request, response, next) => {
 })
 
 //Chamar rota existente 
-const rotaCategoria  = require('./routes/routes_categoria')
-const rotaComentario = require('./routes/routes_comentario')
-const rotaCurtida    = require('./routes/routes_curtida')
-const rotaItem       = require('./routes/routes_item')
+const rotaCategoria   = require('./routes/routes_categoria')
+const rotaComentario  = require('./routes/routes_comentario')
+const rotaCurtida     = require('./routes/routes_curtida')
+const rotaItem        = require('./routes/routes_item')
+const rotaLocalizacao = require('./routes/routes_localizacao')
 
 //Inicia o servidor da API
 app.listen(PORT, () => {
@@ -52,3 +52,4 @@ app.use(rotaCategoria)
 app.use(rotaComentario)
 app.use(rotaCurtida)
 app.use(rotaItem)
+app.use(rotaLocalizacao)

@@ -3,6 +3,10 @@
 * Data: 26/11/2025
 * Autor: Gustavo Mathias
 * Versao: 1.0 
+
+* Autor: Guilherme Moreira
+* Versao: 1.1
+* Descrição: Mensagem de delete adicionada
 **************************************************************************************************************************************************/
 
 /* MENSAGENS PADRONIZADAS */
@@ -31,6 +35,12 @@ const SUCCESS_CREATED_ITEM = {
     message: "Item criado com sucesso!!"
 }
 const SUCCESS_UPDATE_ITEM = {
+    status: true,
+    status_code: 200, 
+    message: "Item atualizado com sucesso!!"
+}
+
+const SUCCESS_DELETED_ITEM = {
     status: true,
     status_code: 200, 
     message: "Item atualizado com sucesso!!"
@@ -79,6 +89,7 @@ module.exports = {
     SUCCESS_REQUEST,
     SUCCESS_CREATED_ITEM,
     SUCCESS_UPDATE_ITEM,
+    SUCCESS_DELETED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,

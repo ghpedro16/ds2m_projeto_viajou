@@ -3,6 +3,8 @@
 * Data: 27/11/2025
 * Autor: Gustavo Mathias
 * Versao: 1.0
+* Autor: Guilherme Moreira
+* OBS: Corrigindo o select da função getSelectAllCategorias e o retorno da de deleter
 ************************************************************************************************************************************************/
 
 //Import da dependencia do Prisma que permite a execucao de Script SQL no banco de dados
@@ -114,12 +116,11 @@ const setUpdadeCategoria = async function (categoria){
 //Exclui uma categoria pelo ID no banco de dados
 const setDeleteCategoria = async function(id){
     try{
-        //Script SQL
-        let sql = `delete from tbl_categoria where id=${id}`
+        let sql = `DELETE FROM tbl_categoria WHERE id=${id}`
 
-        //Encaminha para o BD o script SQL
         let result = await prisma.$executeRawUnsafe(sql)
 
+        // Aqui é onde corrige:
         if (result > 0) {
             return true
         } else {
@@ -127,8 +128,8 @@ const setDeleteCategoria = async function(id){
         }
 
     } catch (error) {
+        console.log(error)
         return false
-
     }
 }
 

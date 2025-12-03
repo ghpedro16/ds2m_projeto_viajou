@@ -3,6 +3,8 @@
 * Data: 26/11/2025
 * Autor: Gustavo Mathias
 * Versao: 1.0 (CRUD do projeto Viajou!, sem as relações com outras tabelas)
+* Autor: Guilherme Moreira
+* OBS: Corrigindo bugs da função de deletar
 ***************************************************************************************************/
 
 //Import da MODEL do DAO 
@@ -24,16 +26,16 @@ const validarDadosCategoria = async function (categoria) {
 //Retorna uma lista de todas categorias
 const listaCategoria = async () => {
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-    
+
     try {
         let resultCategoria = await categoriaDAO.getSelectAllCategorias()
 
         if (resultCategoria) {
             if (resultCategoria.length > 0) {
-                
-                messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.categoria   = resultCategoria
+
+                messages.HEADER.status = messages.SUCCESS_REQUEST.status
+                messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
+                messages.HEADER.itens.categoria = resultCategoria
 
                 return messages.HEADER
             } else {
@@ -59,9 +61,9 @@ const buscarCategoriaId = async function (id) {
 
             if (resultCategoria) {
                 if (resultCategoria.length > 0) {
-                    messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                    messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.categoria   = resultCategoria
+                    messages.HEADER.status = messages.SUCCESS_REQUEST.status
+                    messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
+                    messages.HEADER.itens.categoria = resultCategoria
                     return messages.HEADER
 
                 } else {
@@ -95,34 +97,34 @@ const inserirCategoria = async function (categoria, contentType) {
             if (validar === true) {
 
                 let resultCategoria = await categoriaDAO.setInsertCategoria(categoria)
-                
+
                 if (resultCategoria) {
                     let lastID = await categoriaDAO.getSelectLastID()
-                    
+
                     if (lastID) {
 
                         categoria.id = lastID[0].id
 
-                        messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.categoria   = categoria
-                        return messages.HEADER 
+                        messages.HEADER.status = messages.SUCCESS_CREATED_ITEM.status
+                        messages.HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.HEADER.message = messages.SUCCESS_CREATED_ITEM.message
+                        messages.HEADER.itens.categoria = categoria
+                        return messages.HEADER
 
                     } else {
-                        return messages.ERROR_INTERNAL_SERVER_MODEL 
+                        return messages.ERROR_INTERNAL_SERVER_MODEL
                     }
                 } else {
-                    return messages.ERROR_INTERNAL_SERVER_MODEL 
+                    return messages.ERROR_INTERNAL_SERVER_MODEL
                 }
             } else {
-                return validar 
+                return validar
             }
         } else {
-            return messages.ERROR_CONTENT_TYPE 
+            return messages.ERROR_CONTENT_TYPE
         }
     } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER 
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -146,14 +148,14 @@ const atualizarCategoria = async function (categoria, id, contentType) {
                     categoria.id = Number(id)
 
                     let resultCategoria = await categoriaDAO.setUpdadeCategoria(categoria)
-                    
+
                     if (resultCategoria) {
-                        messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.categoria   = categoria
+                        messages.HEADER.status = messages.SUCCESS_UPDATE_ITEM.status
+                        messages.HEADER.status_code = messages.SUCCESS_UPDATE_ITEM.status_code
+                        messages.HEADER.message = messages.SUCCESS_UPDATE_ITEM.message
+                        messages.HEADER.itens.categoria = categoria
                         return messages.HEADER
-                        
+
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
                     }
@@ -181,6 +183,7 @@ const excluirCategoria = async function (id) {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
             let validarID = await buscarCategoriaId(id)
+            console.log("VALIDAR ID =>", validarID)
 
             if (validarID.status_code == 200) {
 
@@ -188,9 +191,11 @@ const excluirCategoria = async function (id) {
 
                 if (resultCategoria) {
 
-                    messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
-                    messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
-                    messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
+                    messages.HEADER.status = messages.SUCCESS_DELETED_ITEM.status
+                    messages.HEADER.status_code = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.HEADER.message = messages.SUCCESS_DELETED_ITEM.message
+
+                    messages.HEADER.itens = {}
                     delete messages.HEADER.itens
 
                     return messages.HEADER

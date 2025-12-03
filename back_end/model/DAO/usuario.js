@@ -14,7 +14,7 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 //Retorna o ultimo ID gerado no BD
-const getSelectLastID = async function (){
+const getSelectLastId = async function (){
     try{
         //Script SQL para retornar o ultimo ID inserido 
         let sql = `select id from tbl_usuario order by desc limit 1`
@@ -157,7 +157,7 @@ const setDeleteUser = async function(id){
 module.exports = {
     getSelectAllUsers,
     getSelectUserById,
-    getSelectLastID,
+    getSelectLastId,
     getSelectUserLogin,
     setInsertUser,
     setUpdateUser,

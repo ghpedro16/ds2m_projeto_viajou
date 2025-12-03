@@ -3,6 +3,9 @@
  * Data: 02/12/2025
  * Autor: Gustavo Mathias
  * Versao: 1.0 
+ * 
+ * Autor: Guilherme Moreira
+ * OBS: Corrigindo bugs da função de deletar
  ***************************************************************************************************/
 
 //Import da MODEL de Localização
@@ -32,10 +35,10 @@ const listaLocalizacao = async function () {
 
         if (resultLocalizacao) {
             if (resultLocalizacao.length > 0) {
-                messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.localizacao = resultLocalizacao
-                return messages.HEADER
+                messages.DEFAULT_HEADER.status            = messages.SUCCESS_REQUEST.status
+                messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
+                messages.DEFAULT_HEADER.itens.localizacao = resultLocalizacao
+                return messages.DEFAULT_HEADER
 
             } else {
                 return messages.ERROR_NOT_FOUND
@@ -60,10 +63,10 @@ const buscarLocalizacaoId = async function (id) {
 
             if (resultLocalizacao) {
                 if (resultLocalizacao.length > 0) {
-                    messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                    messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.localizacao = resultLocalizacao
-                    return messages.HEADER
+                    messages.DEFAULT_HEADER.status            = messages.SUCCESS_REQUEST.status
+                    messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
+                    messages.DEFAULT_HEADER.itens.localizacao = resultLocalizacao
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_NOT_FOUND
@@ -105,11 +108,11 @@ const inserirLocalizacao = async function (localizacao, contentType) {
                       
                         localizacao.id = resultLastID[0].id 
                         
-                        messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.localizacao = localizacao
-                        return messages.HEADER 
+                        messages.DEFAULT_HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
+                        messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.DEFAULT_HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.itens.localizacao = localizacao
+                        return messages.DEFAULT_HEADER 
 
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL 
@@ -153,12 +156,12 @@ const atualizarLocalizacao = async function (localizacao, id, contentType) {
                     let resultLocalizacao = await localizacaoDAO.setUpdadeLocation(localizacao)
                     
                     if (resultLocalizacao) {
-                        messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.localizacao = localizacao
+                        messages.DEFAULT_HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
+                        messages.DEFAULT_HEADER.itens.localizacao = localizacao
 
-                        return messages.HEADER
+                        return messages.DEFAULT_HEADER
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
                     }
@@ -193,12 +196,12 @@ const excluirLocalizacao = async function (id) {
 
                 if (resultLocalizacao) {
 
-                    messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
-                    messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
-                    messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
-                    messages.HEADER.itens             = null 
+                    messages.DEFAULT_HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
+                    messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.DEFAULT_HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
+                    delete messages.DEFAULT_HEADER.itens
                     
-                    return messages.HEADER
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_INTERNAL_SERVER_MODEL

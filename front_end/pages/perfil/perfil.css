@@ -40,13 +40,15 @@ main {
 }
 
 .dadosPerfil {
-    height: 20%;
+    height: auto;
     width: 96%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     gap: 8px;
     border-bottom: solid #A8A8A8 1px;
+    padding-top: 18px;
+    padding-bottom: 18px;
 
 }
 

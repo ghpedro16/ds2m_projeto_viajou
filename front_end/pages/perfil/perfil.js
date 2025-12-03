@@ -2,10 +2,10 @@
 
 async function carregarPerfil() {
     //No futuro quando tiver usuario logado, pegar o id dele do localStorage e passar na url
-    const API_URL = 'http://localhost:3003/usuario'
+    const url = 'http://localhost:3003/usuario'
 
     try {
-        const resposta = await fetch(API_URL)
+        const resposta = await fetch(url)
         const usuarios = await resposta.json()
 
         const usuario = usuarios[0] //provisório usando o primeiro usuario
@@ -98,10 +98,10 @@ let todasPostagens = []
 // CARREGAR TODAS AS POSTAGENS
 async function carregarPostagem() {
 
-    const API_URL = 'http://localhost:3003/postagem'
+    const url = 'http://localhost:3003/postagem'
 
     try {
-        const resposta = await fetch(API_URL)
+        const resposta = await fetch(url)
         todasPostagens = await resposta.json()
 
         todasPostagens.forEach(post => {
@@ -188,11 +188,40 @@ carregarPostagem()
 //Editando o perfil
 // Abrir modal preenchendo com os dados do usuário
 function abrirModalEditar(user) {
-    document.getElementById('inputNome').value = user.nome
-    document.getElementById('inputUser').value = user.nome_usuario
-    document.getElementById('inputBiografia').value = user.biografia
 
     document.getElementById('fundoModal').style.display = 'flex'
+
+    // Pegando os inputs (não os valores)
+    const inputNome = document.getElementById('inputNome')
+    const inputNomeUsuario = document.getElementById('inputUser')
+    const inputBiografia = document.getElementById('inputBiografia')
+
+    // Preenchendo o modal com os dados atuais
+    inputNome.value = user.nome
+    inputNomeUsuario.value = user.nome_usuario
+    inputBiografia.value = user.biografia
+
+    // Botões
+    const botaoCancelar = document.getElementById('botaoCancelar')
+    botaoCancelar.addEventListener('click', fecharModal)
+
+    const botaoSalvar = document.getElementById('botaoSalvar')
+    botaoSalvar.addEventListener('click', () => {
+        const id = user.id
+        const dados = {
+            ...user,
+            nome: inputNome.value,
+            nome_usuario: inputNomeUsuario.value,
+            biografia: inputBiografia.value
+        }
+
+        const atualizado = atualizarPerfil(id, dados)
+        if(atualizado) {
+            fecharModal()
+        } else {
+            alert('Erro ao atualizar dados!')
+        }
+    })
 }
 
 // Fechar modal
@@ -200,9 +229,19 @@ function fecharModal() {
     document.getElementById('fundoModal').style.display = 'none'
 }
 
-// Botões
-document.getElementById('botaoCancelar').addEventListener('click', fecharModal)
-document.getElementById('botaoSalvar').addEventListener('click', () => {
-    // salvar aqui
-    fecharModal()
-})
+async function atualizarPerfil(id, dados) {
+    const url = `http://localhost:3003/usuario/${id}`
+
+    const options = {
+        method: "PUT",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    }
+
+    const response = await fetch(url, options)
+
+
+    return response.ok
+}

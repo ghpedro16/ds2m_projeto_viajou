@@ -37,7 +37,10 @@ app.use((request, response, next) => {
 })
 
 //Chamar rota existente 
-const rotaCategoria = require('./routes/routes_categoria')
+const rotaCategoria  = require('./routes/routes_categoria')
+const rotaComentario = require('./routes/routes_comentario')
+const rotaCurtida    = require('./routes/routes_curtida')
+const rotaItem       = require('./routes/routes_item')
 
 //Inicia o servidor da API
 app.listen(PORT, () => {
@@ -46,3 +49,6 @@ app.listen(PORT, () => {
 
 //Utiliza as rotas
 app.use(rotaCategoria)
+app.use(rotaComentario)
+app.use(rotaCurtida)
+app.use(rotaItem)

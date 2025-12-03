@@ -6,7 +6,7 @@
  ***************************************************************************************************/
 
 //Import da MODEL de Item Salvo
-const itemSalvoDAO = require('../../model/item_salvo.js')
+const itemSalvoDAO = require('../../model/DAO/item_salvo.js')
 
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
@@ -34,7 +34,7 @@ const listaItensSalvos = async function () {
             if (resultItensSalvos.length > 0) {
                 messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                 messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.itens_salvos = resultItensSalvos
+                messages.HEADER.itens_salvos      = resultItensSalvos
                 return messages.HEADER
 
             } else {
@@ -62,7 +62,7 @@ const buscarItemSalvoId = async function (id) {
                 if (resultItemSalvo.length > 0) {
                     messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                     messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.item_salvo  = resultItemSalvo
+                    messages.HEADER.item_salvo        = resultItemSalvo
                     return messages.HEADER
 
                 } else {
@@ -108,7 +108,7 @@ const inserirItemSalvo = async function (itemSalvo, contentType) {
                         messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
                         messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
                         messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.item_salvo  = itemSalvo
+                        messages.HEADER.item_salvo        = itemSalvo
                         return messages.HEADER 
 
                     } else {
@@ -156,7 +156,7 @@ const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
                         messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
                         messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
                         messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.item_salvo  = itemSalvo
+                        messages.HEADER.item_salvo        = itemSalvo
 
                         return messages.HEADER
                     } else {

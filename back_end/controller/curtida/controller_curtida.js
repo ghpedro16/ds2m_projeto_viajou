@@ -6,7 +6,7 @@
  ***************************************************************************************************/
 
 //Import da MODEL de Curtida
-const curtidaDAO = require('../../model/curtida.js')
+const curtidaDAO = require('../../model/DAO/curtida.js')
 
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')

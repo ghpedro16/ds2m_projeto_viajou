@@ -1,3 +1,10 @@
+/**************************************************************************************************
+ * Objetivo: Arquivo responsavel pela rota
+ * Data: 03/12/2025
+ * Autor: Gustavo Mathias
+ * Versao: 1.0
+ ***************************************************************************************************/
+
 const express       =    require('express')
 const cors          =    require('cors')
 const bodyParser    =    require('body-parser')

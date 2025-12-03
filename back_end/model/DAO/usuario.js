@@ -65,7 +65,6 @@ const getSelectUserById = async function (id){
 
     } catch (error) {
         return false
-
     }
 }
 

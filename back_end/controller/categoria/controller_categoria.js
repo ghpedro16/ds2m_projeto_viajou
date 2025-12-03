@@ -26,7 +26,7 @@ const validarDadosCategoria = async function (categoria) {
 
 //Retorna uma lista de todas categorias
 const listaCategoria = async () => {
-    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         let resultCategoria = await categoriaDAO.getSelectAllCategorias()
@@ -34,19 +34,19 @@ const listaCategoria = async () => {
         if (resultCategoria) {
             if (resultCategoria.length > 0) {
 
-                messages.HEADER.status = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.categoria = resultCategoria
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.itens.categoria = resultCategoria
 
-                return messages.HEADER
+                return MESSAGES.DEFAULT_HEADER
             } else {
-                return messages.ERROR_NOT_FOUND
+                return MESSAGES.ERROR_NOT_FOUND
             }
         } else {
-            return messages.ERROR_INTERNAL_SERVER_MODEL
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
         }
     } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
@@ -62,10 +62,10 @@ const buscarCategoriaId = async function (id) {
 
             if (resultCategoria) {
                 if (resultCategoria.length > 0) {
-                    messages.HEADER.status = messages.SUCCESS_REQUEST.status
-                    messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.categoria = resultCategoria
-                    return messages.HEADER
+                    messages.DEFAULT_HEADER.status = messages.SUCCESS_REQUEST.status
+                    messages.DEFAULT_HEADER.status_code = messages.SUCCESS_REQUEST.status_code
+                    messages.DEFAULT_HEADER.itens.categoria = resultCategoria
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_NOT_FOUND
@@ -106,11 +106,11 @@ const inserirCategoria = async function (categoria, contentType) {
 
                         categoria.id = lastID[0].id
 
-                        messages.HEADER.status = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.categoria = categoria
-                        return messages.HEADER
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATED_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.itens.categoria = categoria
+                        return messages.DEFAULT_HEADER
 
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
@@ -151,11 +151,11 @@ const atualizarCategoria = async function (categoria, id, contentType) {
                     let resultCategoria = await categoriaDAO.setUpdadeCategoria(categoria)
 
                     if (resultCategoria) {
-                        messages.HEADER.status = messages.SUCCESS_UPDATE_ITEM.status
-                        messages.HEADER.status_code = messages.SUCCESS_UPDATE_ITEM.status_code
-                        messages.HEADER.message = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.categoria = categoria
-                        return messages.HEADER
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_UPDATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_UPDATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_UPDATE_ITEM.message
+                        messages.DEFAULT_HEADER.itens.categoria = categoria
+                        return messages.DEFAULT_HEADER
 
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
@@ -192,14 +192,14 @@ const excluirCategoria = async function (id) {
 
                 if (resultCategoria) {
 
-                    messages.HEADER.status = messages.SUCCESS_DELETED_ITEM.status
-                    messages.HEADER.status_code = messages.SUCCESS_DELETED_ITEM.status_code
-                    messages.HEADER.message = messages.SUCCESS_DELETED_ITEM.message
+                    messages.DEFAULT_HEADER.status = messages.SUCCESS_DELETED_ITEM.status
+                    messages.DEFAULT_HEADER.status_code = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.DEFAULT_HEADER.message = messages.SUCCESS_DELETED_ITEM.message
 
-                    messages.HEADER.itens = {}
-                    delete messages.HEADER.itens
+                    messages.DEFAULT_HEADER.itens = {}
+                    delete messages.DEFAULT_HEADER.itens
 
-                    return messages.HEADER
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_INTERNAL_SERVER_MODEL

@@ -1,0 +1,411 @@
+{
+    "usuario": [
+        {
+            "nome": "Guilherme",
+            "nome_usuario": "guilherme_gui",
+            "email": "guilherme@exemplo.com",
+            "senha": "senha707",
+            "data_nascimento": "1994-11-25",
+            "biografia": "Dev FullStack.",
+            "url_foto": "https://cdn.wikimg.net/en/hkwiki/images/e/e6/B_Lace.png",
+            "data_cadastro": "2024-04-10",
+            "status_conta": true,
+            "quantidade_postagens": 10,
+            "quantidade_seguindos": 80,
+            "quantidade_seguidores": 350,
+            "quantidade_itens_salvos": 70,
+            "id": "1"
+        },
+        {
+            "id": "2",
+            "nome": "Bruno Costa",
+            "nome_usuario": "brunocosta_io",
+            "email": "bruno.costa@exemplo.com",
+            "senha": "senha456",
+            "data_nascimento": "1990-08-22",
+            "biografia": "Engenheiro de Software com foco em Python e Machine Learning. Produtividade é o segredo!",
+            "url_foto": "https://randomuser.me/api/portraits/men/2.jpg",
+            "data_cadastro": "2023-11-20",
+            "status_conta": false,
+            "quantidade_postagens": 2,
+            "quantidade_seguindos": 120,
+            "quantidade_seguidores": 5800,
+            "quantidade_itens_salvos": 800
+        },
+        {
+            "id": "3",
+            "nome": "Carla Mendes",
+            "nome_usuario": "carla_mendes_dev",
+            "email": "carla.mendes@exemplo.com",
+            "senha": "senha789",
+            "data_nascimento": "1988-05-10",
+            "biografia": "Arquiteta de Sistemas. Especialista em Microserviços e escalabilidade em nuvem.",
+            "url_foto": "https://randomuser.me/api/portraits/women/3.jpg",
+            "data_cadastro": "2024-03-01",
+            "status_conta": true,
+            "quantidade_postagens": 2,
+            "quantidade_seguindos": 30,
+            "quantidade_seguidores": 10500,
+            "quantidade_itens_salvos": 1200
+        },
+        {
+            "id": "4",
+            "nome": "Daniel Pereira",
+            "nome_usuario": "dani_frontend",
+            "email": "daniel.pereira@exemplo.com",
+            "senha": "senha101",
+            "data_nascimento": "1998-12-03",
+            "biografia": "Designer e Desenvolvedor Web. Foco em responsividade e UX/UI.",
+            "url_foto": "https://randomuser.me/api/portraits/men/4.jpg",
+            "data_cadastro": "2024-05-15",
+            "status_conta": true,
+            "quantidade_postagens": 2,
+            "quantidade_seguindos": 250,
+            "quantidade_seguidores": 750,
+            "quantidade_itens_salvos": 150
+        },
+        {
+            "id": "5",
+            "nome": "Eduarda Lima",
+            "nome_usuario": "edu_fullstack",
+            "email": "eduarda.lima@exemplo.com",
+            "senha": "senha202",
+            "data_nascimento": "1993-01-28",
+            "biografia": "Desenvolvedora Full-Stack. Node.js e APIs REST são meu playground.",
+            "url_foto": "https://randomuser.me/api/portraits/women/5.jpg",
+            "data_cadastro": "2023-09-01",
+            "status_conta": true,
+            "quantidade_postagens": 2,
+            "quantidade_seguindos": 90,
+            "quantidade_seguidores": 3200,
+            "quantidade_itens_salvos": 650
+        },
+        {
+            "id": "6",
+            "nome": "Fábio Santos",
+            "nome_usuario": "fabio_back",
+            "email": "fabio.santos@exemplo.com",
+            "senha": "senha303",
+            "data_nascimento": "1985-06-19",
+            "biografia": "Backend Developer | Java & C#. Buscando sempre a melhor performance e segurança.",
+            "url_foto": "https://randomuser.me/api/portraits/men/6.jpg",
+            "data_cadastro": "2024-02-28",
+            "status_conta": true,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 40,
+            "quantidade_seguidores": 900,
+            "quantidade_itens_salvos": 180
+        },
+        {
+            "id": "7",
+            "nome": "Gabriela Nunes",
+            "nome_usuario": "gabi_dba",
+            "email": "gabriela.nunes@exemplo.com",
+            "senha": "senha404",
+            "data_nascimento": "1991-10-07",
+            "biografia": "Administradora de Banco de Dados. Apaixonada por otimização de consultas SQL.",
+            "url_foto": "https://randomuser.me/api/portraits/women/7.jpg",
+            "data_cadastro": "2023-12-12",
+            "status_conta": true,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 75,
+            "quantidade_seguidores": 2500,
+            "quantidade_itens_salvos": 450
+        },
+        {
+            "id": "8",
+            "nome": "Henrique Oliveira",
+            "nome_usuario": "henrique_mobile",
+            "email": "henrique.oliveira@exemplo.com",
+            "senha": "senha505",
+            "data_nascimento": "2000-04-01",
+            "biografia": "Desenvolvedor Mobile (React Native e Flutter). Transformando ideias em apps.",
+            "url_foto": "https://randomuser.me/api/portraits/men/8.jpg",
+            "data_cadastro": "2024-06-20",
+            "status_conta": true,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 150,
+            "quantidade_seguidores": 450,
+            "quantidade_itens_salvos": 90
+        },
+        {
+            "id": "9",
+            "nome": "Isabela Rocha",
+            "nome_usuario": "isa_cloud",
+            "email": "isabela.rocha@exemplo.com",
+            "senha": "senha606",
+            "data_nascimento": "1996-02-18",
+            "biografia": "DevOps Engineer. Automação, CI/CD e infraestrutura como código (IaC).",
+            "url_foto": "https://randomuser.me/api/portraits/women/9.jpg",
+            "data_cadastro": "2023-08-05",
+            "status_conta": true,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 100,
+            "quantidade_seguidores": 6000,
+            "quantidade_itens_salvos": 1500
+        },
+        {
+            "id": "10",
+            "nome": "João Victor",
+            "nome_usuario": "joaov_tester",
+            "email": "joao.victor@exemplo.com",
+            "senha": "senha707",
+            "data_nascimento": "1994-11-25",
+            "biografia": "QA e Engenheiro de Testes. Garantindo a qualidade do software com testes automatizados.",
+            "url_foto": "https://randomuser.me/api/portraits/men/10.jpg",
+            "data_cadastro": "2024-04-10",
+            "status_conta": false,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 80,
+            "quantidade_seguidores": 350,
+            "quantidade_itens_salvos": 70
+        },
+        {
+            "id": "2c83",
+            "nome": "Guilherme",
+            "nome_usuario": "joaov_tester",
+            "email": "joao.victor@exemplo.com",
+            "senha": "senha707",
+            "data_nascimento": "1994-11-25",
+            "biografia": "QA e Engenheiro de Testes. Garantindo a qualidade do software com testes automatizado",
+            "url_foto": "https://randomuser.me/api/portraits/men/10.jpg",
+            "data_cadastro": "2024-04-10",
+            "status_conta": false,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 80,
+            "quantidade_seguidores": 350,
+            "quantidade_itens_salvos": 70
+        },
+        {
+            "id": "5437",
+            "nome": "Guilherme",
+            "nome_usuario": "joaov_tester",
+            "email": "joao.victor@exemplo.com",
+            "senha": "senha707",
+            "data_nascimento": "1994-11-25",
+            "biografia": "QA e Engenheiro de Testes. Garantindo a qualidade do software com testes automatizado",
+            "url_foto": "https://randomuser.me/api/portraits/men/10.jpg",
+            "data_cadastro": "2024-04-10",
+            "status_conta": false,
+            "quantidade_postagens": 0,
+            "quantidade_seguindos": 80,
+            "quantidade_seguidores": 350,
+            "quantidade_itens_salvos": 70
+        }
+    ],
+    "postagem": [
+        {
+            "id": "1",
+            "titulo": "Trilha no Parque Estadual",
+            "descricao": "Dia incrível fazendo trilha e apreciando a natureza!",
+            "data_postagem": "2025-01-12",
+            "publico": true,
+            "quantidade_curtidas": 23,
+            "quantidade_comentarios": 4,
+            "quantidade_salvos": 2,
+            "midia": [
+                "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+                "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
+            ],
+            "categoria": [
+                "Aventura",
+                "Natureza"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "2",
+            "titulo": "Novo Setup de Estudos",
+            "descricao": "Organizei meu setup hoje, ficou muito melhor para programar!",
+            "data_postagem": "2025-01-15",
+            "publico": true,
+            "quantidade_curtidas": 41,
+            "quantidade_comentarios": 7,
+            "quantidade_salvos": 5,
+            "midia": [
+                "https://images.unsplash.com/photo-1587829741301-dc798b83add3"
+            ],
+            "categoria": [
+                "Tecnologia",
+                "Estudos"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "3",
+            "titulo": "Primeiro Projeto em JS",
+            "descricao": "Finalizei meu primeiro projetinho usando JavaScript e APIs!",
+            "data_postagem": "2025-01-22",
+            "publico": false,
+            "quantidade_curtidas": 39,
+            "quantidade_comentarios": 10,
+            "quantidade_salvos": 6,
+            "midia": [
+                "https://images.unsplash.com/photo-1555066931-4365d14bab8c"
+            ],
+            "categoria": [
+                "Tecnologia",
+                "Educação"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "4",
+            "titulo": "Treino de Skate",
+            "descricao": "Voltei a praticar um pouco. Ainda sei mandar uns flips!",
+            "data_postagem": "2025-02-03",
+            "publico": true,
+            "quantidade_curtidas": 18,
+            "quantidade_comentarios": 2,
+            "quantidade_salvos": 1,
+            "midia": [
+                "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2",
+                "https://images.unsplash.com/photo-1520975661595-6453be3f7070"
+            ],
+            "categoria": [
+                "Aventura",
+                "Esporte"
+            ],
+            "localizacao": [
+                "Estados Unidos"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "5",
+            "titulo": "Comida Caseira",
+            "descricao": "Hoje cozinhei um prato novo e ficou muito bom!",
+            "data_postagem": "2025-02-05",
+            "publico": true,
+            "quantidade_curtidas": 27,
+            "quantidade_comentarios": 3,
+            "quantidade_salvos": 4,
+            "midia": [
+                "https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+            ],
+            "categoria": [
+                "Gastronomica"
+            ],
+            "localizacao": [
+                "Itália",
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "6",
+            "titulo": "Estudo de Redes IP",
+            "descricao": "Aprendendo subnetting… até que dá pra entender!",
+            "data_postagem": "2025-02-12",
+            "publico": false,
+            "quantidade_curtidas": 34,
+            "quantidade_comentarios": 6,
+            "quantidade_salvos": 12,
+            "midia": [
+                "https://images.unsplash.com/photo-1518770660439-4636190af475"
+            ],
+            "categoria": [
+                "Tecnologia",
+                "Educação"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "7",
+            "titulo": "Foto do Pôr do Sol",
+            "descricao": "O céu estava perfeito hoje!",
+            "data_postagem": "2025-02-18",
+            "publico": true,
+            "quantidade_curtidas": 56,
+            "quantidade_comentarios": 9,
+            "quantidade_salvos": 14,
+            "midia": [
+                "https://images.unsplash.com/photo-1501973801540-537f08ccae7b"
+            ],
+            "categoria": [
+                "Cultural",
+                "Natureza"
+            ],
+            "localizacao": [
+                "Portugal"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "8",
+            "titulo": "Projeto no Roblox Studio",
+            "descricao": "Avançando na escultura voxel do dragão.",
+            "data_postagem": "2025-03-01",
+            "publico": true,
+            "quantidade_curtidas": 48,
+            "quantidade_comentarios": 11,
+            "quantidade_salvos": 9,
+            "midia": [
+                "https://images.unsplash.com/photo-1618172193761-2f6c9f0f9a1a",
+                "https://images.unsplash.com/photo-1607082349566-1873f52f5cdd"
+            ],
+            "categoria": [
+                "Tecnologia",
+                "Arte"
+            ],
+            "localizacao": [
+                "Japão"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "9",
+            "titulo": "Dia de Descanso",
+            "descricao": "Hoje foi só relaxar e colocar séries em dia.",
+            "data_postagem": "2025-03-07",
+            "publico": true,
+            "quantidade_curtidas": 12,
+            "quantidade_comentarios": 1,
+            "quantidade_salvos": 0,
+            "midia": [
+                "https://images.unsplash.com/photo-1519710164239-da123dc03ef4"
+            ],
+            "categoria": [
+                "Cultural",
+                "Relaxamento"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        },
+        {
+            "id": "10",
+            "titulo": "Estudando para prova do SENAI",
+            "descricao": "Foco total! Prova chegando e muitos assuntos pra revisar.",
+            "data_postagem": "2025-03-10",
+            "publico": true,
+            "quantidade_curtidas": 31,
+            "quantidade_comentarios": 4,
+            "quantidade_salvos": 8,
+            "midia": [
+                "https://images.unsplash.com/photo-1584697964154-4e8b3ca2c09c"
+            ],
+            "categoria": [
+                "Estudos",
+                "Tecnologia"
+            ],
+            "localizacao": [
+                "Brasil"
+            ],
+            "id_usuario": 1
+        }
+    ]
+}

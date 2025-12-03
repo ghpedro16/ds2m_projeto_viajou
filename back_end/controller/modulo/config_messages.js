@@ -12,14 +12,14 @@
 /* MENSAGENS PADRONIZADAS */
 const data = new Date()
 
-const HEADER = {
-    development: "Gustavo Mathias",
+const DEFAULT_HEADER = {
+    developments: "Gustavo Mathias, Guilherme Moreira, Pedro Silva",
     api_description: "API para manipular dados do projeto Viajou!",
     request_date: data.toLocaleString(),
-    status: null,
-    status_code: null,
+    status: Boolean,
+    status_code: Number,
     itens: {}
-} 
+}
 
 
 /* MENSAGENS DE SUCESSO */
@@ -85,7 +85,7 @@ const ERROR_RELATION_INSERTION = {
 }
 
 module.exports = {
-    HEADER,
+    DEFAULT_HEADER,
     SUCCESS_REQUEST,
     SUCCESS_CREATED_ITEM,
     SUCCESS_UPDATE_ITEM,

@@ -30,12 +30,11 @@ const listaMidia = async function () {
         if (resultMidia) {
             if (resultMidia.length > 0) {
 
-                messages.HEADER.development = 'Guilherme Moreira'
-                messages.HEADER.status = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.midia = resultMidia
+                messages.DEFAULT_HEADER.status = messages.SUCCESS_REQUEST.status
+                messages.DEFAULT_HEADER.status_code = messages.SUCCESS_REQUEST.status_code
+                messages.DEFAULT_HEADER.itens.midia = resultMidia
 
-                return messages.HEADER
+                return messages.DEFAULT_HEADER
 
             } else {
                 return messages.ERROR_NOT_FOUND
@@ -62,12 +61,11 @@ const buscarMidiaId = async function (id) {
             if (resultMidia) {
                 if (resultMidia.length > 0) {
 
-                    messages.HEADER.development = 'Guilherme Moreira'
-                    messages.HEADER.status = messages.SUCCESS_REQUEST.status
-                    messages.HEADER.status_code = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.midia = resultMidia
+                    messages.DEFAULT_HEADER.status = messages.SUCCESS_REQUEST.status
+                    messages.DEFAULT_HEADER.status_code = messages.SUCCESS_REQUEST.status_code
+                    messages.DEFAULT_HEADER.itens.midia = resultMidia
 
-                    return messages.HEADER
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_NOT_FOUND
@@ -108,13 +106,12 @@ const inserirMidia = async function (midia, contentType) {
 
                         midia.id = resultLastID[0].id
 
-                        messages.HEADER.development = 'Guilherme Moreira'
-                        messages.HEADER.status = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.midia = midia
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATED_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.itens.midia = midia
 
-                        return messages.HEADER
+                        return messages.DEFAULT_HEADER
 
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
@@ -159,13 +156,12 @@ const atualizarMidia = async function (midia, id, contentType) {
 
                     if (resultMidia) {
 
-                        messages.HEADER.development = 'Guilherme Moreira'
-                        messages.HEADER.status = messages.SUCCESS_UPDATE_ITEM.status
-                        messages.HEADER.status_code = messages.SUCCESS_UPDATE_ITEM.status_code
-                        messages.HEADER.message = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.midia = midia
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_UPDATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_UPDATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_UPDATE_ITEM.message
+                        messages.DEFAULT_HEADER.itens.midia = midia
 
-                        return messages.HEADER
+                        return messages.DEFAULT_HEADER
 
                     } else {
                         return messages.ERROR_INTERNAL_SERVER_MODEL
@@ -203,13 +199,12 @@ const excluirMidia = async function (id) {
                 let resultMidia = await midiaDAO.setDeleteMidia(Number(id))
 
                 if (resultMidia) {
-                    messages.HEADER.development = 'Guilherme Moreira'
-                    messages.HEADER.status = messages.SUCCESS_DELETED_ITEM.status
-                    messages.HEADER.status_code = messages.SUCCESS_DELETED_ITEM.status_code
-                    messages.HEADER.message = messages.SUCCESS_DELETED_ITEM.message
-                    delete messages.HEADER.itens
+                    messages.DEFAULT_HEADER.status = messages.SUCCESS_DELETED_ITEM.status
+                    messages.DEFAULT_HEADER.status_code = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.DEFAULT_HEADER.message = messages.SUCCESS_DELETED_ITEM.message
+                    delete messages.DEFAULT_HEADER.itens
 
-                    return messages.HEADER
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_INTERNAL_SERVER_MODEL

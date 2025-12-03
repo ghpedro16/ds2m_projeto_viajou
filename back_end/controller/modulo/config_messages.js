@@ -19,7 +19,7 @@ const DEFAULT_HEADER = {
     status: Boolean,
     status_code: Number,
     itens: {}
-} 
+}
 
 
 /* MENSAGENS DE SUCESSO */

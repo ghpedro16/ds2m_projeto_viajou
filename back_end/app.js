@@ -3,6 +3,10 @@
 * Data: 26/11/2025
 * Autor: Gustavo Mathias
 * Versao: 1.0 
+
+* Autor: Gustavo Mathias
+* Versao: 1.1
+* Obs: Adicionando as rotas de localizacao e midia 
 ******************************************************************************/
 
 /*
@@ -42,6 +46,7 @@ const rotaComentario    = require('./routes/routes_comentario')
 const rotaCurtida       = require('./routes/routes_curtida')
 const rotaItem          = require('./routes/routes_item')
 const rotaLocalizacao   = require('./routes/routes_localizacao.js')
+const rotaMidia         = require('./routes/routes_midia.js')
 
 //Inicia o servidor da API
 app.listen(PORT, () => {
@@ -54,3 +59,4 @@ app.use(rotaComentario)
 app.use(rotaCurtida)
 app.use(rotaItem)
 app.use(rotaLocalizacao)
+app.use(rotaMidia)

@@ -1,5 +1,16 @@
+/***********************************************************************************************************************************************
+ * Objetivo: Arquivo responsavel pelo CRUD de dados no Mysql referente ao genero
+ * Data: 02/12/2025
+ * Autor: Pedro
+ * Versão: 1.0
+ * 
+ * Autor: Guilherme Moreira
+ * OBS: Corrigindo o select da função setUpdadeMidia
+ ************************************************************************************************************************************************/
+
 /*
 Vou utilizar (node-fetch), (Axios) para fazer um GET na Url do arquivo
+Guilherme: Não sei oq é isso vou ver dps com os outros membros
 */
 
 
@@ -103,7 +114,7 @@ const setInsertMidia = async function (midia){
 const setUpdadeMidia = async function (midia){
 
     try {
-        let sql = `update tbl_categoria set
+        let sql = `update tbl_midia set
         url    =    '${midia.url}'
         where id =   ${midia.id}`
 

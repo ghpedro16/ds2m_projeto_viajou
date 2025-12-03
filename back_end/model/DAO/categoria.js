@@ -3,8 +3,9 @@
 * Data: 27/11/2025
 * Autor: Gustavo Mathias
 * Versao: 1.0
+
 * Autor: Guilherme Moreira
-* OBS: Corrigindo o select da função getSelectAllCategorias e o retorno da de deleter
+* OBS: Corrigindo o select da função getSelectAllCategorias e o retorno da setDeleteCategoria
 ************************************************************************************************************************************************/
 
 //Import da dependencia do Prisma que permite a execucao de Script SQL no banco de dados

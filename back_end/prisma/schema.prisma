@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
@@ -18,10 +18,3 @@ model tbl_teste {
   id Int @id @default(autoincrement())
   nome String
 }
-
-model tbl_debug {
-  id Int @id @default(autoincrement())
-  nome String
-}
-
-

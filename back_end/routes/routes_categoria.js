@@ -23,7 +23,7 @@ app.use((request, response, next) => {
 //Rota para listar todas categorias 
 app.get('/v1/viajou/categoria', cors(), async (request, response) => {
     let categorias = await controller_categoria.listaCategoria()
-    response.status(categorias.status.code)
+    response.status(categorias.status_code)
     response.json(categorias)
 })
 

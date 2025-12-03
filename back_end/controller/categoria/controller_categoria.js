@@ -11,7 +11,6 @@ const categoriaDAO = require('../../model/categoria.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-
 // Função para validar os dados da categoria
 const validarDadosCategoria = async function (categoria) {
 
@@ -23,8 +22,7 @@ const validarDadosCategoria = async function (categoria) {
 }
 
 //Retorna uma lista de todas categorias
-const listaCategoria = async function () {
-    
+const listaCategoria = async () => {
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
     try {
@@ -32,6 +30,8 @@ const listaCategoria = async function () {
 
         if (resultCategoria) {
             if (resultCategoria.length > 0) {
+
+                
                 messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                 messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
                 messages.HEADER.itens.categoria   = resultCategoria
@@ -40,7 +40,6 @@ const listaCategoria = async function () {
             } else {
                 return messages.ERROR_NOT_FOUND
             }
-
         } else {
             return messages.ERROR_INTERNAL_SERVER_MODEL
         }

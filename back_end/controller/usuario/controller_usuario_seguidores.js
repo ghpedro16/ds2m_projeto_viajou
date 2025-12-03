@@ -12,9 +12,17 @@ const usuarioSeguidoresDAO = require('../../model/DAO/usuario_seguidores.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
 const listarSeguindosUsuario = async function(id_usuario){
-
+ 
 }
 
 const listarSeguidoresUsuario = async function(id_usuario){
+
+}
+
+const inserirSeguidor = async function(){
+
+}
+
+const excluirSeguidor = async function(){
 
 }

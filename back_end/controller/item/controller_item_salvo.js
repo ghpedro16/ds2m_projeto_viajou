@@ -2,39 +2,39 @@
  * Objetivo: Arquivo responsavel pela manipulacao de dado entre o app e a model para o CRUD do projeto Viajou!
  * Data: 02/12/2025
  * Autor: Gustavo Mathias
- * Versao: 1.0 
+ * Versao: 1.0
  ***************************************************************************************************/
 
-//Import da MODEL de Localização
-const localizacaoDAO = require('../../model/localizacao.js')
+//Import da MODEL de Item Salvo
+const itemSalvoDAO = require('../../model/item_salvo.js')
 
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-// Função para validar os dados da localização
-const validarDadosLocalizacao = async function (localizacao) {
-
-    // Verifica se o campo 'pais' existe, e nao ultrapassa 100 caracteres 
-    if (!localizacao.pais || localizacao.pais == '' || localizacao.pais.length > 100) {
+// Função para validar os dados do item salvo
+const validarDadosItemSalvo = async function (itemSalvo) {
+    
+    if (!itemSalvo.id_postagem || isNaN(itemSalvo.id_postagem) || 
+        !itemSalvo.id_usuario || isNaN(itemSalvo.id_usuario)) {
         return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
     } else {
         return true
     }
 }
 
-//Retorna uma lista de todas as localizações
-const listaLocalizacao = async function () {
-  
+//Retorna uma lista de todos os itens salvos
+const listaItensSalvos = async function () {
+    
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let resultLocalizacao = await localizacaoDAO.getSelectAllLocation()
+        let resultItensSalvos = await itemSalvoDAO.getSelectAllSavedItem()
 
-        if (resultLocalizacao) {
-            if (resultLocalizacao.length > 0) {
+        if (resultItensSalvos) {
+            if (resultItensSalvos.length > 0) {
                 messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                 messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.localizacao = resultLocalizacao
+                messages.HEADER.itens.itens_salvos = resultItensSalvos
                 return messages.HEADER
 
             } else {
@@ -48,21 +48,21 @@ const listaLocalizacao = async function () {
     }
 }
 
-//Retorna uma localização filtrada pelo ID 
-const buscarLocalizacaoId = async function (id) {
+//Retorna um item salvo filtrado pelo ID 
+const buscarItemSalvoId = async function (id) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
         if (!isNaN(id)) {
 
-            let resultLocalizacao = await localizacaoDAO.getSelectLocationById(Number(id))
+            let resultItemSalvo = await itemSalvoDAO.getSelectSavedItemById(Number(id))
 
-            if (resultLocalizacao) {
-                if (resultLocalizacao.length > 0) {
+            if (resultItemSalvo) {
+                if (resultItemSalvo.length > 0) {
                     messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                     messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.itens.localizacao = resultLocalizacao
+                    messages.HEADER.itens.item_salvo  = resultItemSalvo
                     return messages.HEADER
 
                 } else {
@@ -82,8 +82,8 @@ const buscarLocalizacaoId = async function (id) {
     }
 }
 
-//Inserir uma nova localização 
-const inserirLocalizacao = async function (localizacao, contentType) {
+//Inserir um novo item salvo 
+const inserirItemSalvo = async function (itemSalvo, contentType) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -91,24 +91,24 @@ const inserirLocalizacao = async function (localizacao, contentType) {
 
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosLocalizacao(localizacao)
+            let validar = await validarDadosItemSalvo(itemSalvo)
 
             if (validar === true) {
-
-                let resultLocalizacao = await localizacaoDAO.setInsertLocation(localizacao)
                 
-                if (resultLocalizacao) {
+                let resultItemSalvo = await itemSalvoDAO.setInsertSavedItem(itemSalvo)
+                
+                if (resultItemSalvo) {
                   
-                    let resultLastID = await localizacaoDAO.getSelectLastID()
+                    let resultLastID = await itemSalvoDAO.getSelectLastId()
                     
                     if (resultLastID) {
-                      
-                        localizacao.id = resultLastID[0].id 
+                       
+                        itemSalvo.id = resultLastID[0].id 
                         
                         messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
                         messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
                         messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.localizacao = localizacao
+                        messages.HEADER.itens.item_salvo  = itemSalvo
                         return messages.HEADER 
 
                     } else {
@@ -129,8 +129,8 @@ const inserirLocalizacao = async function (localizacao, contentType) {
     }
 }
 
-//Atualiza uma localização 
-const atualizarLocalizacao = async function (localizacao, id, contentType) {
+//Atualiza um item salvo 
+const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -138,25 +138,25 @@ const atualizarLocalizacao = async function (localizacao, id, contentType) {
 
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let validar = await validarDadosLocalizacao(localizacao)
+            let validar = await validarDadosItemSalvo(itemSalvo)
 
             if (validar === true) {
 
-                let validarID = await buscarLocalizacaoId(id)
+                let validarID = await buscarItemSalvoId(id)
 
                 if (validarID.status_code == 200) {
 
-                    localizacao.id = Number(id)
+                    itemSalvo.id = Number(id)
 
                     //Processamento 
                     //Chama a função para atualizar no BD
-                    let resultLocalizacao = await localizacaoDAO.setUpdadeLocation(localizacao)
+                    let resultItemSalvo = await itemSalvoDAO.setUpdateSavedItem(itemSalvo)
                     
-                    if (resultLocalizacao) {
+                    if (resultItemSalvo) {
                         messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
                         messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
                         messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.itens.localizacao = localizacao
+                        messages.HEADER.itens.item_salvo  = itemSalvo
 
                         return messages.HEADER
                     } else {
@@ -176,8 +176,8 @@ const atualizarLocalizacao = async function (localizacao, id, contentType) {
     }
 }
 
-//Excluir uma localização
-const excluirLocalizacao = async function (id) {
+//Excluir um item salvo
+const excluirItemSalvo = async function (id) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -185,13 +185,13 @@ const excluirLocalizacao = async function (id) {
         //Validação da chegada do ID 
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
-            let validarID = await buscarLocalizacaoId(id)
+            let validarID = await buscarItemSalvoId(id)
 
             if (validarID.status_code == 200) {
 
-                let resultLocalizacao = await localizacaoDAO.setDeleteLocation(Number(id))
+                let resultItemSalvo = await itemSalvoDAO.setDeleteSavedItem(Number(id))
 
-                if (resultLocalizacao) {
+                if (resultItemSalvo) {
 
                     messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
                     messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
@@ -216,9 +216,9 @@ const excluirLocalizacao = async function (id) {
 }
 
 module.exports = {
-    listaLocalizacao,
-    buscarLocalizacaoId,
-    inserirLocalizacao,
-    atualizarLocalizacao,
-    excluirLocalizacao
+    listaItensSalvos,
+    buscarItemSalvoId,
+    inserirItemSalvo,
+    atualizarItemSalvo,
+    excluirItemSalvo
 }

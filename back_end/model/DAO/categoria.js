@@ -97,7 +97,7 @@ const setUpdadeCategoria = async function (categoria){
     try {
         let sql = `update tbl_categoria set
         nome    =   '${categoria.nome}'
-        where id =   ${categoria}`
+        where id =   ${categoria.id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 

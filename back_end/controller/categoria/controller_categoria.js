@@ -12,48 +12,31 @@ const categoriaDAO = require('../../model/categoria.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
 
-//Retorna uma lista de todas categorias
-const listaCategoria = async function () {
-    let resultCategoria = await categoriaDAO.getSelectAllCategorias ()
+// Função para validar os dados da categoria
+const validarDadosCategoria = async function (categoria) {
 
-    try {
-    if (resultCategoria) {
-        if (resultCategoria.length > 0) {
-            messages.HEADER.status            = messages.SUCESS_REQUEST.status
-            messages.HEADER.status_code       = messages.SUCESS_REQUEST.status_code
-            messages.HEADER.itens.categoria   = resultCategoria
-
-            return messages.HEADER
-        }else{
-            return messages.ERROR_NOT_FOUND
-        }
-
-        } else {
-            return messages.ERROR_INTERNAL_SERVER_MODEL
-        }
-    } catch (error){
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    if (!categoria.nome || categoria.nome == '' || categoria.nome.length > 100) {
+        return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
+    } else {
+        return true
     }
 }
 
-//Retorna uma caegoria filtrada pelo ID 
-const buscarCategoriaId = async function (id) {
-
+//Retorna uma lista de todas categorias
+const listaCategoria = async function () {
+    
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
+    
     try {
-        if (!isNaN(id)){
+        let resultCategoria = await categoriaDAO.getSelectAllCategorias()
 
-            let resultCategoria = await categoriaDAO.getSelectByIdCategoria(Number(id))
-
-        if (resultCategoria){
+        if (resultCategoria) {
             if (resultCategoria.length > 0) {
-                messages.HEADER.status           = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code      = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens.categoria  = resultCategoria
+                messages.HEADER.status            = messages.SUCCESS_REQUEST.status
+                messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
+                messages.HEADER.itens.categoria   = resultCategoria
 
                 return messages.HEADER
-
             } else {
                 return messages.ERROR_NOT_FOUND
             }
@@ -61,148 +44,170 @@ const buscarCategoriaId = async function (id) {
         } else {
             return messages.ERROR_INTERNAL_SERVER_MODEL
         }
-
-    } else {
-        return messages.ERROR_REQUIRED_FIELDS
+    } catch (error) {
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
     }
+}
 
-} catch (error) {
-    return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+//Retorna uma categoria filtrada pelo ID 
+const buscarCategoriaId = async function (id) {
+
+    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        if (!isNaN(id)) {
+
+            let resultCategoria = await categoriaDAO.getSelectCategoriaById(Number(id))
+
+            if (resultCategoria) {
+                if (resultCategoria.length > 0) {
+                    messages.HEADER.status            = messages.SUCCESS_REQUEST.status
+                    messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
+                    messages.HEADER.itens.categoria   = resultCategoria
+                    return messages.HEADER
+
+                } else {
+                    return messages.ERROR_NOT_FOUND
+                }
+
+            } else {
+                return messages.ERROR_INTERNAL_SERVER_MODEL
+            }
+
+        } else {
+            return messages.ERROR_REQUIRED_FIELDS
+        }
+    } catch (error) {
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
 
     }
 }
 
 //Inserir uma nova categoria 
+const inserirCategoria = async function (categoria, contentType) {
 
-const inserirCategoria = async function (categoria, contentType) { 
-  
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
 
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
-            
+
             let validar = await validarDadosCategoria(categoria)
 
-            if (!validar) {
+            if (validar === true) {
 
-               
-                //Chama a função para inserir uma nova categoria no BD
                 let resultCategoria = await categoriaDAO.setInsertCategoria(categoria)
+                
                 if (resultCategoria) {
                     let lastID = await categoriaDAO.getSelectLastID()
-                    if(lastID){
+                    
+                    if (lastID) {
 
-                        //Adiciona o ID no JSON com os dados da categoria 
-                        categoria.id = lastID
-                        messages.HEADER.status      = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message     = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.itens.categoria  = categoria
+                        categoria.id = lastID[0].id
 
-                        return messages.HEADER //201
-                    }else{
-                        return messages.ERROR_INTERNAL_SERVER_MODEL //500
+                        messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
+                        messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
+                        messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
+                        messages.HEADER.itens.categoria   = categoria
+                        return messages.HEADER 
+
+                    } else {
+                        return messages.ERROR_INTERNAL_SERVER_MODEL 
                     }
                 } else {
-                    return messages.ERROR_INTERNAL_SERVER_MODEL //500
+                    return messages.ERROR_INTERNAL_SERVER_MODEL 
                 }
             } else {
-                return validar //400
+                return validar 
             }
         } else {
-            return messages.ERROR_CONTENT_TYPE //415
+            return messages.ERROR_CONTENT_TYPE 
         }
-
     } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER //500
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER 
     }
 }
 
 //Atualiza uma categoria 
-
-const atualizarCategoria = async function (categoria, id, contentType){
-
-let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
-try { 
-
-if (String(contentType).toUpperCase() == 'APPLICATION/JSON'){
-
-    // Chama a função de validar todas as categorias
-    let validar = await validarDadosCategoria(categoria)
-
-    if (!validar){
-
-        //Validação de ID valido (chama a controller)
-        let validarID = await buscarCategoriaId(id)
-
-        if (validarID.status_code == 200)
-
-            //Adiciona o ID da categoria no JSON de dados para ser encaminhado
-            categoria.id = Number(id)
-
-        //Processamento 
-        //Chama a função para inserir uma nova categoria no BD
-        let resultCategoria = await categoriaDAO.setUpdadeCategoria(categoria)
-        if (resultCategoria){
-            messages.HEADER.status               =     messages.SUCCESS_UPDATE_ITEM.status
-            messages.HEADER.status_code          =     messages.SUCCESS_UPDATE_ITEM.status_code
-            messages.HEADER.message              =     messages.SUCCESS_UPDATE_ITEM.message
-            messages.HEADER.itens.categoria      =     categoria
-
-            return messages.HEADER
-        }else {
-            return messages.ERROR_INTERNAL_SERVER_MODEL
-        }
-    } else{
-        return validarID
-    }
-}else {
-    return messages.ERROR_CONTENT_TYPE
-}
-} catch (error) {
-      
-    return messages.ERROR_INTERNAL_SERVER_CONTROLLER 
-}
-}
-
-const excluirCategoria = async function (id){
+const atualizarCategoria = async function (categoria, id, contentType) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    try{
-        //Vlidação da chegada do ID 
-        if(!isNaN(id) && id != '' && id != null && id > 0){
+    try {
 
-           //Validação de ID valido, chama a controller
-           let validarID = await buscarCategoriaId(id)
-           
-           if(validarID.status_code == 200){
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            let resultCategoria = await categoriaDAO.setDeleteCategoria(Number(id))
+            let validar = await validarDadosCategoria(categoria)
 
-            if(resultCategoria){
+            if (validar === true) {
 
-                MESSAGES.DEFAULT_HEADER.status           = MESSAGES.SUCCESS_DELETED_ITEM.status
-                MESSAGES.DEFAULT_HEADER.status_code      = MESSAGES.SUCCESS_DELETED_ITEM.status_code
-                MESSAGES.DEFAULT_HEADER.message          = MESSAGES.SUCCESS_DELETED_ITEM.message
-                MESSAGES.DEFAULT_HEADER.itens.categoria  = resultCategoria
-                delete MESSAGES.DEFAULT_HEADER.itens
-                return MESSAGES.DEFAULT_HEADER 
+                let validarID = await buscarCategoriaId(id)
 
-            }else{
-                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                if (validarID.status_code == 200) {
+
+                    categoria.id = Number(id)
+
+                    let resultCategoria = await categoriaDAO.setUpdadeCategoria(categoria)
+                    
+                    if (resultCategoria) {
+                        messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
+                        messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
+                        messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
+                        messages.HEADER.itens.categoria   = categoria
+                        return messages.HEADER
+                        
+                    } else {
+                        return messages.ERROR_INTERNAL_SERVER_MODEL
+                    }
+                } else {
+                    return validarID
+                }
+            } else {
+                return validar
             }
-           }else{
-                return MESSAGES.ERROR_NOT_FOUND
-           }
-        }else{
-            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID incorreto]'
-            return MESSAGES.ERROR_REQUIRED_FIELDS
+        } else {
+            return messages.ERROR_CONTENT_TYPE
         }
-    }catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+    } catch (error) {
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+// Excluir Categoria
+const excluirCategoria = async function (id) {
+
+    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        //Validação da chegada do ID 
+        if (!isNaN(id) && id != '' && id != null && id > 0) {
+
+            let validarID = await buscarCategoriaId(id)
+
+            if (validarID.status_code == 200) {
+
+                let resultCategoria = await categoriaDAO.setDeleteCategoria(Number(id))
+
+                if (resultCategoria) {
+
+                    messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
+                    messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
+                    messages.HEADER.itens             = null
+                    return messages.HEADER
+
+                } else {
+                    return messages.ERROR_INTERNAL_SERVER_MODEL
+                }
+            } else {
+                return messages.ERROR_NOT_FOUND
+            }
+        } else {
+            messages.ERROR_REQUIRED_FIELDS.message += ' [ID incorreto]'
+            return messages.ERROR_REQUIRED_FIELDS
+        }
+    } catch (error) {
+        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 

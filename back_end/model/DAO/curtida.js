@@ -44,7 +44,29 @@ const getSelectLikeById = async function(id){
     } catch (error) {
         return false
     }
+}
 
+const getSelectLikesByIdPost = async function(id_postagem){
+    try{
+        //Script SQL
+        let sql = `select tbl_curtida.id as id_curtida, tbl_curtida.data_curtida, 
+        tbl_usuario.id as id_usuario, tbl_usuario.url_foto, tbl_usuario.nome, tbl_usuario.nome_usuario, tbl_postagem.id as id_postagem, tbl_postagem.quantidade_curtidas
+        from tbl_curtida inner join tbl_usuario on tbl_curtida.id_usuario = tbl_usuario.id
+        inner join tbl_postagem on tbl_postagem.id = tbl_curtida.id_postagem
+        where tbl_curtida.id_postagem = ${id_postagem}`
+
+        //Encaminha para o banco de dados o script SQL
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if (result) {
+            return result
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
 }
 
 const getSelectLastId = async function(){
@@ -125,6 +147,7 @@ const setDeleteLike = async function(id){
 module.exports = {
     getSelectAllLikes,
     getSelectLikeById,
+    getSelectLikesByIdPost,
     getSelectLastId,
     setInsertLike,
     setUpdateLike,

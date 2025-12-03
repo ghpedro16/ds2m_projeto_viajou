@@ -50,8 +50,10 @@ const getSelectCommentById = async function(id){
 const getSelectCommentsByIdPost = async function(id_postagem){
     try{
         //Script SQL
-        let sql = `SELECT tbl_postagem.id, tbl_comentario.texto, tbl_comentario.data_comentario
+        let sql = `SELECT tbl_postagem.id, tbl_postagem.quantidade_comentarios, tbl_comentario.texto, tbl_comentario.data_comentario, 
+        tbl_usuario.id as id_usuario, tbl_usuario.url_foto, tbl_usuario.nome, tbl_usuario.nome_usuario
         FROM tbl_postagem INNER JOIN tbl_comentario ON tbl_postagem.id = tbl_comentario.id_postagem
+        INNER JOIN tbl_usuario ON tbl_usuario.id = tbl_comentario.id_usuario
         WHERE tbl_comentario.id_postagem = ${id_postagem}`
 
         //Encaminha para o banco de dados o script SQL

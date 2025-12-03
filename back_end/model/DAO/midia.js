@@ -31,7 +31,7 @@ const getSelectLastID = async function (){
         return false
     }
 
-    }
+}
 
 //Retorna uma lista com a midia (foto ou video) de viajens
 const getSelectAllMidia = async function (){
@@ -57,7 +57,7 @@ const getSelectAllMidia = async function (){
 }
 
 //Retorna uma midia (foto ou video) filtrada pelo ID no banco de dados 
-async function getSelectByIdMidia(id){
+async function getSelectMidiaById(id){
 
     try{
         //Script SQL
@@ -79,33 +79,33 @@ async function getSelectByIdMidia(id){
     }
 
 //Insere uma midia (foto ou video) nova no banco de dados 
-async function setInsertMidia(midia){
+const setInsertMidia = async function (midia){
 
     try {
-       let sql = `insert into tbl_midia
+        let sql = `insert into tbl_midia
         (url)
         VALUES ('${midia.url}')`
    
 
-    let result = await prisma.$executeRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
 
-    if (result) {
-        return true
-    } else {
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+    }catch (error){
         return false
     }
-}catch (error){
-    return false
-}
 }
         
 //Altera uma midia (foto ou video) no banco de dados 
-async function setUpdadeMidia(midia){
+const setUpdadeMidia = async function (midia){
 
     try {
         let sql = `update tbl_categoria set
         url    =    '${midia.url}'
-        where id =   ${midia}`
+        where id =   ${midia.id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -123,7 +123,7 @@ async function setUpdadeMidia(midia){
 const setDeleteMidia = async function(id){
     try{
         //Script SQL
-        let sql = `delete from tbl_midia where id=${id}`
+        let sql = `delete from tbl_midia where id = ${id}`
 
         //Encaminha para o BD o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
@@ -141,7 +141,7 @@ const setDeleteMidia = async function(id){
 
 module.exports = {
     getSelectAllMidia,
-    getSelectByIdMidia,
+    getSelectMidiaById,
     getSelectLastID,
     setUpdadeMidia,
     setInsertMidia,

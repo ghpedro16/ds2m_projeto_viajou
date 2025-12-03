@@ -44,7 +44,25 @@ const getSelectSavedItemById = async function(id){
     } catch (error) {
         return false
     }
+}
 
+const getSelectSavedItemByIdUser = async function(id_usuario){
+    try{
+        //Script SQL
+        let sql = `select tbl_item_salvo.id, tbl_item_salvo.data_salvo, `
+
+        //Encaminha para o banco de dados o script SQL
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if (result) {
+            return result
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
 }
 
 const getSelectLastId = async function(){

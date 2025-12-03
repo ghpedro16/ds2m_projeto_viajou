@@ -6,7 +6,7 @@
 ************************************************************************************************************************************************/
 
 //Import da dependencia do Prisma que permite a execucao de Script SQL no banco de dados
-const { PrismaClient } = require('../generated/prisma')
+const { PrismaClient } = require('../../generated/prisma')
 
 //Criando um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
@@ -15,7 +15,7 @@ const prisma = new PrismaClient()
 const getSelectLastID = async function (){
     try{
         //script SQL para retornar o ultimo id inserido no BD
-        let sql = "select id from tbl_categoria order by id desc"
+        let sql = "select * from tbl_categoria order by id desc"
 
         //encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)

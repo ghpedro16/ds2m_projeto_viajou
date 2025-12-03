@@ -6,7 +6,7 @@
 ***************************************************************************************************/
 
 //Import da MODEL do DAO 
-const categoriaDAO = require('../../model/categoria.js')
+const categoriaDAO = require('../../model/DAO/categoria.js')
 
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
@@ -30,7 +30,6 @@ const listaCategoria = async () => {
 
         if (resultCategoria) {
             if (resultCategoria.length > 0) {
-
                 
                 messages.HEADER.status            = messages.SUCCESS_REQUEST.status
                 messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code

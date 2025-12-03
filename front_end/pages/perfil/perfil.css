@@ -1,0 +1,324 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Poppins';
+}
+
+header {
+    height: 8%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    padding: 8px;
+    background-color: white;
+    z-index: 999;
+}
+
+.icons {
+    height: 100%;
+}
+
+main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.dadosPerfil {
+    height: auto;
+    width: 96%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    border-bottom: solid #A8A8A8 1px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+
+}
+
+.dadosPerfil img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: solid 1px #9E9B9B;
+}
+
+.alinhamento {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.7rem;
+}
+
+.nomes {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.nomes .nomeExibicao {
+    font-size: 1.5rem;
+    height: 1.5rem;
+}
+
+.nomes .nomeUsuario {
+    font-size: 0.7rem;
+    padding-left: 2px;
+}
+
+.dadosPerfil .interacoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 2px;
+    text-align: center;
+}
+
+.dadosPerfil .botoes {
+    display: flex;
+    color: white;
+}
+
+.botoes button {
+    width: 60px;
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+    padding: 3px;
+}
+
+.filtros {
+    height: 6%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filtros button {
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+    padding: 3px;
+}
+
+.filtros .popular {
+    width: 100px;
+}
+
+.filtros .filtroData {
+    width: 125px;
+}
+
+.filtros select {
+    color: white;
+    background-color: #C79A8A;
+    border: none;
+    border-radius: 12px;
+    padding: 3px;
+}
+
+.conjuntoPostagens {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+    padding-bottom: 72px;
+}
+
+.postagem {
+    height: auto;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    border: solid #9E9B9B 1px;
+    gap: 6px;
+    padding: 12px;
+    position: relative;
+}
+
+.cadeado {
+    position: absolute;
+    top: -5px;
+    left: -2px;
+    height: 12px;
+}
+
+
+.imagemContainer {
+    position: relative;
+    height: 150px;
+    width: 150px;
+}
+
+.postagem .imagemContainer .imagemPostagem {
+    height: 150px;
+    width: 150px;
+    border-radius: 15px;
+    border: solid #9E9B9B 1px;
+    position: relative;
+    display: block;
+}
+
+.inferiorPostagem {
+    height: 15%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    font-size: 0.7rem;
+}
+
+.inferiorPostagem img {
+    height: 12px;
+}
+
+/* Overlay que vai aparecer no hover */
+.overlayPostagem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.0);
+    color: white;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+}
+
+/* APARECER O TEXTO NO HOVER */
+.postagem:hover .overlayPostagem {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Fundo escuro */
+.fundoModal {
+    display: none; /* escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(2px);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal {
+    height: 400px;
+    width: 96%;
+    padding: 18px;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    background: #4b372f;
+    animation: abrir 0.2s ease;
+}
+
+.preview {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.preview-input {
+    display: none;
+}
+.preview-image {
+    height: 112px;
+    width: 112px;
+    border-radius: 50%;
+    background-color: rebeccapurple;
+}
+
+.preview-label {
+    width: 100px;
+    height: 100px;
+    position:absolute;
+    display: block;
+    border-radius: 50%;
+}
+
+.modal .informacoes {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.campos {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: white;
+}
+.campos div {
+    width: 200px;
+}
+
+.modal input,
+.modal textarea {
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: #C79A8A;
+}
+
+.campos .biografia {
+    height: 100px;
+}
+
+.botoesModal {
+    display: flex;
+    justify-content: end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.botoesModal button {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 400;
+    color: white;
+    background-color: #C79A8A;
+}

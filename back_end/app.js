@@ -40,20 +40,11 @@ app.use((request, response, next) => {
 })
 
 //Chamar rota existente 
-<<<<<<< HEAD
 const rotaCategoria   = require('./routes/routes_categoria')
 const rotaComentario  = require('./routes/routes_comentario')
 const rotaCurtida     = require('./routes/routes_curtida')
 const rotaItem        = require('./routes/routes_item')
 const rotaLocalizacao = require('./routes/routes_localizacao')
-=======
-const rotaCategoria     = require('./routes/routes_categoria')
-const rotaComentario    = require('./routes/routes_comentario')
-const rotaCurtida       = require('./routes/routes_curtida')
-const rotaItem          = require('./routes/routes_item')
-const rotaLocalizacao   = require('./routes/routes_localizacao.js')
-const rotaMidia         = require('./routes/routes_midia.js')
->>>>>>> bec2fb4c61b20f7660c29ea3a6700f92b8e23d77
 
 //Inicia o servidor da API
 app.listen(PORT, () => {
@@ -66,7 +57,3 @@ app.use(rotaComentario)
 app.use(rotaCurtida)
 app.use(rotaItem)
 app.use(rotaLocalizacao)
-<<<<<<< HEAD
-=======
-app.use(rotaMidia)
->>>>>>> bec2fb4c61b20f7660c29ea3a6700f92b8e23d77

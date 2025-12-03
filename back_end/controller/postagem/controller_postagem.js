@@ -1,30 +1,32 @@
 /*******************************************************************************************************************************************************************
- * Objetivo: Arquivo responsável pela manipulação de dados entre o app e a model para um CRUD de usuários
+ * Objetivo: Arquivo responsável pela manipulação de dados entre o app e a model para um CRUD de postagens
  * Data: 03/12/2025
  * Autor: Pedro Henrique Araújo da Silva
  * Versão: 1.0 
  *******************************************************************************************************************************************************************/
 
 //Import do arquivo DAO
-const usuarioDAO = require('../../model/DAO/usuario.js')
+const postagemDAO = require('../../model/DAO/postagem.js')
+
+//Import da controller do usuario
+const controllerUsuario = require('../../controller/usuario/controller_usuario.js')
 
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-const listarUsuarios = async function(){
+const listarPostagens = async function(){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-    
-    try {
-        
-        //Chama a função do DAO para retornar a lista de usuarios do BD
-        let resultUsers = await usuarioDAO.getSelectAllUsers()
 
-        if(resultUsers){
-            if(resultUsers.length > 0){
+    try {
+        //Chama a função do DAO para retornar a lista de usuarios do BD
+        let resultPosts = await postagemDAO.getSelectAllPostagens()
+
+        if(resultPosts){
+            if(resultPosts.length > 0){
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.response.usuarios = resultUsers
+                MESSAGES.DEFAULT_HEADER.response.postagens = resultPosts
 
                 return MESSAGES.DEFAULT_HEADER // 200
             }else{
@@ -38,21 +40,21 @@ const listarUsuarios = async function(){
     }
 }
 
-const buscarUsuarioId = async function(id){
+const buscarPostagemId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
+    
     try {
-
         if(!isNaN(id) && id != '' && id != null && id > 0){
-            //Chama a função do DAO
-            let resultUser = await usuarioDAO.getSelectUserById(Number(id))
 
-            if(resultUser){
-                if(resultUser.length > 0){
+            //Chama a função do DAO para retornar a lista de usuarios do BD
+            let resultPost = await postagemDAO.getSelectPostagemById(Number(id))
+
+            if(resultPost){
+                if(resultPost.length > 0){
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.itens.usuario = resultUser
+                    MESSAGES.DEFAULT_HEADER.response.postagem = resultPost
 
                     return MESSAGES.DEFAULT_HEADER // 200
                 }else{
@@ -70,7 +72,39 @@ const buscarUsuarioId = async function(id){
     }
 }
 
-const inserirUsuario = async function(user, contentType){
+const buscarPostagemIdUsuario = async function(id_usuario){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    
+    try {
+        if(!isNaN(id_usuario) && id_usuario != '' && id_usuario != null && id_usuario > 0){
+
+            //Chama a função do DAO para retornar a lista de usuarios do BD
+            let resultPost = await postagemDAO.getSelectPostagemByIdUser(Number(id_usuario))
+
+            if(resultPost){
+                if(resultPost.length > 0){
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.itens.postagens = resultPost
+
+                    return MESSAGES.DEFAULT_HEADER // 200
+                }else{
+                    return MESSAGES.ERROR_NOT_FOUND // 404
+                }
+            }else{
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        }else{
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
+const inserirPostagem = async function(post, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -78,33 +112,41 @@ const inserirUsuario = async function(user, contentType){
         //Validação do tipo de conteúdo da requisição (OBRIGATÓRIO SER UM JSON)
         if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
-            let validar = await validarDadosUsuario(user)
+            let validar = await validarDadosPostagem(post)
 
             if(!validar){
-                //Processamento
+
+                //Valida se o usuario existe
+                let validarIdUser = await controllerUsuario.buscarUsuarioId(post.id_usuario)
+
+                if(validarIdUser.status_code == 200){
                 //Chama a função para inserir um novo filme no banco de dados
-                let resultUser = await usuarioDAO.setInsertUser(user)
+                let resultPost = await postagemDAO.setInsertPostagem(post)
                 
-                if(resultUser){
+                    if(resultPost){
                     //Chama a função para receber o ID gerado no BD
-                    let lastId = await usuarioDAO.getSelectLastId()
+                    let lastId = await postagemDAO.getSelectLastId()
 
-                    if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
-                        usuario.id = lastId
+                        if(lastId){
+                            //Adiciona o ID no JSON de dados do filme
+                            postagem.id = lastId
 
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
+                            MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
+                            MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
 
-                        MESSAGES.DEFAULT_HEADER.response = user
+                            MESSAGES.DEFAULT_HEADER.response = post
                     
-                        return MESSAGES.DEFAULT_HEADER //201
+                            return MESSAGES.DEFAULT_HEADER //201
+                        }else{
+                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                        }
                     }else{
-                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Usuario Incorreto!]'
+                    return MESSAGES.ERROR_REQUIRED_FIELDS // 400
                 }
             }else{
                 return validar // 400
@@ -117,7 +159,7 @@ const inserirUsuario = async function(user, contentType){
     }
 }
 
-const atualizarUsuario = async function(user, id, contentType){
+const atualizarPostagem = async function(post, id, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -126,33 +168,33 @@ const atualizarUsuario = async function(user, id, contentType){
         if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
             //Chama a função de validar todos os dados
-            let validar = await validarDadosUsuario(user)
+            let validar = await validarDadosPostagem(post)
 
             if(!validar){
 
                 //Validação do ID, chamando a Controller que verifica no BD se o ID existe e valida o ID
-                let validarId = await buscarUsuarioId(id)
+                let validarId = await buscarPostagemId(id)
 
                 if(validarId.status_code == 200){
                     //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
-                    usuario.id = Number(id)
+                    postagem.id = Number(id)
 
                     //Processamento
                     //Chama a função para inserir um novo filme no banco de dados
-                    let resultUser = await usuarioDAO.setUpdateUser(user)
+                    let resultPost = await postagemDAO.setUpdatePostagem(post)
                 
-                    if(resultUser){
+                    if(resultPost){
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.response.usuario = user
+                        MESSAGES.DEFAULT_HEADER.itens.postagem = post
                     
                         return MESSAGES.DEFAULT_HEADER //200
                     }else{
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return validarId // A função buscarUsuarioId poderá retornar um erro 400, 404 ou 500
+                    return validarId // A função buscarPostagemId poderá retornar um erro 400, 404 ou 500
                 }
             }else{
                 return validar // 400
@@ -165,7 +207,7 @@ const atualizarUsuario = async function(user, id, contentType){
     }
 }
 
-const excluirUsuario = async function(id){
+const excluirPostagem = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -173,14 +215,14 @@ const excluirUsuario = async function(id){
         if(!isNaN(id) && id != '' && id != null && id > 0){
 
             //Validação de ID válido, chama a função da controller que verifica no BD se o ID existe e valida o ID
-            let validarId = await buscarUsuarioId(id)
+            let validarId = await buscarPostagemId(id)
 
             if(validarId.status_code == 200){
 
                 //Chama a função do DAO
-                let resultUser = await usuarioDAO.setDeleteUser(Number(id))
+                let resultPost = await postagemDAO.setDeletePostagem(Number(id))
 
-                if(resultUser){
+                if(resultPost){
                     MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCCESS_DELETED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message     = MESSAGES.SUCCESS_DELETED_ITEM.message
@@ -202,49 +244,39 @@ const excluirUsuario = async function(id){
     }
 }
 
-const validarDadosUsuario = async function(user){
+const validarDadosPostagem = async function(post){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
-    if(user.nome == '' || user.nome == undefined || user.nome == null || user.nome.length > 150){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome incorreto]'
+    if(post.titulo == '' || post.titulo == undefined || post.titulo == null || post.titulo.length > 80){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Titulo incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(user.email == '' || user.email == undefined || user.email == null || user.email.length > 120){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [E-mail incorreto]'
+    }else if(post.data_postagem == undefined || post.data_postagem.length != 10 || post.data_postagem == null || post.data_postagem == ''){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data Postagem incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(user.nome_usuario == '' || user.nome_usuario == undefined || user.nome_usuario == null || user.nome_usuario.length > 30){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Nome de Usuário incorreto!]'
+    }else if(post.descricao == undefined || post.descricao.length > 350){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descricao incorreto!]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(user.data_nascimento == undefined || user.data_nascimento.length != 10 || user.data_nascimento == null || user.data_nascimento == ''){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data de Nascimento incorreto]' 
+    }else if(post.publico == undefined){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Publico incorreto]' 
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(user.data_cadastro == undefined || user.data_cadastro.length != 10 || user.data_cadastro == null || user.data_cadastro == ''){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data de Cadastro incorreto]'
+    }else if(post.id_usuario == undefined || isNaN(post.id_usuario || post.id_usuario <= 0) || post.id_usuario == null || post.id_usuario == ''){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_usuario incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    }else if(user.senha == '' || user.senha == undefined || user.senha == null || user.senha.length > 25){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Senha incorreto]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    }else if(user.biografia == undefined || user.biografia.length > 200){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Biografia incorreto]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    }else if(user.url_foto == undefined || user.url_foto.length > 200){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [URL da Foto incorreto]'
     }else{
         return false
     }
 }
 
 module.exports = {
-    listarUsuarios,
-    buscarUsuarioId,
-    inserirUsuario,
-    atualizarUsuario,
-    excluirUsuario
+    listarPostagens,
+    buscarPostagemId,
+    buscarPostagemIdUsuario,
+    inserirPostagem,
+    atualizarPostagem,
+    excluirPostagem
 }

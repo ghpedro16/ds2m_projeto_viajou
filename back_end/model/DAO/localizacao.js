@@ -3,6 +3,9 @@
 * Data: 01/12/2025
 * Autor: Pedro Silva
 * Versao: 1.0
+
+* Autor: Guilherme Moreira
+* OBS: Corrigindo bugs da função de atualizar
 ************************************************************************************************************************************************/
 
 //Import da dependencia do Prisma que permite a execucao de Script SQL no banco de dados

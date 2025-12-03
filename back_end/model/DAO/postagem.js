@@ -13,7 +13,7 @@ const prisma = new PrismaClient()
 
 const getSelectAllPostagens = async function(){
     try {
-        let sql = `select * from tbl_postagem order by id desc`
+        let sql = `select * from tbl_postagem where publico = 1 order by id desc`
 
         let result = await prisma$queryRawUnsafe(sql)
         

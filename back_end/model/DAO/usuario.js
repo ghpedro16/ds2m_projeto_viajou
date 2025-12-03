@@ -68,23 +68,6 @@ const getSelectUserById = async function (id){
     }
 }
 
-const getSelectUserLogin = async function(user){
-    try {
-        let sql = `select * from tbl_usuario where nome_usuario = ${user.nome_usuario} AND senha = ${user.senha}`
-
-        let result = await prisma.$queryRawUnsafe(sql)
-
-        if (result) {
-            return result
-        } else {
-            return false
-        }
-
-    } catch (error) {
-        return false
-    }
-}
-
 //Insere um usuario novo no BD
 const setInsertUser = async function(user){
     try{

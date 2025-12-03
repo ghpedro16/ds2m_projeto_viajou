@@ -41,23 +41,29 @@ const listarUsuarios = async function(){
 const buscarUsuarioId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-    
+
     try {
-        //Chama a função do DAO para retornar a lista de usuarios do BD
-        let resultUser = await usuarioDAO.getSelectUserById(Number(id))
 
-        if(resultUser){
-            if(resultUser.length > 0){
-                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
-                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.response.usuarios = resultUser
+        if(!isNaN(id) && id != '' && id != null && id > 0){
+            //Chama a função do DAO
+            let resultUser = await usuarioDAO.getSelectUserById(Number(id))
 
-                return MESSAGES.DEFAULT_HEADER // 200
+            if(resultUser){
+                if(resultUser.length > 0){
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.itens.usuario = resultUser
+
+                    return MESSAGES.DEFAULT_HEADER // 200
+                }else{
+                    return MESSAGES.ERROR_NOT_FOUND // 404
+                }
             }else{
-                return MESSAGES.ERROR_NOT_FOUND // 404
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
         }else{
-            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400
         }
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500

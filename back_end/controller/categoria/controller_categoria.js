@@ -191,7 +191,8 @@ const excluirCategoria = async function (id) {
                     messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
                     messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
                     messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
-                    messages.HEADER.itens             = null
+                    delete messages.HEADER.itens
+
                     return messages.HEADER
 
                 } else {

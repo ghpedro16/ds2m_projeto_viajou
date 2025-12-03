@@ -118,12 +118,13 @@ const setDeleteCategoria = async function(id){
         let sql = `delete from tbl_categoria where id=${id}`
 
         //Encaminha para o BD o script SQL
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
 
-        if(Array.isArray(result))
-            return result
-        else
+        if (result > 0) {
+            return true
+        } else {
             return false
+        }
 
     } catch (error) {
         return false
@@ -140,19 +141,3 @@ module.exports = {
     setDeleteCategoria
 }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

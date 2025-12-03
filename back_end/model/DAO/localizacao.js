@@ -95,7 +95,7 @@ const setInsertLocation = async function (localizacao){
 const setUpdadeLocation = async function (localizacao){
     try {
         //Script SQL
-        let sql = `update tbl_localizao set 
+        let sql = `update tbl_localizacao set 
         pais = '${localizacao.pais}'
         where id = ${localizacao.id}`
 

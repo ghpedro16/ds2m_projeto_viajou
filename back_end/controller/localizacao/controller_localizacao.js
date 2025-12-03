@@ -3,6 +3,9 @@
  * Data: 02/12/2025
  * Autor: Gustavo Mathias
  * Versao: 1.0 
+ * 
+ * Autor: Guilherme Moreira
+ * OBS: Corrigindo bugs da função de deletar
  ***************************************************************************************************/
 
 //Import da MODEL de Localização
@@ -196,7 +199,7 @@ const excluirLocalizacao = async function (id) {
                     messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
                     messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
                     messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
-                    messages.HEADER.itens             = null 
+                    delete messages.HEADER.itens
                     
                     return messages.HEADER
 

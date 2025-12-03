@@ -17,7 +17,7 @@ const prisma = new PrismaClient()
 const getSelectLastID = async function (){
     try{
         //script SQL para retornar o ultimo id inserido no BD
-        let sql = "select * from tbl_categoria order by id desc"
+        let sql = "select id from tbl_categoria order by id desc"
 
         //encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)

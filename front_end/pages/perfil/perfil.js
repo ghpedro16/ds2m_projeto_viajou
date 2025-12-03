@@ -108,6 +108,19 @@ async function carregarPostagem() {
             criarPostagem(post)
         })
 
+        //Botao popular
+        const buttonPopular = document.getElementById('popular')
+        buttonPopular.addEventListener('click', () => {
+            const postagensPorLike = filtroPopular(todasPostagens)
+
+            const conjuntoPostagens = document.getElementById("conjuntoPostagens")
+            conjuntoPostagens.innerHTML = ''
+
+            postagensPorLike.forEach(post => {
+                criarPostagem(post)
+            })
+        })
+
     } catch (erro) {
         console.error("Erro ao carregar postagens:", erro)
     }
@@ -216,7 +229,7 @@ function abrirModalEditar(user) {
         }
 
         const atualizado = atualizarPerfil(id, dados)
-        if(atualizado) {
+        if (atualizado) {
             fecharModal()
         } else {
             alert('Erro ao atualizar dados!')
@@ -244,4 +257,15 @@ async function atualizarPerfil(id, dados) {
 
 
     return response.ok
+}
+
+//Filtros
+function filtroPopular(todasPostagens) {
+    const postagemFiltrada = [...todasPostagens] //os 3 pontos é para fazer uma copia, não modificando o original
+
+    postagemFiltrada.sort((a, b) => b.quantidade_curtidas - a.quantidade_curtidas);
+    //.sort utilizado para ordernar o array
+    //verifica se o resultado de b for positivo ele vem antes do a, se for negativo o a vem na frente
+
+    return postagemFiltrada;
 }

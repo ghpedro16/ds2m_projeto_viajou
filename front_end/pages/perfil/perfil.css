@@ -101,6 +101,7 @@ main {
     background-color: #C79A8A;
     border: none;
     border-radius: 12px;
+    padding: 3px;
 }
 
 .filtros {
@@ -118,6 +119,7 @@ main {
     background-color: #C79A8A;
     border: none;
     border-radius: 12px;
+    padding: 3px;
 }
 
 .filtros .popular {
@@ -133,6 +135,7 @@ main {
     background-color: #C79A8A;
     border: none;
     border-radius: 12px;
+    padding: 3px;
 }
 
 .conjuntoPostagens {

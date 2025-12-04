@@ -1,5 +1,8 @@
 'use strict'
 
+import { verificarDono, podeVerPostagem } from '../../utils/authUtils.js'
+import { atualizarPerfil } from '../../utils/apiUtils.js'
+
 //Vai vir do localStorage futuramente
 const idUsuarioLogado = 1
 
@@ -13,7 +16,7 @@ async function carregarPerfil() {
         const resposta = await fetch(url)
         const usuario = await resposta.json()
 
-        criarPerfil(usuario, idPerfilParaExibir)
+        criarPerfil(usuario, idUsuarioLogado)
 
     } catch (erro) {
         console.error('Erro ao carregar perfil:', erro)
@@ -21,24 +24,11 @@ async function carregarPerfil() {
 }
 
 function criarPerfil(user, idUsuarioLogado) {
+
+    //Verificaão se o id do usuario é igual o do usuario logado
+    const donoDoPerfil = Number(user.id) == Number(idUsuarioLogado)
+
     const dadosPerfil = document.getElementById('dadosPerfil')
-
-    //Verificaão
-    const donoDoPerfil = user.id === idUsuarioLogado
-
-    if (donoDoPerfil) {
-        // PERFIL PRÓPRIO: Mostra o botão "Editar"
-        const btnEditar = document.createElement('button')
-        btnEditar.textContent = 'Editar'
-        btnEditar.addEventListener('click', () => {
-            abrirModalEditar(user)
-        })
-    } else {
-        // PERFIL DE TERCEIRO: Mostra o botão "Seguir"
-        btnSeguir = document.createElement('button')
-        btnSeguir.textContent = 'Seguir'
-        // Adicionar lógica de seguir aqui (e.g., event listener)
-    }
 
     // Foto
     const imagemPerfil = document.createElement('img')
@@ -97,7 +87,22 @@ function criarPerfil(user, idUsuarioLogado) {
     const divBotao = document.createElement('div')
     divBotao.classList.add('botoes')
 
-    divBotao.appendChild(btnEditar)
+    if (donoDoPerfil) {
+        // PERFIL PRÓPRIO: Mostra o botão "Editar"
+        const btnEditar = document.createElement('button')
+        btnEditar.textContent = 'Editar'
+        divBotao.appendChild(btnEditar)
+
+        btnEditar.addEventListener('click', () => {
+            abrirModalEditar(user)
+        })
+    } else {
+        // PERFIL DE TERCEIRO: Mostra o botão "Seguir"
+        const btnSeguir = document.createElement('button')
+        btnSeguir.textContent = 'Seguir'
+
+        divBotao.appendChild(btnSeguir)
+    }
 
     // Adicionndo no div principal
     dadosPerfil.appendChild(imagemPerfil)
@@ -120,7 +125,7 @@ async function carregarPostagem() {
         todasPostagens = await resposta.json()
 
         todasPostagens.forEach(post => {
-            criarPostagem(post)
+            criarPostagem(post, idUsuarioLogado)
         })
 
         //Botao popular
@@ -143,7 +148,16 @@ async function carregarPostagem() {
 
 
 // criando a postagem
-function criarPostagem(dadosPostagem) {
+function criarPostagem(dadosPostagem, idUsuarioLogado) {
+
+        // 1. Verificar se pode ver (dono ou público)
+    if (!podeVerPostagem(dadosPostagem, idUsuarioLogado)) {
+        return; // Não cria nada na tela
+    }
+
+    // 2. Verificar se é dono (para ícones especiais)
+    const donoDoPost = verificarDono(dadosPostagem.id_usuario, idUsuarioLogado)
+
     const conjuntoPostagens = document.getElementById("conjuntoPostagens")
 
     // div principal
@@ -196,7 +210,7 @@ function criarPostagem(dadosPostagem) {
     imagemContainer.appendChild(imagem)
     imagemContainer.appendChild(overlay)
 
-    if (dadosPostagem.publico == false) {
+    if (dadosPostagem.publico === false && donoDoPost) {
         //Imagem do cadeado
         const imagemCadeado = document.createElement('img')
         imagemCadeado.classList.add('cadeado')
@@ -209,9 +223,10 @@ function criarPostagem(dadosPostagem) {
     postagem.appendChild(inferior)
 
     conjuntoPostagens.appendChild(postagem)
-}
-carregarPostagem()
 
+}
+
+carregarPostagem()
 
 //Editando o perfil
 // Abrir modal preenchendo com os dados do usuário
@@ -255,23 +270,6 @@ function abrirModalEditar(user) {
 // Fechar modal
 function fecharModal() {
     document.getElementById('fundoModal').style.display = 'none'
-}
-
-async function atualizarPerfil(id, dados) {
-    const url = `http://localhost:3003/usuario/${id}`
-
-    const options = {
-        method: "PUT",
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify(dados)
-    }
-
-    const response = await fetch(url, options)
-
-
-    return response.ok
 }
 
 //Filtros

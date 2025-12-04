@@ -1,23 +1,44 @@
 'use strict'
 
+//Vai vir do localStorage futuramente
+const idUsuarioLogado = 1
+
+const idPerfilParaExibir = 1
+
 async function carregarPerfil() {
     //No futuro quando tiver usuario logado, pegar o id dele do localStorage e passar na url
-    const url = 'http://localhost:3003/usuario'
+    const url = `http://localhost:3003/usuario/${idPerfilParaExibir}`
 
     try {
         const resposta = await fetch(url)
-        const usuarios = await resposta.json()
+        const usuario = await resposta.json()
 
-        const usuario = usuarios[0] //provisório usando o primeiro usuario
-        criarPerfil(usuario)
+        criarPerfil(usuario, idPerfilParaExibir)
 
     } catch (erro) {
         console.error('Erro ao carregar perfil:', erro)
     }
 }
 
-function criarPerfil(user) {
+function criarPerfil(user, idUsuarioLogado) {
     const dadosPerfil = document.getElementById('dadosPerfil')
+
+    //Verificaão
+    const donoDoPerfil = user.id === idUsuarioLogado
+
+    if (donoDoPerfil) {
+        // PERFIL PRÓPRIO: Mostra o botão "Editar"
+        const btnEditar = document.createElement('button')
+        btnEditar.textContent = 'Editar'
+        btnEditar.addEventListener('click', () => {
+            abrirModalEditar(user)
+        })
+    } else {
+        // PERFIL DE TERCEIRO: Mostra o botão "Seguir"
+        btnSeguir = document.createElement('button')
+        btnSeguir.textContent = 'Seguir'
+        // Adicionar lógica de seguir aqui (e.g., event listener)
+    }
 
     // Foto
     const imagemPerfil = document.createElement('img')
@@ -75,12 +96,6 @@ function criarPerfil(user) {
     // Botão
     const divBotao = document.createElement('div')
     divBotao.classList.add('botoes')
-
-    const btnEditar = document.createElement('button')
-    btnEditar.textContent = 'Editar'
-    btnEditar.addEventListener('click', () => {
-        abrirModalEditar(user)
-    })
 
     divBotao.appendChild(btnEditar)
 

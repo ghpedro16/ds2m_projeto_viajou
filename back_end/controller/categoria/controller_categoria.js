@@ -14,16 +14,6 @@ const categoriaDAO = require('../../model/DAO/categoria.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-// Função para validar os dados da categoria
-const validarDadosCategoria = async function (categoria) {
-
-    if (!categoria.nome || categoria.nome == '' || categoria.nome.length > 100) {
-        return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
-    } else {
-        return true
-    }
-}
-
 //Retorna uma lista de todas categorias
 const listaCategoria = async () => {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -95,7 +85,7 @@ const inserirCategoria = async function (categoria, contentType) {
 
             let validar = await validarDadosCategoria(categoria)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let resultCategoria = await categoriaDAO.setInsertCategoria(categoria)
 
@@ -104,11 +94,11 @@ const inserirCategoria = async function (categoria, contentType) {
 
                     if (lastID) {
 
-                        categoria.id = lastID[0].id
+                        categoria.id = lastID
 
-                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATED_ITEM.status
-                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATE_ITEM.message
                         messages.DEFAULT_HEADER.itens.categoria = categoria
                         return messages.DEFAULT_HEADER
 
@@ -140,7 +130,7 @@ const atualizarCategoria = async function (categoria, id, contentType) {
 
             let validar = await validarDadosCategoria(categoria)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let validarID = await buscarCategoriaId(id)
 
@@ -213,6 +203,18 @@ const excluirCategoria = async function (id) {
         }
     } catch (error) {
         return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const validarDadosCategoria = async function(categoria){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    if(categoria.nome == '' || categoria.nome == undefined || categoria.nome == null || categoria.nome.length > 100){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Categoria incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }else{
+        return false
     }
 }
 

@@ -14,20 +14,19 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 //Retorna o ultimo ID gerado no BD
-const getSelectLastId = async function (){
-    try{
-        //Script SQL para retornar o ultimo ID inserido 
-        let sql = `select id from tbl_usuario order by desc limit 1`
+const getSelectLastId = async function(){
+    try {
+        //Script sql para retornar apenas o ultimo id do banco
+        let sql = `SELECT id FROM tbl_usuario ORDER BY id DESC LIMIT 1`
 
-        //Encaminha para o BD o script 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if(Array.isArray(result)){
+        if(Array.isArray(result))
             return Number(result[0].id)
-        }else{
+        else
             return false
-        }
-    } catch(error){
+
+    } catch (error) {
         return false
     }
 }
@@ -37,7 +36,7 @@ const getSelectAllUsers = async function (){
     try {
         let sql = `select * from tbl_usuario order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -71,15 +70,14 @@ const getSelectUserById = async function (id){
 //Insere um usuario novo no BD
 const setInsertUser = async function(user){
     try{
-        let sql = `INSERT INTO tbl_usuario (nome, email, nome_usuario, data_cadastro, data_nascimento, senha, biografia, url_foto)
+        let sql = `INSERT INTO tbl_usuario (nome, email, nome_usuario, data_nascimento, senha, biografia, url_foto)
         VALUES ('${user.nome}', 
         '${user.email}', 
         '${user.nome_usuario}', 
-        '${user.current_date()}', 
-        '${user.data_nascimento}', 
+        '${user.data_nascimento}',
         '${user.senha}', 
         '${user.biografia}', 
-        '${user.url_foto}');`
+        '${user.url_foto}')`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -99,8 +97,7 @@ const setUpdateUser = async function(user){
         let sql = `UPDATE tbl_usuario SET
         nome = '${user.nome}', 
         email = '${user.email}', 
-        nome_usuario = '${user.nome_usuario}', 
-        data_cadastro = '${user.current_date()}', 
+        nome_usuario = '${user.nome_usuario}',  
         data_nascimento = '${user.data_nascimento}', 
         senha = '${user.senha}', 
         biografia = '${user.biografia}', 
@@ -141,7 +138,6 @@ module.exports = {
     getSelectAllUsers,
     getSelectUserById,
     getSelectLastId,
-    getSelectUserLogin,
     setInsertUser,
     setUpdateUser,
     setDeleteUser

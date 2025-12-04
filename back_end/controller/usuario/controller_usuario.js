@@ -24,7 +24,7 @@ const listarUsuarios = async function(){
             if(resultUsers.length > 0){
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.response.usuarios = resultUsers
+                MESSAGES.DEFAULT_HEADER.itens.usuarios = resultUsers
 
                 return MESSAGES.DEFAULT_HEADER // 200
             }else{
@@ -88,16 +88,16 @@ const inserirUsuario = async function(user, contentType){
                 if(resultUser){
                     //Chama a função para receber o ID gerado no BD
                     let lastId = await usuarioDAO.getSelectLastId()
-
+                    
                     if(lastId){
                         //Adiciona o ID no JSON de dados do filme
-                        usuario.id = lastId
+                        user.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
 
-                        MESSAGES.DEFAULT_HEADER.response = user
+                        MESSAGES.DEFAULT_HEADER.itens = user
                     
                         return MESSAGES.DEFAULT_HEADER //201
                     }else{
@@ -122,6 +122,7 @@ const atualizarUsuario = async function(user, id, contentType){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
+        
         //Validação do tipo de conteúdo da requisição (OBRIGATÓRIO SER UM JSON)
         if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
@@ -132,21 +133,21 @@ const atualizarUsuario = async function(user, id, contentType){
 
                 //Validação do ID, chamando a Controller que verifica no BD se o ID existe e valida o ID
                 let validarId = await buscarUsuarioId(id)
-
+                
                 if(validarId.status_code == 200){
                     //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
-                    usuario.id = Number(id)
+                    user.id = Number(id)
 
                     //Processamento
                     //Chama a função para inserir um novo filme no banco de dados
                     let resultUser = await usuarioDAO.setUpdateUser(user)
                 
                     if(resultUser){
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.response.usuario = user
-                    
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.itens.usuario = user
+                        
                         return MESSAGES.DEFAULT_HEADER //200
                     }else{
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
@@ -220,10 +221,6 @@ const validarDadosUsuario = async function(user){
 
     }else if(user.data_nascimento == undefined || user.data_nascimento.length != 10 || user.data_nascimento == null || user.data_nascimento == ''){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data de Nascimento incorreto]' 
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
-    }else if(user.data_cadastro == undefined || user.data_cadastro.length != 10 || user.data_cadastro == null || user.data_cadastro == ''){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data de Cadastro incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
     }else if(user.senha == '' || user.senha == undefined || user.senha == null || user.senha.length > 25){

@@ -26,7 +26,7 @@ const listarPostagens = async function(){
             if(resultPosts.length > 0){
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_HEADER.response.postagens = resultPosts
+                MESSAGES.DEFAULT_HEADER.itens.postagens = resultPosts
 
                 return MESSAGES.DEFAULT_HEADER // 200
             }else{
@@ -54,7 +54,7 @@ const buscarPostagemId = async function(id){
                 if(resultPost.length > 0){
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
-                    MESSAGES.DEFAULT_HEADER.response.postagem = resultPost
+                    MESSAGES.DEFAULT_HEADER.itens.postagem = resultPost
 
                     return MESSAGES.DEFAULT_HEADER // 200
                 }else{
@@ -129,13 +129,13 @@ const inserirPostagem = async function(post, contentType){
 
                         if(lastId){
                             //Adiciona o ID no JSON de dados do filme
-                            postagem.id = lastId
+                            post.id = lastId
 
                             MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
                             MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
                             MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
 
-                            MESSAGES.DEFAULT_HEADER.response = post
+                            MESSAGES.DEFAULT_HEADER.itens = post
                     
                             return MESSAGES.DEFAULT_HEADER //201
                         }else{
@@ -168,7 +168,7 @@ const atualizarPostagem = async function(post, id, contentType){
         if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
             //Chama a função de validar todos os dados
-            let validar = await validarDadosPostagem(post)
+            let validar = await validarDadosUpdatePostagem(post)
 
             if(!validar){
 
@@ -177,16 +177,16 @@ const atualizarPostagem = async function(post, id, contentType){
 
                 if(validarId.status_code == 200){
                     //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
-                    postagem.id = Number(id)
+                    post.id = Number(id)
 
                     //Processamento
                     //Chama a função para inserir um novo filme no banco de dados
                     let resultPost = await postagemDAO.setUpdatePostagem(post)
                 
                     if(resultPost){
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATE_ITEM.message
                         MESSAGES.DEFAULT_HEADER.itens.postagem = post
                     
                         return MESSAGES.DEFAULT_HEADER //200
@@ -252,10 +252,6 @@ const validarDadosPostagem = async function(post){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Titulo incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
 
-    }else if(post.data_postagem == undefined || post.data_postagem.length != 10 || post.data_postagem == null || post.data_postagem == ''){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Data Postagem incorreto]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-
     }else if(post.descricao == undefined || post.descricao.length > 350){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descricao incorreto!]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
@@ -266,6 +262,26 @@ const validarDadosPostagem = async function(post){
 
     }else if(post.id_usuario == undefined || isNaN(post.id_usuario || post.id_usuario <= 0) || post.id_usuario == null || post.id_usuario == ''){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [id_usuario incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }else{
+        return false
+    }
+}
+
+const validarDadosUpdatePostagem = async function(post){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    if(post.titulo == '' || post.titulo == undefined || post.titulo == null || post.titulo.length > 80){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Titulo incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else if(post.descricao == undefined || post.descricao.length > 350){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Descricao incorreto!]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else if(post.publico == undefined){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Publico incorreto]' 
         return MESSAGES.ERROR_REQUIRED_FIELDS
     }else{
         return false

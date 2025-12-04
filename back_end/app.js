@@ -47,6 +47,7 @@ const rotaItem        = require('./routes/routes_item')
 const rotaLocalizacao = require('./routes/routes_localizacao')
 const rotaPostagem    = require('./routes/routes_postagem')
 const rotaUsuario     = require('./routes/routes_usuario')
+const rotaMidia       = require('./routes/routes_midia')
 
 //Inicia o servidor da API
 app.listen(PORT, () => {
@@ -61,3 +62,4 @@ app.use(rotaItem)
 app.use(rotaLocalizacao)
 app.use(rotaPostagem)
 app.use(rotaUsuario)
+app.use(rotaMidia)

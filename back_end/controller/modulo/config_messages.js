@@ -29,7 +29,7 @@ const SUCCESS_REQUEST = {
     message: "Requisição bem sucedida!"
 }
 
-const SUCCESS_CREATED_ITEM = {
+const SUCCESS_CREATE_ITEM = {
     status: true,
     status_code: 201, 
     message: "Item criado com sucesso!!"
@@ -87,7 +87,7 @@ const ERROR_RELATION_INSERTION = {
 module.exports = {
     DEFAULT_HEADER,
     SUCCESS_REQUEST,
-    SUCCESS_CREATED_ITEM,
+    SUCCESS_CREATE_ITEM,
     SUCCESS_UPDATE_ITEM,
     SUCCESS_DELETED_ITEM,
     ERROR_NOT_FOUND,

@@ -11,15 +11,6 @@ const midiaDAO = require('../../model/DAO/midia.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-const validarDadosMidia = async function (midia) {
-
-    if (!midia.url || midia.url == '' || midia.url.length > 200) {
-        return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
-    } else {
-        return true
-    }
-}
-
 const listaMidia = async function () {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -94,7 +85,7 @@ const inserirMidia = async function (midia, contentType) {
 
             let validar = await validarDadosMidia(midia)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let resultMidia = await midiaDAO.setInsertMidia(midia)
 
@@ -106,9 +97,9 @@ const inserirMidia = async function (midia, contentType) {
 
                         midia.id = resultLastID[0].id
 
-                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATED_ITEM.status
-                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.status = messages.SUCCESS_CREATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code = messages.SUCCESS_CREATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message = messages.SUCCESS_CREATE_ITEM.message
                         messages.DEFAULT_HEADER.itens.midia = midia
 
                         return messages.DEFAULT_HEADER
@@ -144,7 +135,7 @@ const atualizarMidia = async function (midia, id, contentType) {
 
             let validar = await validarDadosMidia(midia)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let validarID = await buscarMidiaId(id)
 
@@ -221,6 +212,18 @@ const excluirMidia = async function (id) {
 
     } catch (error) {
         return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const validarDadosMidia = async function(midia){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    if(midia.url == '' || midia.url == undefined || midia.url == null || midia.url.length > 200){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Midia incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }else{
+        return false
     }
 }
 

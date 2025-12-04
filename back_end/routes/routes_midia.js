@@ -14,8 +14,6 @@ const bodyParserJSON = bodyParser.json()
 
 const controller_midia = require('../controller/midia/controller_midia.js')
 
-const PORT = process.PORT || 8080
-
 const app = express()
 
 //Configuração de permissões
@@ -70,4 +68,4 @@ app.delete('/v1/viajou/midia/:id', cors(), async (request, response) => {
 })
 
 //Export
-module.exports = app
+module.exports = app;

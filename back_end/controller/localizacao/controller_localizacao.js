@@ -14,17 +14,6 @@ const localizacaoDAO = require('../../model/DAO/localizacao.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-// Função para validar os dados da localização
-const validarDadosLocalizacao = async function (localizacao) {
-
-    // Verifica se o campo 'pais' existe, e nao ultrapassa 100 caracteres 
-    if (!localizacao.pais || localizacao.pais == '' || localizacao.pais.length > 100) {
-        return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
-    } else {
-        return true
-    }
-}
-
 //Retorna uma lista de todas as localizações
 const listaLocalizacao = async function () {
   
@@ -96,7 +85,7 @@ const inserirLocalizacao = async function (localizacao, contentType) {
 
             let validar = await validarDadosLocalizacao(localizacao)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let resultLocalizacao = await localizacaoDAO.setInsertLocation(localizacao)
                 
@@ -108,9 +97,9 @@ const inserirLocalizacao = async function (localizacao, contentType) {
                       
                         localizacao.id = resultLastID[0].id 
                         
-                        messages.DEFAULT_HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
-                        messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.DEFAULT_HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
+                        messages.DEFAULT_HEADER.status            = messages.SUCCESS_CREATE_ITEM.status
+                        messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_CREATE_ITEM.status_code
+                        messages.DEFAULT_HEADER.message           = messages.SUCCESS_CREATE_ITEM.message
                         messages.DEFAULT_HEADER.itens.localizacao = localizacao
                         return messages.DEFAULT_HEADER 
 
@@ -143,7 +132,7 @@ const atualizarLocalizacao = async function (localizacao, id, contentType) {
 
             let validar = await validarDadosLocalizacao(localizacao)
 
-            if (validar === true) {
+            if (!validar) {
 
                 let validarID = await buscarLocalizacaoId(id)
 
@@ -215,6 +204,18 @@ const excluirLocalizacao = async function (id) {
         }
     } catch (error) {
         return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
+const validarDadosLocalizacao = async function(localizacao){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    if(localizacao.pais == '' || localizacao.pais == undefined || localizacao.pais == null || localizacao.pais.length > 100){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Localizacao incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }else{
+        return false
     }
 }
 

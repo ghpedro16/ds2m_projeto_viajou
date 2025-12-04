@@ -12,9 +12,7 @@ const bodyParser    =    require('body-parser')
 //Cria um objeto especialista no formato JSON para receber dados via POST e PUT
 const bodyParserJSON = bodyParser.json()
 
-const controller_usuario = require('../controller/usuario/controller_usuario')
-
-const PORT = process.PORT || 8080
+const controller_usuario = require('../controller/usuario/controller_usuario.js')
 
 const app = express()
 

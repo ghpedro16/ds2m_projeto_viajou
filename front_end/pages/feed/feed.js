@@ -168,6 +168,9 @@ function criarPostagem(post, user) {
         imgPerfil.src = '../img/no_image.jpg';
     };
 
+    const divNomedata = document.createElement("div")
+    divNomedata.classList.add("divNomedata")
+
     const nome = document.createElement("span")
     nome.classList.add("nome")
     nome.textContent = user.nome
@@ -176,7 +179,8 @@ function criarPostagem(post, user) {
     data.classList.add("data")
     data.textContent = formatarData(post.data_postagem)
 
-    topo.append(imgPerfil, nome, data)
+    divNomedata.append(nome, data)
+    topo.append(imgPerfil, divNomedata)
 
     const midia = document.createElement("img")
     midia.src = post.midia[0]

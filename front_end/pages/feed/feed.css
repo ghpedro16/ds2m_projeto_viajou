@@ -101,6 +101,13 @@ main {
     border: solid 1px #9E9B9B;
 }
 
+.divNomedata {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .superiorPostagem .nome {
     font-size: 1.2rem;
 }

@@ -7,7 +7,7 @@
     <title>Viajou</title>
     <link rel="shortcut icon" href="../img/logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="feed.css">
-    <script src="feed.js" defer></script>
+    <script type="module" src="feed.js" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +29,13 @@
 
         <div class="input-container">
             <img src="../img/Search.svg" alt="" class="icons lupa">
-            <input type="text" placeholder="Pesquisar">
+            <input type="text" id="campoPesquisa" placeholder="Pesquisar">
         </div>
+        <div id="resultadoPesquisa"></div>
 
-        <div class="postagem">
+        <div id="listaPostagens" class="listaPostagens"></div>
+
+        <!-- <div class="postagem">
             <div class="superiorPostagem">
                 <img src="https://blog.mrhgestao.com.br/wp-content/uploads/2018/05/199358-perfil-profissional-existe-um-que-e-mais-desejado-pelo-mercado.jpg"
                     alt="" class="imagemPerfil">
@@ -90,7 +93,7 @@
                 <img src="../img/FavoritoVazio.svg" alt="" class="interacaoPostagem">
 
             </div>
-        </div>
+        </div> -->
 
     </main>
 

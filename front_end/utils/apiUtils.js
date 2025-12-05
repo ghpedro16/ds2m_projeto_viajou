@@ -1,7 +1,8 @@
 'use strict'
 
 export async function atualizarPerfil(id, dados) {
-    const url = `http://localhost:3003/usuario/${id}`
+    const url = `http://localhost:8080/v1/viajou/usuario/${id}`
+    console.log(dados)
 
     const options = {
         method: "PUT",

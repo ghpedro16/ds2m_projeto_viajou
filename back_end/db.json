@@ -1,20 +1,20 @@
 {
   "usuario": [
     {
-      "nome": "Guilherme",
-      "nome_usuario": "guilherme_gui",
-      "email": "guilherme@exemplo.com",
-      "senha": "senha707",
-      "data_nascimento": "1994-11-25",
-      "biografia": "Dev FullStack.",
-      "url_foto": "https://cdn.wikimg.net/en/hkwiki/images/e/e6/B_Lace.png",
-      "data_cadastro": "2024-04-10",
-      "status_conta": true,
-      "quantidade_postagens": 10,
-      "quantidade_seguindos": 80,
-      "quantidade_seguidores": 350,
-      "quantidade_itens_salvos": 70,
-      "id": "1"
+      "id": "1",
+      "nome": "Ana Pereiraaaa",
+      "nome_usuario": "anap",
+      "email": "ana.pereira@example.com",
+      "senha": "senha123",
+      "data_nascimento": "2000-05-12T00:00:00.000Z",
+      "biografia": "Amante de fotografia e viagens.",
+      "url_foto": "https://picsum.photos/id/1005/200",
+      "data_cadastro": "2024-01-10T00:00:00.000Z",
+      "status_conta": 1,
+      "quantidade_postagens": 12,
+      "quantidade_seguindos": 150,
+      "quantidade_seguidores": 210,
+      "quantidade_itens_salvos": 8
     },
     {
       "id": "2",
@@ -376,145 +376,209 @@
       "id_usuario": 1
     },
     {
-  "id": "11",
-  "titulo": "Passeando por Buenos Aires",
-  "descricao": "Cheguei hoje e já estou apaixonado pela arquitetura!",
-  "data_postagem": "2025-03-12",
-  "publico": true,
-  "quantidade_curtidas": 51,
-  "quantidade_comentarios": 7,
-  "quantidade_salvos": 13,
-  "midia": ["https://images.unsplash.com/photo-1505739771521-bb0e324597c5"],
-  "categoria": ["Cultural", "Viagem"],
-  "localizacao": ["Argentina"],
-  "id_usuario": 2
-},
-{
-  "id": "12",
-  "titulo": "Café da Manhã Chileno",
-  "descricao": "Primeira vez experimentando comidas típicas daqui.",
-  "data_postagem": "2025-03-13",
-  "publico": false,
-  "quantidade_curtidas": 15,
-  "quantidade_comentarios": 2,
-  "quantidade_salvos": 4,
-  "midia": ["https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38"],
-  "categoria": ["Gastronomica", "Viagem"],
-  "localizacao": ["Chile"],
-  "id_usuario": 2
-},
-{
-  "id": "13",
-  "titulo": "Subindo o Cerro San Cristóbal",
-  "descricao": "Vista surreal da cidade!",
-  "data_postagem": "2025-03-15",
-  "publico": true,
-  "quantidade_curtidas": 76,
-  "quantidade_comentarios": 11,
-  "quantidade_salvos": 18,
-  "midia": ["https://images.unsplash.com/photo-1601758064226-0f7c96f1a4da"],
-  "categoria": ["Aventura", "Natureza"],
-  "localizacao": ["Chile"],
-  "id_usuario": 2
-},
-{
-  "id": "14",
-  "titulo": "Dia Chuvoso em Montevidéu",
-  "descricao": "Mesmo com chuva, cidade linda demais.",
-  "data_postagem": "2025-03-16",
-  "publico": true,
-  "quantidade_curtidas": 38,
-  "quantidade_comentarios": 3,
-  "quantidade_salvos": 5,
-  "midia": ["https://images.unsplash.com/photo-1534447677768-be436bb09401"],
-  "categoria": ["Cultural"],
-  "localizacao": ["Uruguai"],
-  "id_usuario": 2
-},
-{
-  "id": "15",
-  "titulo": "Museu do Amanhã",
-  "descricao": "Visita rápida no RJ antes de voltar pra casa.",
-  "data_postagem": "2025-03-18",
-  "publico": false,
-  "quantidade_curtidas": 22,
-  "quantidade_comentarios": 1,
-  "quantidade_salvos": 2,
-  "midia": ["https://images.unsplash.com/photo-1545249390-6e8b52f0d6c5"],
-  "categoria": ["Cultural"],
-  "localizacao": ["Brasil"],
-  "id_usuario": 2
-},
-{
-  "id": "16",
-  "titulo": "Primeiro dia em Londres",
-  "descricao": "Sempre quis conhecer essa cidade!",
-  "data_postagem": "2025-03-10",
-  "publico": true,
-  "quantidade_curtidas": 120,
-  "quantidade_comentarios": 19,
-  "quantidade_salvos": 42,
-  "midia": ["https://images.unsplash.com/photo-1528901166007-3784c7dd3653"],
-  "categoria": ["Cultural", "Viagem"],
-  "localizacao": ["Reino Unido"],
-  "id_usuario": 3
-},
-{
-  "id": "17",
-  "titulo": "Passeio na Tower Bridge",
-  "descricao": "Vista maravilhosa do Rio Tâmisa.",
-  "data_postagem": "2025-03-11",
-  "publico": true,
-  "quantidade_curtidas": 98,
-  "quantidade_comentarios": 10,
-  "quantidade_salvos": 21,
-  "midia": ["https://images.unsplash.com/photo-1505761671935-60b3a7427bad"],
-  "categoria": ["Cultural"],
-  "localizacao": ["Reino Unido"],
-  "id_usuario": 3
-},
-{
-  "id": "18",
-  "titulo": "Café da manhã estilo inglês",
-  "descricao": "Muito diferente do que estou acostumada!",
-  "data_postagem": "2025-03-12",
-  "publico": false,
-  "quantidade_curtidas": 30,
-  "quantidade_comentarios": 2,
-  "quantidade_salvos": 9,
-  "midia": ["https://images.unsplash.com/photo-1513104890138-7c749659a591"],
-  "categoria": ["Gastronomica"],
-  "localizacao": ["Reino Unido"],
-  "id_usuario": 3
-},
-{
-  "id": "19",
-  "titulo": "Arquitetura Moderna em Londres",
-  "descricao": "Cada prédio mais lindo que o outro.",
-  "data_postagem": "2025-03-13",
-  "publico": true,
-  "quantidade_curtidas": 87,
-  "quantidade_comentarios": 5,
-  "quantidade_salvos": 14,
-  "midia": ["https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba"],
-  "categoria": ["Cultural", "Tecnologia"],
-  "localizacao": ["Reino Unido"],
-  "id_usuario": 3
-},
-{
-  "id": "20",
-  "titulo": "Último dia em Londres",
-  "descricao": "Cidade maravilhosa, já quero voltar.",
-  "data_postagem": "2025-03-14",
-  "publico": false,
-  "quantidade_curtidas": 45,
-  "quantidade_comentarios": 4,
-  "quantidade_salvos": 8,
-  "midia": ["https://images.unsplash.com/photo-1506898665062-42c3b3ee2aaa"],
-  "categoria": ["Viagem"],
-  "localizacao": ["Reino Unido"],
-  "id_usuario": 3
-}
-
+      "id": "11",
+      "titulo": "Passeando por Buenos Aires",
+      "descricao": "Cheguei hoje e já estou apaixonado pela arquitetura!",
+      "data_postagem": "2025-03-12",
+      "publico": true,
+      "quantidade_curtidas": 51,
+      "quantidade_comentarios": 7,
+      "quantidade_salvos": 13,
+      "midia": [
+        "https://images.unsplash.com/photo-1505739771521-bb0e324597c5"
+      ],
+      "categoria": [
+        "Cultural",
+        "Viagem"
+      ],
+      "localizacao": [
+        "Argentina"
+      ],
+      "id_usuario": 2
+    },
+    {
+      "id": "12",
+      "titulo": "Café da Manhã Chileno",
+      "descricao": "Primeira vez experimentando comidas típicas daqui.",
+      "data_postagem": "2025-03-13",
+      "publico": false,
+      "quantidade_curtidas": 15,
+      "quantidade_comentarios": 2,
+      "quantidade_salvos": 4,
+      "midia": [
+        "https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38"
+      ],
+      "categoria": [
+        "Gastronomica",
+        "Viagem"
+      ],
+      "localizacao": [
+        "Chile"
+      ],
+      "id_usuario": 2
+    },
+    {
+      "id": "13",
+      "titulo": "Subindo o Cerro San Cristóbal",
+      "descricao": "Vista surreal da cidade!",
+      "data_postagem": "2025-03-15",
+      "publico": true,
+      "quantidade_curtidas": 76,
+      "quantidade_comentarios": 11,
+      "quantidade_salvos": 18,
+      "midia": [
+        "https://images.unsplash.com/photo-1601758064226-0f7c96f1a4da"
+      ],
+      "categoria": [
+        "Aventura",
+        "Natureza"
+      ],
+      "localizacao": [
+        "Chile"
+      ],
+      "id_usuario": 2
+    },
+    {
+      "id": "14",
+      "titulo": "Dia Chuvoso em Montevidéu",
+      "descricao": "Mesmo com chuva, cidade linda demais.",
+      "data_postagem": "2025-03-16",
+      "publico": true,
+      "quantidade_curtidas": 38,
+      "quantidade_comentarios": 3,
+      "quantidade_salvos": 5,
+      "midia": [
+        "https://images.unsplash.com/photo-1534447677768-be436bb09401"
+      ],
+      "categoria": [
+        "Cultural"
+      ],
+      "localizacao": [
+        "Uruguai"
+      ],
+      "id_usuario": 2
+    },
+    {
+      "id": "15",
+      "titulo": "Museu do Amanhã",
+      "descricao": "Visita rápida no RJ antes de voltar pra casa.",
+      "data_postagem": "2025-03-18",
+      "publico": false,
+      "quantidade_curtidas": 22,
+      "quantidade_comentarios": 1,
+      "quantidade_salvos": 2,
+      "midia": [
+        "https://images.unsplash.com/photo-1545249390-6e8b52f0d6c5"
+      ],
+      "categoria": [
+        "Cultural"
+      ],
+      "localizacao": [
+        "Brasil"
+      ],
+      "id_usuario": 2
+    },
+    {
+      "id": "16",
+      "titulo": "Primeiro dia em Londres",
+      "descricao": "Sempre quis conhecer essa cidade!",
+      "data_postagem": "2025-03-10",
+      "publico": true,
+      "quantidade_curtidas": 120,
+      "quantidade_comentarios": 19,
+      "quantidade_salvos": 42,
+      "midia": [
+        "https://images.unsplash.com/photo-1528901166007-3784c7dd3653"
+      ],
+      "categoria": [
+        "Cultural",
+        "Viagem"
+      ],
+      "localizacao": [
+        "Reino Unido"
+      ],
+      "id_usuario": 3
+    },
+    {
+      "id": "17",
+      "titulo": "Passeio na Tower Bridge",
+      "descricao": "Vista maravilhosa do Rio Tâmisa.",
+      "data_postagem": "2025-03-11",
+      "publico": true,
+      "quantidade_curtidas": 98,
+      "quantidade_comentarios": 10,
+      "quantidade_salvos": 21,
+      "midia": [
+        "https://images.unsplash.com/photo-1505761671935-60b3a7427bad"
+      ],
+      "categoria": [
+        "Cultural"
+      ],
+      "localizacao": [
+        "Reino Unido"
+      ],
+      "id_usuario": 3
+    },
+    {
+      "id": "18",
+      "titulo": "Café da manhã estilo inglês",
+      "descricao": "Muito diferente do que estou acostumada!",
+      "data_postagem": "2025-03-12",
+      "publico": false,
+      "quantidade_curtidas": 30,
+      "quantidade_comentarios": 2,
+      "quantidade_salvos": 9,
+      "midia": [
+        "https://images.unsplash.com/photo-1513104890138-7c749659a591"
+      ],
+      "categoria": [
+        "Gastronomica"
+      ],
+      "localizacao": [
+        "Reino Unido"
+      ],
+      "id_usuario": 3
+    },
+    {
+      "id": "19",
+      "titulo": "Arquitetura Moderna em Londres",
+      "descricao": "Cada prédio mais lindo que o outro.",
+      "data_postagem": "2025-03-13",
+      "publico": true,
+      "quantidade_curtidas": 87,
+      "quantidade_comentarios": 5,
+      "quantidade_salvos": 14,
+      "midia": [
+        "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba"
+      ],
+      "categoria": [
+        "Cultural",
+        "Tecnologia"
+      ],
+      "localizacao": [
+        "Reino Unido"
+      ],
+      "id_usuario": 3
+    },
+    {
+      "id": "20",
+      "titulo": "Último dia em Londres",
+      "descricao": "Cidade maravilhosa, já quero voltar.",
+      "data_postagem": "2025-03-14",
+      "publico": false,
+      "quantidade_curtidas": 45,
+      "quantidade_comentarios": 4,
+      "quantidade_salvos": 8,
+      "midia": [
+        "https://images.unsplash.com/photo-1506898665062-42c3b3ee2aaa"
+      ],
+      "categoria": [
+        "Viagem"
+      ],
+      "localizacao": [
+        "Reino Unido"
+      ],
+      "id_usuario": 3
+    }
   ]
 }

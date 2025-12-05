@@ -1,11 +1,21 @@
 'use strict'
+//Não temos sistema de login, então estamos simulando o usuario logado
+const idUsuarioLogado = 1;
+
+//pegando o elemento 
+const linkPerfil = document.getElementById('linkPerfil')
+linkPerfil.addEventListener('click', () => {
+    localStorage.setItem('idUsuarioLogado', idUsuarioLogado)
+    window.location.href = `../perfil/perfil.html?id=${idUsuarioLogado}` //pasando o usuario logado no params para carregar o proprio perfil
+})
 
 let todosUsuarios = []
 
 async function carregarUsuarios() {
     try {
-        const resposta = await fetch("http://localhost:3003/usuario")
-        todosUsuarios = await resposta.json()
+        const resposta = await fetch("http://localhost:8080/v1/viajou/usuario")
+        const dadosCompletosUsuario = await resposta.json()
+        todosUsuarios = dadosCompletosUsuario.itens.usuarios
     } catch (erro) {
         console.error("Erro ao carregar usuários:", erro)
     }
@@ -114,8 +124,9 @@ let postagens = []
 
 async function carregarDados() {
     try {
-        const respostaUsuarios = await fetch("http://localhost:3003/usuario")
-        usuarios = await respostaUsuarios.json()
+        const respostaUsuarios = await fetch("http://localhost:8080/v1/viajou/usuario")
+        const dadosCompletosUsuario = await respostaUsuarios.json()
+        usuarios = dadosCompletosUsuario.itens.usuarios
 
         const respostaPostagens = await fetch("http://localhost:3003/postagem")
         postagens = await respostaPostagens.json()

@@ -4,19 +4,18 @@ import { verificarDono, podeVerPostagem } from '../../utils/authUtils.js'
 import { atualizarPerfil } from '../../utils/apiUtils.js'
 
 //Vai vir do localStorage futuramente
-const idUsuarioLogado = 1
+const idUsuarioLogado = localStorage.getItem('idUsuarioLogado');
 
 const params = new URLSearchParams(window.location.search)
 const idPerfilParaExibir = params.get("id")
 
-carregarPerfil(idPerfilParaExibir)
-
-async function carregarPerfil() {
-    const url = `http://localhost:3003/usuario/${idPerfilParaExibir}`
+async function carregarPerfil(id) {
+    const url = `http://localhost:8080/v1/viajou/usuario/${id}`
 
     try {
         const resposta = await fetch(url)
-        const usuario = await resposta.json()
+        const dadosAPI = await resposta.json()
+        const usuario = dadosAPI.itens.usuario[0]
 
         criarPerfil(usuario, idUsuarioLogado)
 
@@ -25,7 +24,7 @@ async function carregarPerfil() {
     }
 }
 
-function criarPerfil(user, idUsuarioLogado) {
+async function criarPerfil(user, idUsuarioLogado) {
 
     //Verificaão se o id do usuario é igual o do usuario logado
     const donoDoPerfil = Number(user.id) == Number(idUsuarioLogado)
@@ -111,6 +110,7 @@ function criarPerfil(user, idUsuarioLogado) {
     dadosPerfil.appendChild(alinhamento)
     dadosPerfil.appendChild(divBotao)
 }
+carregarPerfil(idPerfilParaExibir)
 
 //Variavel que guarda todas as postagens
 let todasPostagens = []
@@ -246,17 +246,22 @@ function abrirModalEditar(user) {
 
     const botaoSalvar = document.getElementById('botaoSalvar')
     botaoSalvar.addEventListener('click', () => {
-        const id = user.id
+        const { id, ...usuarioSemId } = user
         const dados = {
-            ...user,
+            ...usuarioSemId,
             nome: inputNome.value,
             nome_usuario: inputNomeUsuario.value,
-            biografia: inputBiografia.value
+            biografia: inputBiografia.value,
+
+            //Correção do formato das datas
+            data_nascimento: usuarioSemId.data_nascimento.split("T")[0], //Isso separa a data em um array, deixando a data no modelo correto
+            data_cadastro: usuarioSemId.data_cadastro.split("T")[0] //["2000-05-12", "00:00:00.000Z"]
         }
 
         const atualizado = atualizarPerfil(id, dados)
         if (atualizado) {
             fecharModal()
+            window.location.reload();
         } else {
             alert('Erro ao atualizar dados!')
         }

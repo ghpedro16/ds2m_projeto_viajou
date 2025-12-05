@@ -6,10 +6,12 @@ import { atualizarPerfil } from '../../utils/apiUtils.js'
 //Vai vir do localStorage futuramente
 const idUsuarioLogado = 1
 
-const idPerfilParaExibir = 1
+const params = new URLSearchParams(window.location.search)
+const idPerfilParaExibir = params.get("id")
+
+carregarPerfil(idPerfilParaExibir)
 
 async function carregarPerfil() {
-    //No futuro quando tiver usuario logado, pegar o id dele do localStorage e passar na url
     const url = `http://localhost:3003/usuario/${idPerfilParaExibir}`
 
     try {
@@ -110,14 +112,11 @@ function criarPerfil(user, idUsuarioLogado) {
     dadosPerfil.appendChild(divBotao)
 }
 
-carregarPerfil()
-
 //Variavel que guarda todas as postagens
 let todasPostagens = []
 
 // CARREGAR TODAS AS POSTAGENS
 async function carregarPostagem() {
-
     const url = 'http://localhost:3003/postagem'
 
     try {
@@ -137,7 +136,7 @@ async function carregarPostagem() {
             conjuntoPostagens.innerHTML = ''
 
             postagensPorLike.forEach(post => {
-                criarPostagem(post)
+                criarPostagem(post, idUsuarioLogado)
             })
         })
 
@@ -150,12 +149,10 @@ async function carregarPostagem() {
 // criando a postagem
 function criarPostagem(dadosPostagem, idUsuarioLogado) {
 
-        // 1. Verificar se pode ver (dono ou público)
     if (!podeVerPostagem(dadosPostagem, idUsuarioLogado)) {
-        return; // Não cria nada na tela
+        return;
     }
 
-    // 2. Verificar se é dono (para ícones especiais)
     const donoDoPost = verificarDono(dadosPostagem.id_usuario, idUsuarioLogado)
 
     const conjuntoPostagens = document.getElementById("conjuntoPostagens")
@@ -225,7 +222,6 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
     conjuntoPostagens.appendChild(postagem)
 
 }
-
 carregarPostagem()
 
 //Editando o perfil

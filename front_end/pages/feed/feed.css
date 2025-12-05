@@ -120,3 +120,45 @@ main {
     height: 40%;
 }
 
+/* PESQUISA */
+#resultadoPesquisa {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cardUsuario {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid #e1e1e1;
+}
+
+.cardUsuario:hover {
+    background-color: #C79A8A;
+}
+
+.cardUsuario img {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: solid 1px #9E9B9B;
+}
+
+.divNomes {
+    display: flex;
+    flex-direction: column;
+}
+
+.divNomes strong{
+    font-size: 1.1rem;
+}
+
+.divNomes span{
+    font-size: 0.7rem;
+}

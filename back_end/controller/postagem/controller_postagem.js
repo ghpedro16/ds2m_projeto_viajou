@@ -9,7 +9,10 @@
 const postagemDAO = require('../../model/DAO/postagem.js')
 
 //Import da controller do usuario
-const controllerUsuario = require('../../controller/usuario/controller_usuario.js')
+const controllerUsuario = require('../usuario/controller_usuario.js')
+
+//Import da controller da tabela relacional categoria_postagem
+const controllerCategoriaPostagem = require('./controller_categoria_postagem.js')
 
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
@@ -24,6 +27,16 @@ const listarPostagens = async function(){
 
         if(resultPosts){
             if(resultPosts.length > 0){
+
+                for(post of resultPosts){
+                    //Encaminha o JSON com o id
+                    let resultCategorias = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(post.id)
+
+                    if(resultCategorias.status_code == 200){
+                        post.categoria = resultCategorias.itens.categoria_postagem
+                    }
+                }
+
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.itens.postagens = resultPosts
@@ -52,6 +65,16 @@ const buscarPostagemId = async function(id){
 
             if(resultPost){
                 if(resultPost.length > 0){
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultCategorias = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(post.id)
+    
+                        if(resultCategorias.status_code == 200){
+                            post.categoria = resultCategorias.itens.categoria_postagem
+                        }
+                    }
+
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.itens.postagem = resultPost
@@ -84,6 +107,16 @@ const buscarPostagemIdUsuario = async function(id_usuario){
 
             if(resultPost){
                 if(resultPost.length > 0){
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultCategorias = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(post.id)
+    
+                        if(resultCategorias.status_code == 200){
+                            post.categoria = resultCategorias.itens.categoria_postagem
+                        }
+                    }
+                    
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.itens.postagens = resultPost
@@ -128,12 +161,29 @@ const inserirPostagem = async function(post, contentType){
                     let lastId = await postagemDAO.getSelectLastId()
 
                         if(lastId){
-                            //Adiciona o ID no JSON de dados do filme
+
+                            for(categoria of post.categoria){
+                                //Cria o JSON com o id do filme e o id do genero
+                                let categoriaPostagem = {id_postagem: lastId, id_categoria: categoria.id}
+    
+                                //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                                let resultCategoriaPostagem = await controllerCategoriaPostagem.inserirCategoriaPostagem(categoriaPostagem, contentType)
+    
+                                if(resultCategoriaPostagem.status_code != 201){
+                                    return MESSAGES.ERROR_RELATIONAL_INSERTION
+                                }
+                            }            
+
+                            //Adiciona o ID no JSON de dados do post
                             post.id = lastId
 
                             MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
                             MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
                             MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
+                            
+                            delete post.categoria
+                            let resultDadosCategoria = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(lastId)
+                            post.categoria = resultDadosCategoria.itens.categoria_postagem
 
                             MESSAGES.DEFAULT_HEADER.itens = post
                     

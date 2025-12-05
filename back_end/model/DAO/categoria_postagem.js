@@ -15,7 +15,7 @@ const getSelectAllCategoryPosts = async function(){
     try {
         let sql = `select * from tbl_categoria_postagem order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -31,7 +31,7 @@ const getSelectCategoryPostById = async function(id){
     try {
         let sql = `select * from tbl_categoria_postagem where id = ${id}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -45,13 +45,14 @@ const getSelectCategoryPostById = async function(id){
 
 const getSelectCategoryByIdPost = async function(id_postagem){
     try {
-        let sql = `select tbl_categoria.id as id_categoria, tbl_categoria.nome, tbl_postagem.id as id_postagem
-        from tbl_categoria_postagem inner join tbl_categoria
-        on tbl_categoria.id = tbl_categoria_postagem.id_categoria
-        inner join tbl_postagem on tbl_postagem.id = tbl_categoria_postagem.id_postagem
-        where tbl_categoria_postagem.id_postagem = ${id_postagem}`
+        let sql = `SELECT tbl_categoria.id, tbl_categoria.nome 
+                FROM tbl_postagem inner join tbl_categoria_postagem
+                ON tbl_postagem.id = tbl_categoria_postagem.id_postagem
+                inner join tbl_categoria
+                ON tbl_categoria.id = tbl_categoria_postagem.id_categoria 
+                WHERE tbl_postagem.id = ${id_postagem}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -71,7 +72,7 @@ const getSelectPostByIdCategory = async function(id_categoria){
         inner join tbl_postagem on tbl_postagem.id = tbl_categoria_postagem.id_postagem
         where tbl_categoria_postagem.id_categoria = ${id_categoria}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -84,26 +85,25 @@ const getSelectPostByIdCategory = async function(id_categoria){
 }
 
 const getSelectLastId = async function(){
-    try{
-        //Script SQL para retornar o ultimo ID inserido 
-        let sql = `select id from tbl_categoria_postagem order by desc limit 1`
+    try {
+        //Script sql para retornar apenas o ultimo id do banco
+        let sql = `SELECT id FROM tbl_categoria_postagem ORDER BY id DESC LIMIT 1`
 
-        //Encaminha para o BD o script 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if(Array.isArray(result)){
+        if(Array.isArray(result))
             return Number(result[0].id)
-        }else{
+        else
             return false
-        }
-    } catch(error){
+
+    } catch (error) {
         return false
     }
 }
 
 const setInsertCategoryPost = async function(categoriaPostagem){
     try {
-        let sql = `insert into tbl_localizacao_postagem (id_postagem, id_categoria) 
+        let sql = `insert into tbl_categoria_postagem (id_postagem, id_categoria) 
         VALUES (${categoriaPostagem.id_postagem}, ${categoriaPostagem.id_categoria});`
    
         let result = await prisma.$executeRawUnsafe(sql)
@@ -119,7 +119,7 @@ const setInsertCategoryPost = async function(categoriaPostagem){
     }
 }
 
-const setUpdateLocationPost = async function(categoriaPostagem){
+const setUpdateCategoryPost = async function(categoriaPostagem){
     try {
         let sql = `update tbl_categoria_postagem set 
         id_postagem = '${categoriaPostagem.id_postagem}',
@@ -162,6 +162,6 @@ module.exports = {
     getSelectPostByIdCategory,
     getSelectLastId,
     setInsertCategoryPost,
-    setUpdateLocationPost,
+    setUpdateCategoryPost,
     setDeleteCategoryPost
 }

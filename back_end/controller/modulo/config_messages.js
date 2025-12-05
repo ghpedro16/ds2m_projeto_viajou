@@ -21,7 +21,6 @@ const DEFAULT_HEADER = {
     itens: {}
 }
 
-
 /* MENSAGENS DE SUCESSO */
 const SUCCESS_REQUEST = {
     status: true,
@@ -78,7 +77,7 @@ const ERROR_CONTENT_TYPE = {
     message: "Não foi possivel processar a requisição, pois o tipo de dados enviado no corpo deve ser JSON !!!"
 }
 
-const ERROR_RELATION_INSERTION = {  
+const ERROR_RELATIONAL_INSERTION = {  
     status: false,
     status_code: 500,
     message: "A requisição do item principal foi processada com sucesso, porem houveram problemas ao inserir dados na tabela de relação!!!"
@@ -95,5 +94,5 @@ module.exports = {
     ERROR_INTERNAL_SERVER_MODEL,
     ERROR_REQUIRED_FIELDS,
     ERROR_CONTENT_TYPE,
-    ERROR_RELATION_INSERTION
+    ERROR_RELATIONAL_INSERTION
 }

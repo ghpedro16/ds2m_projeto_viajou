@@ -54,7 +54,7 @@ response.json(postagem)
 app.post('/v1/viajou/postagem', cors(), bodyParserJSON, async(request, response) => {
     let dadosBody    = request.body
     let contentType  = request.headers['content-type']
-    let postagem = await controller_postagem.inserirPostagem(dadosBody, contentType);
+    let postagem = await controller_postagem.inserirPostagem(dadosBody, contentType)
     response.status(postagem.status_code)
     response.json(postagem)
 })

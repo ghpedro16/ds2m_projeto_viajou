@@ -87,7 +87,26 @@ async function getSelectMidiaById(id){
         return false
     }
 
+}
+
+const getSelectMidiaByIdPost = async function(id_postagem){
+    try {
+        let sql = `select tbl_midia.id as id_midia, tbl_midia.url, tbl_midia.id_postagem
+        from tbl_midia inner join tbl_postagem
+        on tbl_midia.id_postagem = tbl_postagem.id
+        where tbl_midia.id_postagem = ${id_postagem}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+        
+        if (result) {
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
     }
+}
 
 //Insere uma midia (foto ou video) nova no banco de dados 
 const setInsertMidia = async function (midia){
@@ -153,6 +172,7 @@ const setDeleteMidia = async function(id){
 module.exports = {
     getSelectAllMidia,
     getSelectMidiaById,
+    getSelectMidiaByIdPost,
     getSelectLastID,
     setUpdadeMidia,
     setInsertMidia,

@@ -98,11 +98,13 @@ function limparResultado() {
 }
 
 function esconderPostagens() {
-    cardsPostagens.forEach(card => card.style.display = "none")
+    const container = document.getElementById("listaPostagens")
+    container.style.display = "none"
 }
 
 function mostrarPostagens() {
-    cardsPostagens.forEach(card => card.style.display = "flex")
+        const container = document.getElementById("listaPostagens")
+    container.style.display = "flex"
 }
 
 

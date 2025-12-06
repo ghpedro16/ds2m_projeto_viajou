@@ -15,7 +15,7 @@ const getSelectAllLikes = async function(){
     try {
         let sql = `select * from tbl_curtida order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -50,7 +50,7 @@ const getSelectLikesByIdPost = async function(id_postagem){
     try{
         //Script SQL
         let sql = `select tbl_curtida.id as id_curtida, tbl_curtida.data_curtida, 
-        tbl_usuario.id as id_usuario, tbl_usuario.url_foto, tbl_usuario.nome, tbl_usuario.nome_usuario, tbl_postagem.id as id_postagem, tbl_postagem.quantidade_curtidas
+        tbl_usuario.id as id_usuario, tbl_postagem.id as id_postagem
         from tbl_curtida inner join tbl_usuario on tbl_curtida.id_usuario = tbl_usuario.id
         inner join tbl_postagem on tbl_postagem.id = tbl_curtida.id_postagem
         where tbl_curtida.id_postagem = ${id_postagem}`
@@ -71,27 +71,26 @@ const getSelectLikesByIdPost = async function(id_postagem){
 
 const getSelectLastId = async function(){
     try{
-        //script SQL para retornar o ultimo id inserido no BD
-        let sql = "select id from tbl_curtida order by id desc"
+        //Script SQL para retornar o ultimo ID inserido 
+        let sql = `select id from tbl_curtida order by id desc limit 1`
 
-        //Encaminha para o banco de dados o script SQL
+        //Encaminha para o BD o script 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if (result) {
-            return result
-        } else {
+        if(Array.isArray(result))
+            return Number(result[0].id)
+        else
             return false
-        }
 
-    } catch (error) {
+    } catch(error){
         return false
     }
 }
 
 const setInsertLike = async function(curtida){
     try {
-        let sql = `insert into tbl_curtida (data_curtida, id_postagem, id_usuario) 
-        VALUES ('${curtida.current_date()}', ${curtida.id_postagem}, ${curtida.id_usuario});`
+        let sql = `insert into tbl_curtida (id_postagem, id_usuario) 
+        VALUES (${curtida.id_postagem}, ${curtida.id_usuario});`
    
         let result = await prisma.$executeRawUnsafe(sql)
 

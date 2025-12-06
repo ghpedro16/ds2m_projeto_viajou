@@ -45,7 +45,7 @@ const getSelectPostagemById = async function(id){
 
 const getSelectPostagemByIdUser = async function(id_usuario){
     try {
-        let sql = `select * from tbl_postagem where id_usuario = ${id_usuario}`
+        let sql = `select * from tbl_postagem where id_usuario = ${id_usuario} order by id desc`
 
         let result = await prisma.$queryRawUnsafe(sql)
         

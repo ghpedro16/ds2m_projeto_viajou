@@ -28,22 +28,30 @@ app.use((request, response, next) => {
 })
 
 //Rota para listar todos item 
-app.get('/v1/viajou/item', cors(), async (request, response) => {
-    let item = await controller_itens_salvos.listaItensSalvos ()
+app.get('/v1/viajou/item_salvo', cors(), async (request, response) => {
+    let item = await controller_itens_salvos.listarItensSalvo()
     response.status(item.status_code)
     response.json(item)
 })
 
 //Rota para buscar um item pelo ID 
-app.get('/v1/viajou/item/:id', cors(), async (request, response) => {
-let id = request.params.id
-let item = await controller_itens_salvos.buscarItemSalvoId(id)
-response.status(item.status_code)
-response.json(item)
+app.get('/v1/viajou/item_salvo/:id', cors(), async (request, response) => {
+    let id = request.params.id
+    let item = await controller_itens_salvos.buscarItemSalvoId(id)
+    response.status(item.status_code)
+    response.json(item)
+})
+
+//Rota para buscar um item pelo ID do usuario
+app.get('/v1/viajou/item_salvo/usuario/:id', cors(), async (request, response) => {
+    let id = request.params.id
+    let item = await controller_itens_salvos.buscarItemSalvoIdUsuario(id)
+    response.status(item.status_code)
+    response.json(item)
 })
 
 //rota para inserir novo item 
-app.post('/v1/viajou/item', cors(), bodyParserJSON, async(request, response) => {
+app.post('/v1/viajou/item_salvo', cors(), bodyParserJSON, async(request, response) => {
     let dadosBody    = request.body
     let contentType  = request.headers['content-type']
     let item    = await controller_itens_salvos.inserirItemSalvo(dadosBody, contentType)
@@ -52,7 +60,7 @@ app.post('/v1/viajou/item', cors(), bodyParserJSON, async(request, response) => 
 })
 
 //Rota para atualizar uma item existente 
-app.put('/v1/viajou/item/:id', cors(), bodyParserJSON, async (request, response) => {
+app.put('/v1/viajou/item_salvo/:id', cors(), bodyParserJSON, async (request, response) => {
     let idItem   = request.params.id
     let dadosBody   = request.body
     let contentType = request.headers['content-type']
@@ -62,7 +70,7 @@ app.put('/v1/viajou/item/:id', cors(), bodyParserJSON, async (request, response)
 })
 
 //Rota pra deletar um item 
-app.delete('/v1/viajou/item/:id', cors(), async (request, response) => {
+app.delete('/v1/viajou/item_salvo/:id', cors(), async (request, response) => {
     let idItem = request.params.id
     let item   = await controller_itens_salvos.excluirItemSalvo(idItem)
     response.status(item.status_code)

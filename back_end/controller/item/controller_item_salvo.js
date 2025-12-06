@@ -11,172 +11,196 @@ const itemSalvoDAO = require('../../model/DAO/item_salvo.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-// Função para validar os dados do item salvo
-const validarDadosItemSalvo = async function (itemSalvo) {
+//Retorna uma lista de todos os comentarios
+const listarItensSalvo = async function () {
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
-    if (!itemSalvo.id_postagem || isNaN(itemSalvo.id_postagem) || 
-        !itemSalvo.id_usuario || isNaN(itemSalvo.id_usuario)) {
-        return DEFAULT_MESSAGES.ERROR_REQUIRED_FIELDS
-    } else {
-        return true
-    }
-}
-
-//Retorna uma lista de todos os itens salvos
-const listaItensSalvos = async function () {
-    
-    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
     try {
-        let resultItensSalvos = await itemSalvoDAO.getSelectAllSavedItem()
+        //Chama a função do DAO para retornar a lista de usuarios do BD
+        let resultItemSalvo = await itemSalvoDAO.getSelectAllSavedItem()
 
-        if (resultItensSalvos) {
-            if (resultItensSalvos.length > 0) {
-                messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                messages.HEADER.itens_salvos      = resultItensSalvos
-                return messages.HEADER
+        if(resultItemSalvo){
+            if(resultItemSalvo.length > 0){
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.itens.itens_salvos = resultItemSalvo
 
-            } else {
-                return messages.ERROR_NOT_FOUND
+                return MESSAGES.DEFAULT_HEADER // 200
+            }else{
+                return MESSAGES.ERROR_NOT_FOUND // 404
             }
-        } else {
-            return messages.ERROR_INTERNAL_SERVER_MODEL
+        }else{
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
         }
     } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-//Retorna um item salvo filtrado pelo ID 
+//Retorna um comentario filtrado pelo ID 
 const buscarItemSalvoId = async function (id) {
 
-    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (!isNaN(id)) {
 
+        if(!isNaN(id) && id != '' && id != null && id > 0){
+            //Chama a função do DAO
             let resultItemSalvo = await itemSalvoDAO.getSelectSavedItemById(Number(id))
 
-            if (resultItemSalvo) {
-                if (resultItemSalvo.length > 0) {
-                    messages.HEADER.status            = messages.SUCCESS_REQUEST.status
-                    messages.HEADER.status_code       = messages.SUCCESS_REQUEST.status_code
-                    messages.HEADER.item_salvo        = resultItemSalvo
-                    return messages.HEADER
-
-                } else {
-                    return messages.ERROR_NOT_FOUND
+            if(resultItemSalvo){
+                if(resultItemSalvo.length > 0){
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.itens.item_salvo = resultItemSalvo
+                    return MESSAGES.DEFAULT_HEADER // 200
+                }else{
+                    return MESSAGES.ERROR_NOT_FOUND // 404
                 }
-
-            } else {
-                return messages.ERROR_INTERNAL_SERVER_MODEL
+            }else{
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
-
-        } else {
-            return messages.ERROR_REQUIRED_FIELDS
+        }else{
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400
         }
-
-    } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    } catch (error){
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-//Inserir um novo item salvo 
-const inserirItemSalvo = async function (itemSalvo, contentType) {
-
-    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+const buscarItemSalvoIdUsuario = async function(id_usuario){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
 
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        if(!isNaN(id_usuario) && id_usuario != '' && id_usuario != null && id_usuario > 0){
+            //Chama a função do DAO
+            let resultItemSalvo = await itemSalvoDAO.getSelectSavedItemByIdUser(Number(id_usuario))
+
+            if(resultItemSalvo){
+                if(resultItemSalvo.length > 0){
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.itens.item_salvo = resultItemSalvo
+
+                    return MESSAGES.DEFAULT_HEADER // 200
+                }else{
+                    return MESSAGES.ERROR_NOT_FOUND // 404
+                }
+            }else{
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        }else{
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400
+        }
+    } catch (error){
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
+//Inserir um novo comentario 
+const inserirItemSalvo = async function (itemSalvo, contentType) {
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        //Validação do tipo de conteúdo da requisição (OBRIGATÓRIO SER UM JSON)
+        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
             let validar = await validarDadosItemSalvo(itemSalvo)
 
-            if (validar === true) {
-                
+            if(!validar){
+                //Processamento
+                //Chama a função para inserir um novo comentario no banco de dados
                 let resultItemSalvo = await itemSalvoDAO.setInsertSavedItem(itemSalvo)
                 
-                if (resultItemSalvo) {
-                  
-                    let resultLastID = await itemSalvoDAO.getSelectLastId()
+                if(resultItemSalvo){
+                    //Chama a função para receber o ID gerado no BD
+                    let lastId = await itemSalvoDAO.getSelectLastId()
                     
-                    if (resultLastID) {
-                       
-                        itemSalvo.id = resultLastID[0].id 
-                        
-                        messages.HEADER.status            = messages.SUCCESS_CREATED_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_CREATED_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_CREATED_ITEM.message
-                        messages.HEADER.item_salvo        = itemSalvo
-                        return messages.HEADER 
+                    if(lastId){
+                        //Adiciona o ID no JSON de dados do filme
+                        itemSalvo.id = lastId
 
-                    } else {
-                        return messages.ERROR_INTERNAL_SERVER_MODEL 
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
+
+                        MESSAGES.DEFAULT_HEADER.itens = itemSalvo
+                    
+                        return MESSAGES.DEFAULT_HEADER //201
+                    }else{
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
                     }
-                } else {
-                    return messages.ERROR_INTERNAL_SERVER_MODEL 
+                }else{
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                 }
-            } else {
-                return validar 
+            }else{
+                return validar // 400
             }
-        } else {
-            return messages.ERROR_CONTENT_TYPE 
+        }else{
+            return MESSAGES.ERROR_CONTENT_TYPE // 415
         }
-
-    } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER 
+    } catch (error){
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-//Atualiza um item salvo 
+//Atualiza um comentario 
 const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
-
-    let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
+        //Validação do tipo de conteúdo da requisição (OBRIGATÓRIO SER UM JSON)
+        if(String(contentType).toUpperCase() == 'APPLICATION/JSON'){
 
-        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
-
+            //Chama a função de validar todos os dados
             let validar = await validarDadosItemSalvo(itemSalvo)
 
-            if (validar === true) {
+            if(!validar){
 
-                let validarID = await buscarItemSalvoId(id)
-
-                if (validarID.status_code == 200) {
-
+                //Validação do ID, chamando a Controller que verifica no BD se o ID existe e valida o ID
+                let validarId = await buscarItemSalvoId(id)
+                
+                if(validarId.status_code == 200){
+                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
                     itemSalvo.id = Number(id)
 
-                    //Processamento 
-                    //Chama a função para atualizar no BD
+                    //Processamento
+                    //Chama a função para inserir um novo filme no banco de dados
                     let resultItemSalvo = await itemSalvoDAO.setUpdateSavedItem(itemSalvo)
-                    
-                    if (resultItemSalvo) {
-                        messages.HEADER.status            = messages.SUCCESS_UPDATE_ITEM.status
-                        messages.HEADER.status_code       = messages.SUCCESS_UPDATE_ITEM.status_code
-                        messages.HEADER.message           = messages.SUCCESS_UPDATE_ITEM.message
-                        messages.HEADER.item_salvo        = itemSalvo
-
-                        return messages.HEADER
-                    } else {
-                        return messages.ERROR_INTERNAL_SERVER_MODEL
+                
+                    if(resultItemSalvo){
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATE_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATE_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.itens.item_salvo = itemSalvo
+                        
+                        return MESSAGES.DEFAULT_HEADER //200
+                    }else{
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
-                } else {
-                    return validarID 
+                }else{
+                    return validarId // A função buscarComentarioID poderá retornar um erro 400, 404 ou 500
                 }
-            } else {
-                return validar 
+            }else{
+                return validar // 400
             }
-        } else {
-            return messages.ERROR_CONTENT_TYPE
+        }else{
+            return MESSAGES.ERROR_CONTENT_TYPE // 415
         }
-    } catch (error) {
-        return messages.ERROR_INTERNAL_SERVER_CONTROLLER
+    } catch (error){
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-//Excluir um item salvo
+//Excluir um comentario
 const excluirItemSalvo = async function (id) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -193,12 +217,11 @@ const excluirItemSalvo = async function (id) {
 
                 if (resultItemSalvo) {
 
-                    messages.HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
-                    messages.HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
-                    messages.HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
-                    messages.HEADER.itens             = null 
+                    messages.DEFAULT_HEADER.status            = messages.SUCCESS_DELETED_ITEM.status
+                    messages.DEFAULT_HEADER.status_code       = messages.SUCCESS_DELETED_ITEM.status_code
+                    messages.DEFAULT_HEADER.message           = messages.SUCCESS_DELETED_ITEM.message
                     
-                    return messages.HEADER
+                    return messages.DEFAULT_HEADER
 
                 } else {
                     return messages.ERROR_INTERNAL_SERVER_MODEL
@@ -215,9 +238,26 @@ const excluirItemSalvo = async function (id) {
     }
 }
 
+// Validação dos dados do comentário 
+const validarDadosItemSalvo = async function (itemSalvo) {
+
+    if(itemSalvo.id_usuario == undefined || isNaN(itemSalvo.id_usuario || itemSalvo.id_usuario <= 0) || itemSalvo.id_usuario == null || itemSalvo.id_usuario == ''){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Usuario incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else if(itemSalvo.id_postagem == undefined || isNaN(itemSalvo.id_postagem || itemSalvo.id_postagem <= 0) || itemSalvo.id_postagem == null || itemSalvo.id_postagem == ''){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Postagem incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+
+    }else{
+        return false
+    }
+}
+
 module.exports = {
-    listaItensSalvos,
+    listarItensSalvo,
     buscarItemSalvoId,
+    buscarItemSalvoIdUsuario,
     inserirItemSalvo,
     atualizarItemSalvo,
     excluirItemSalvo

@@ -15,7 +15,7 @@ const getSelectAllComments = async function(){
     try {
         let sql = `select * from tbl_comentario order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -50,8 +50,7 @@ const getSelectCommentById = async function(id){
 const getSelectCommentsByIdPost = async function(id_postagem){
     try{
         //Script SQL
-        let sql = `SELECT tbl_postagem.id, tbl_postagem.quantidade_comentarios, tbl_comentario.texto, tbl_comentario.data_comentario, 
-        tbl_usuario.id as id_usuario, tbl_usuario.url_foto, tbl_usuario.nome, tbl_usuario.nome_usuario
+        let sql = `SELECT tbl_comentario.texto, tbl_comentario.data_comentario, tbl_usuario.id as id_usuario
         FROM tbl_postagem INNER JOIN tbl_comentario ON tbl_postagem.id = tbl_comentario.id_postagem
         INNER JOIN tbl_usuario ON tbl_usuario.id = tbl_comentario.id_usuario
         WHERE tbl_comentario.id_postagem = ${id_postagem}`
@@ -73,27 +72,26 @@ const getSelectCommentsByIdPost = async function(id_postagem){
 
 const getSelectLastId = async function(){
     try{
-        //script SQL para retornar o ultimo id inserido no BD
-        let sql = "select id from tbl_comentario order by id desc"
+        //Script SQL para retornar o ultimo ID inserido 
+        let sql = `select id from tbl_comentario order by id desc limit 1`
 
-        //Encaminha para o banco de dados o script SQL
+        //Encaminha para o BD o script 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if (result) {
-            return result
-        } else {
+        if(Array.isArray(result))
+            return Number(result[0].id)
+        else
             return false
-        }
 
-    } catch (error) {
+    } catch(error){
         return false
     }
 }
 
 const setInsertComment = async function(comentario){
     try {
-        let sql = `insert into tbl_comentario (texto, data_comentario, id_postagem, id_usuario) 
-        VALUES ('${comentario.texto}', ${comentario.current_date()}', ${comentario.id_postagem}, ${comentario.id_usuario});`
+        let sql = `insert into tbl_comentario (texto, id_postagem, id_usuario) 
+        VALUES ('${comentario.texto}', ${comentario.id_postagem}, ${comentario.id_usuario});`
    
         let result = await prisma.$executeRawUnsafe(sql)
 

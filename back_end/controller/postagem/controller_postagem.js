@@ -14,6 +14,12 @@ const controllerUsuario = require('../usuario/controller_usuario.js')
 //Import da controller da tabela relacional categoria_postagem
 const controllerCategoriaPostagem = require('./controller_categoria_postagem.js')
 
+//Import da controller da tabela relacional localizacao_postagem
+const controllerLocalizacaoPostagem = require('./controller_localizacao_postagem.js')
+
+//Import da controller da tabela de midia
+const controllerMidia = require('../midia/controller_midia.js')
+
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
@@ -34,6 +40,22 @@ const listarPostagens = async function(){
 
                     if(resultCategorias.status_code == 200){
                         post.categoria = resultCategorias.itens.categoria_postagem
+                    }
+                }
+
+                for(post of resultPosts){
+                    let resultLocalizacao = await controllerLocalizacaoPostagem.buscarLocalizacaoIdPostagem(post.id)
+
+                    if(resultLocalizacao.status_code == 200){
+                        post.localizacao = resultLocalizacao.itens.localizacao_postagem
+                    }
+                }
+
+                for(post of resultPosts){
+                    let resultMidia = await controllerMidia.buscarMidiaIdPostagem(post.id)
+
+                    if(resultMidia.status_code == 200){
+                        post.midia = resultMidia.itens.midias
                     }
                 }
 
@@ -72,6 +94,24 @@ const buscarPostagemId = async function(id){
     
                         if(resultCategorias.status_code == 200){
                             post.categoria = resultCategorias.itens.categoria_postagem
+                        }
+                    }
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultLocalizacao = await controllerLocalizacaoPostagem.buscarLocalizacaoIdPostagem(post.id)
+    
+                        if(resultLocalizacao.status_code == 200){
+                            post.localizacao = resultLocalizacao.itens.localizacao_postagem
+                        }
+                    }
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultMidia = await controllerMidia.buscarMidiaIdPostagem(post.id)
+    
+                        if(resultMidia.status_code == 200){
+                            post.midia = resultMidia.itens.midias
                         }
                     }
 
@@ -114,6 +154,24 @@ const buscarPostagemIdUsuario = async function(id_usuario){
     
                         if(resultCategorias.status_code == 200){
                             post.categoria = resultCategorias.itens.categoria_postagem
+                        }
+                    }
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultLocalizacao = await controllerLocalizacaoPostagem.buscarLocalizacaoIdPostagem(post.id)
+    
+                        if(resultLocalizacao.status_code == 200){
+                            post.localizacao = resultLocalizacao.itens.localizacao_postagem
+                        }
+                    }
+
+                    for(post of resultPost){
+                        //Encaminha o JSON com o id
+                        let resultMidia = await controllerMidia.buscarMidiaIdPostagem(post.id)
+    
+                        if(resultMidia.status_code == 200){
+                            post.midia = resultMidia.itens.midias
                         }
                     }
                     
@@ -159,7 +217,7 @@ const inserirPostagem = async function(post, contentType){
                     if(resultPost){
                     //Chama a função para receber o ID gerado no BD
                     let lastId = await postagemDAO.getSelectLastId()
-
+                        
                         if(lastId){
 
                             for(categoria of post.categoria){
@@ -174,6 +232,28 @@ const inserirPostagem = async function(post, contentType){
                                 }
                             }            
 
+                            for(localizacao of post.localizacao){
+                                //Cria o JSON com o id do filme e o id do genero
+                                let localizacaoPostagem = {id_postagem: lastId, id_localizacao: localizacao.id}
+    
+                                //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                                let resultLocalizacaoPostagem = await controllerLocalizacaoPostagem.inserirLocalizacaoPostagem(localizacaoPostagem, contentType)
+    
+                                if(resultLocalizacaoPostagem.status_code != 201){
+                                    return MESSAGES.ERROR_RELATIONAL_INSERTION
+                                }
+                            }
+
+                            for(midia of post.midia){
+                                let midiaPostagem = {url: midia.url, id_postagem: lastId}
+
+                                let resultMidiaPostagem = await controllerMidia.inserirMidia(midiaPostagem, contentType)
+
+                                if(resultMidiaPostagem.status_code != 201){
+                                    return MESSAGES.ERROR_RELATIONAL_INSERTION
+                                }
+                            }
+
                             //Adiciona o ID no JSON de dados do post
                             post.id = lastId
 
@@ -184,6 +264,14 @@ const inserirPostagem = async function(post, contentType){
                             delete post.categoria
                             let resultDadosCategoria = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(lastId)
                             post.categoria = resultDadosCategoria.itens.categoria_postagem
+
+                            delete post.localizacao
+                            let resultDadosLocalizacao = await controllerLocalizacaoPostagem.buscarLocalizacaoIdPostagem(lastId)
+                            post.localizacao = resultDadosLocalizacao.itens.localizacao_postagem
+
+                            delete post.midia
+                            let resultDadosMidia = await controllerMidia.buscarMidiaIdPostagem(lastId)
+                            post.midia = resultDadosMidia.itens.midias
 
                             MESSAGES.DEFAULT_HEADER.itens = post
                     

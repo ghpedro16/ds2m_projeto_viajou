@@ -36,10 +36,18 @@ app.get('/v1/viajou/comentario', cors(), async (request, response) => {
 
 //Rota para buscar uma comentario pelo ID 
 app.get('/v1/viajou/comentario/:id', cors(), async (request, response) => {
-let id = request.params.id
-let comentario = await controller_comentario.buscarComentarioId(id)
-response.status(comentario.status_code)
-response.json(comentario)
+    let id = request.params.id
+    let comentario = await controller_comentario.buscarComentarioId(id)
+    response.status(comentario.status_code)
+    response.json(comentario)
+})
+
+// Rota para buscar comentarios pelo id da postagem
+app.get('/v1/viajou/comentario/postagem/:id', cors(), async (request, response) =>{
+    let id = request.params.id
+    let comentarioPostagem = await controller_comentario.buscarComentarioIdPostagem(id)
+
+    response.status(comentarioPostagem.status_code).json(comentarioPostagem)
 })
 
 //rota para inserir um novo comentario

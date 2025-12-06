@@ -29,17 +29,25 @@ app.use((request, response, next) => {
 
 //Rota para listar todas curtida 
 app.get('/v1/viajou/curtida', cors(), async (request, response) => {
-    let curtidas = await controller_curtida.listaCurtidas ()
+    let curtidas = await controller_curtida.listarCurtidas()
     response.status(curtidas.status_code)
     response.json(curtidas)
 })
 
 //Rota para buscar uma curtida pelo ID 
 app.get('/v1/viajou/curtida/:id', cors(), async (request, response) => {
-let id = request.params.id
-let curtida = await controller_curtida.buscarCurtidaId(id)
-response.status(curtida.status_code)
-response.json(curtida)
+    let id = request.params.id
+    let curtida = await controller_curtida.buscarCurtidaId(id)
+    response.status(curtida.status_code)
+    response.json(curtida)
+})
+
+//Rota para buscar curtidas pelo id da postagem
+app.get('/v1/viajou/curtida/postagem/:id', cors(), async (request, response) => {
+    let id = request.params.id
+    let curtida = await controller_curtida.buscarCurtidaIdPostagem(id)
+    response.status(curtida.status_code)
+    response.json(curtida)
 })
 
 //rota para inserir nova curtida 

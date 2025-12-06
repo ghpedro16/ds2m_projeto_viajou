@@ -91,7 +91,7 @@ async function getSelectMidiaById(id){
 
 const getSelectMidiaByIdPost = async function(id_postagem){
     try {
-        let sql = `select tbl_midia.id as id_midia, tbl_midia.url, tbl_midia.id_postagem
+        let sql = `select tbl_midia.id, tbl_midia.url
         from tbl_midia inner join tbl_postagem
         on tbl_midia.id_postagem = tbl_postagem.id
         where tbl_midia.id_postagem = ${id_postagem}`
@@ -113,8 +113,8 @@ const setInsertMidia = async function (midia){
 
     try {
         let sql = `insert into tbl_midia
-        (url)
-        VALUES ('${midia.url}')`
+        (url, id_postagem)
+        VALUES ('${midia.url}', '${midia.id_postagem}')`
    
 
         let result = await prisma.$executeRawUnsafe(sql)

@@ -15,7 +15,7 @@ const getSelectAllSavedItem = async function(){
     try {
         let sql = `select * from tbl_item_salvo order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -49,7 +49,10 @@ const getSelectSavedItemById = async function(id){
 const getSelectSavedItemByIdUser = async function(id_usuario){
     try{
         //Script SQL
-        let sql = `select tbl_item_salvo.id, tbl_item_salvo.data_salvo, `
+        let sql = `select tbl_item_salvo.id, tbl_item_salvo.data_salvo, tbl_item_salvo.id_usuario, tbl_item_salvo.id_postagem
+        from tbl_item_salvo inner join tbl_usuario on tbl_item_salvo.id_usuario = tbl_usuario.id
+        inner join tbl_postagem on tbl_postagem.id = tbl_item_salvo.id_postagem
+        where tbl_item_salvo.id_usuario = ${id_usuario}`
 
         //Encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
@@ -67,27 +70,26 @@ const getSelectSavedItemByIdUser = async function(id_usuario){
 
 const getSelectLastId = async function(){
     try{
-        //script SQL para retornar o ultimo id inserido no BD
-        let sql = "select id from tbl_item_salvo order by id desc"
+        //Script SQL para retornar o ultimo ID inserido 
+        let sql = `select id from tbl_item_salvo order by id desc limit 1`
 
-        //Encaminha para o banco de dados o script SQL
+        //Encaminha para o BD o script 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if (result) {
-            return result
-        } else {
+        if(Array.isArray(result))
+            return Number(result[0].id)
+        else
             return false
-        }
 
-    } catch (error) {
+    } catch(error){
         return false
     }
 }
 
 const setInsertSavedItem = async function(itemSalvo){
     try {
-        let sql = `insert into tbl_item_salvo (data_salvo, id_postagem, id_usuario) 
-        VALUES ('${itemSalvo.current_date()}', ${itemSalvo.id_postagem}, ${itemSalvo.id_usuario});`
+        let sql = `insert into tbl_item_salvo (id_postagem, id_usuario) 
+        VALUES (${itemSalvo.id_postagem}, ${itemSalvo.id_usuario});`
    
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -143,6 +145,7 @@ const setDeleteSavedItem = async function(id){
 module.exports = {
     getSelectAllSavedItem,
     getSelectSavedItemById,
+    getSelectSavedItemByIdUser,
     getSelectLastId,
     setInsertSavedItem,
     setUpdateSavedItem,

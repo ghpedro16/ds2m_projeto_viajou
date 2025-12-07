@@ -15,7 +15,7 @@ const getSelectAllUserFollows = async function(){
     try {
         let sql = `select * from tbl_usuario_seguidores order by id desc`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -31,7 +31,7 @@ const getSelectUserFollowById = async function(id){
     try {
         let sql = `select * from tbl_usuario_seguidores where id = ${id}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -47,10 +47,10 @@ const getSelectFollowingByIdUser = async function(id_usuario){
     try {
         let sql = `select tbl_usuario.id, tbl_usuario.nome, tbl_usuario.nome_usuario
         from tbl_usuario INNER JOIN tbl_usuario_seguidores
-        ON tbl_usuario.id = tbl_usuario_seguidores.id_usuario_seguindo
-        WHERE tbl_usuario.id = ${id_usuario}`
+        ON tbl_usuario.id = tbl_usuario_seguidores.id_usuario_seguidor
+        WHERE tbl_usuario_seguidores.id_usuario_seguindo = ${id_usuario}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -66,10 +66,10 @@ const getSelectFollowerByIdUser = async function(id_usuario){
     try {
         let sql = `select tbl_usuario.id, tbl_usuario.nome, tbl_usuario.nome_usuario
         from tbl_usuario INNER JOIN tbl_usuario_seguidores
-        ON tbl_usuario.id = tbl_usuario_seguidores.id_usuario_seguidor
-        WHERE tbl_usuario.id = ${id_usuario}`
+        ON tbl_usuario.id = tbl_usuario_seguidores.id_usuario_seguindo
+        WHERE tbl_usuario_seguidores.id_usuario_seguidor = ${id_usuario}`
 
-        let result = await prisma$queryRawUnsafe(sql)
+        let result = await prisma.$queryRawUnsafe(sql)
         
         if (result) {
             return result
@@ -81,10 +81,28 @@ const getSelectFollowerByIdUser = async function(id_usuario){
     }
 }
 
+const getSelectLastId = async function(){
+    try{
+        //Script SQL para retornar o ultimo ID inserido 
+        let sql = `select id from tbl_usuario_seguidores order by id desc limit 1`
+
+        //Encaminha para o BD o script 
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(Array.isArray(result))
+            return Number(result[0].id)
+        else
+            return false
+
+    } catch(error){
+        return false
+    }
+}
+
 const setInsertUserFollow = async function(userSeguidor){
     try {
-        let sql = `insert into tbl_usuario_seguidores (data_seguidor, id_usuario_seguindo, id_usuario_seguidor) 
-        VALUES ('${userSeguidor.current_date()}', ${userSeguidor.id_usuario_seguindo}, ${userSeguidor.id_usuario_seguidor});`
+        let sql = `insert into tbl_usuario_seguidores (id_usuario_seguindo, id_usuario_seguidor) 
+        VALUES (${userSeguidor.id_usuario_seguindo}, ${userSeguidor.id_usuario_seguidor});`
    
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -142,6 +160,7 @@ module.exports = {
     getSelectUserFollowById,
     getSelectFollowingByIdUser,
     getSelectFollowerByIdUser,
+    getSelectLastId,
     setInsertUserFollow,
     setUpdateUserFollow,
     setDeleteUserFollow

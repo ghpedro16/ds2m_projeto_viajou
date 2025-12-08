@@ -149,6 +149,25 @@ const setUpdadeMidia = async function (midia){
     }
 }
 
+const setDeleteMidiaByIdPost = async function (id_postagem) {
+    try {
+        let sql = `delete from tbl_midia
+        WHERE id_postagem = ${id_postagem}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+
+    }
+}
+
 //Exclui uma midia (foto ou video) pelo ID no banco de dados
 const setDeleteMidia = async function(id){
     try{
@@ -176,6 +195,7 @@ module.exports = {
     getSelectLastID,
     setUpdadeMidia,
     setInsertMidia,
+    setDeleteMidiaByIdPost,
     setDeleteMidia
 }
     

@@ -8,6 +8,15 @@
 //Import do arquivo DAO
 const postagemDAO = require('../../model/DAO/postagem.js')
 
+//Import da DAO de categoria_postagem
+const categoriaPostagemDAO = require('../../model/DAO/categoria_postagem.js')
+
+//Import da DAO de localizacao_postagem
+const localizacaoPostagemDAO = require('../../model/DAO/localizacao_postagem.js')
+
+//Import da DAO de midia
+const midiaDAO = require('../../model/DAO/midia.js')
+
 //Import da controller do usuario
 const controllerUsuario = require('../usuario/controller_usuario.js')
 
@@ -320,11 +329,48 @@ const atualizarPostagem = async function(post, id, contentType){
                     //Processamento
                     //Chama a função para inserir um novo filme no banco de dados
                     let resultPost = await postagemDAO.setUpdatePostagem(post)
+                    let atualizaCategoriaPostagem = await categoriaPostagemDAO.setDeleteCategoryByIdPost(id)
+                    let atualizaLocalizacaoPostagem = await localizacaoPostagemDAO.setDeleteLocationByIdPost(id)
+                    let atualizaMidiaPostagem = await midiaDAO.setDeleteMidiaByIdPost(id)
                 
                     if(resultPost){
+
+                        for(categoria of post.categoria){
+                            //Cria o JSON com o id do filme e o id do genero
+                            let categoriaPostagem = {id_postagem: id, id_categoria: categoria.id}
+    
+                            //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                            let resultCategoriaPostagem = await controllerCategoriaPostagem.inserirCategoriaPostagem(categoriaPostagem, contentType)
+                        }
+
+                        for(localizacao of post.localizacao){
+                            let localizacaoPostagem = {id_postagem: id, id_localizacao: localizacao.id}
+
+                            let resultLocalizacaoPostagem = await controllerLocalizacaoPostagem.inserirLocalizacaoPostagem(localizacaoPostagem, contentType)
+                        }
+
+                        for(midia of post.midia){
+                            let midiaPostagem = {url: midia.url, id_postagem: id}
+
+                            let resultMidiaPostagem = await controllerMidia.inserirMidia(midiaPostagem, contentType)
+                        }
+
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATE_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATE_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATE_ITEM.message
+
+                        delete post.categoria
+                        let resultDadosCategoria = await controllerCategoriaPostagem.buscarCategoriaIdPostagem(id)
+                        post.categoria = resultDadosCategoria.itens.categoria_postagem
+
+                        delete post.localizacao
+                        let resultDadosLocalizacao = await controllerLocalizacaoPostagem.buscarLocalizacaoIdPostagem(id)
+                        post.localizacao = resultDadosLocalizacao.itens.localizacao_postagem
+
+                        delete post.midia
+                        let resultDadosMidia = await controllerMidia.buscarMidiaIdPostagem(id)
+                        post.midia = resultDadosMidia.itens.midias
+
                         MESSAGES.DEFAULT_HEADER.itens.postagem = post
                     
                         return MESSAGES.DEFAULT_HEADER //200

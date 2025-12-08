@@ -139,6 +139,25 @@ const setUpdateLocationPost = async function(localizacaoPostagem){
     }
 }
 
+const setDeleteLocationByIdPost = async function (id_postagem) {
+    try {
+        let sql = `delete from tbl_localizacao_postagem
+        WHERE id_postagem = ${id_postagem}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+
+    }
+}
+
 const setDeleteLocationPost = async function(id){
     try {
         let sql = `delete from tbl_localizacao_postagem where id = ${id}`
@@ -164,5 +183,6 @@ module.exports = {
     getSelectLastId,
     setInsertLocationPost,
     setUpdateLocationPost,
+    setDeleteLocationByIdPost,
     setDeleteLocationPost
 }

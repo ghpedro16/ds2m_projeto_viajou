@@ -123,7 +123,8 @@ const setUpdateCategoryPost = async function(categoriaPostagem){
     try {
         let sql = `update tbl_categoria_postagem set 
         id_postagem = '${categoriaPostagem.id_postagem}',
-        id_categoria = '${categoriaPostagem.id_categoria}';`
+        id_categoria = '${categoriaPostagem.id_categoria}'
+        WHERE id = ${categoriaPostagem.id}`
    
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -135,6 +136,25 @@ const setUpdateCategoryPost = async function(categoriaPostagem){
 
     }catch (error){
         return false
+    }
+}
+
+const setDeleteCategoryByIdPost = async function (id_postagem) {
+    try {
+        let sql = `delete from tbl_categoria_postagem
+        WHERE id_postagem = ${id_postagem}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+        
+        if (result) {
+            return true
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+
     }
 }
 
@@ -163,5 +183,6 @@ module.exports = {
     getSelectLastId,
     setInsertCategoryPost,
     setUpdateCategoryPost,
+    setDeleteCategoryByIdPost,
     setDeleteCategoryPost
 }

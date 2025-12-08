@@ -108,12 +108,6 @@ main {
     border: none;
 }
 
-.postagem .imagemPostagem {
-    max-height: 75%;
-    max-width: 100%;
-    border-radius: 15px;
-}
-
 .inferiorPostagem {
     height: auto;
     width: 100%;
@@ -124,4 +118,80 @@ main {
 
 .inferiorPostagem img {
     height: 18px;
+}
+
+.localizacao,
+.categoria {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.conjuntoLocalizacao,
+.conjuntoCategoria {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pais-item,
+.categoria-item {
+    background-color: #D8C4C4;
+    border-radius: 6px;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.carrossel {
+    position: relative; /* necessário para os botões absolutos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.carrossel-btn {
+    height: 100%;
+    width: 8%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00000055;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Botão esquerdo */
+.carrossel-btn.left {
+    left: 0;
+}
+
+/* Botão direito */
+.carrossel-btn.right {
+    right: 0;
+}
+
+/* Mostrar botões no hover do carrossel */
+.carrossel:hover .carrossel-btn {
+    opacity: 1;
+}
+
+
+.imagemPostagem {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: solid 1px #9E9B9B;
 }

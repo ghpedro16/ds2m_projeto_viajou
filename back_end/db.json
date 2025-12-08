@@ -163,25 +163,21 @@
   ],
   "postagem": [
     {
-      "id": "1",
-      "titulo": "Amanhecer nas Montanhas",
+      "titulo": "Amanhecer",
       "descricao": "Uma trilha leve até o topo para ver o nascer do sol. Incrível!",
       "data_postagem": "2025-01-10",
       "publico": true,
-      "quantidade_curtidas": 41,
-      "quantidade_comentarios": 7,
-      "quantidade_salvos": 5,
       "midia": [
         "https://cdn.pixabay.com/photo/2022/06/22/04/44/tindari-7276929_1280.jpg",
-        "https://cdn.pixabay.com/photo/2022/06/22/04/44/tindari-7276929_1280.jpg"
+        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
       ],
-      "categoria": [
-        "Natureza"
-      ],
+      "categoria": [],
       "localizacao": [
-        "Chile"
+        "1",
+        "2"
       ],
-      "id_usuario": 1
+      "id_usuario": 1,
+      "id": "1"
     },
     {
       "id": "2",

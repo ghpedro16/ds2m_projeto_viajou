@@ -1,5 +1,7 @@
 'use strict'
 
+import { verificarDono } from '../../utils/authUtils.js'
+
 // Pegando o ID da URL
 const params = new URLSearchParams(window.location.search);
 const idPostagem = params.get("id")
@@ -33,6 +35,8 @@ export async function carregarDadosPostagem() {
 
 function criarTela(post, user) {
 
+    const id = post.id
+
     // Div principal
     const div = document.createElement('div')
     div.classList.add('postagem')
@@ -64,22 +68,68 @@ function criarTela(post, user) {
     // Div juntando o titulo e o botão
     const divtituloBotao = document.createElement('div')
     divtituloBotao.classList.add('divTituloBotao')
-    
+
     // Titulo
     const titulo = document.createElement('p')
     titulo.classList.add('titulo')
     titulo.textContent = post.titulo
 
-        // Botão editar
-    const editar = document.createElement('button')
-    editar.classList.add('botaoEditar')
-    editar.textContent = 'Editar'
+    //Adiciona na divTituloBotao
+    divtituloBotao.appendChild(titulo)
 
-    // Imagem
-    const imagem = document.createElement('img')
-    imagem.src = post.midia[0]
-    imagem.classList.add('imagemPostagem')
-    imagem.onerror = () => imagem.src = '../img/no_image.jpg'
+    //Verificaão se o id do usuario é igual o do usuario logado
+    const idUsuarioLogado = localStorage.getItem('idUsuarioLogado');
+    const donoDaPostagem = verificarDono(Number(user.id), Number(idUsuarioLogado))
+
+    if (donoDaPostagem) {
+        // Botão editar
+        const editar = document.createElement('button')
+        editar.classList.add('botaoEditar')
+        editar.textContent = 'Editar'
+
+        editar.addEventListener('click', () => {
+            window.location.href = `../criarPostagem/criarPostagem.html?idPostagem=${id}`
+        })
+
+        divtituloBotao.appendChild(editar)
+    }
+
+
+    //Carrosel de imagens
+    const carrossel = document.createElement('div');
+    carrossel.classList.add('carrossel');
+
+    // Botão voltar
+    const btnVoltar = document.createElement('button');
+    btnVoltar.textContent = '<';
+    btnVoltar.classList.add('carrossel-btn', 'left');
+
+    // Imagem principal
+    const imgCarrossel = document.createElement('img');
+    imgCarrossel.classList.add('imagemPostagem');
+    imgCarrossel.src = post.midia[0];
+    imgCarrossel.onerror = () => imgCarrossel.src = '../img/no_image.jpg';
+
+    // Botão avançar
+    const btnAvancar = document.createElement('button');
+    btnAvancar.textContent = '>';
+    btnAvancar.classList.add('carrossel-btn', 'right');
+
+    // Índice atual
+    let indice = 0;
+
+    btnAvancar.addEventListener('click', () => {
+        indice = (indice + 1) % post.midia.length;
+        imgCarrossel.src = post.midia[indice];
+    });
+
+    btnVoltar.addEventListener('click', () => {
+        indice = (indice - 1 + post.midia.length) % post.midia.length;
+        imgCarrossel.src = post.midia[indice];
+    });
+
+    // Monta o carrossel
+    carrossel.append(btnVoltar, imgCarrossel, btnAvancar);
 
     //DIV Inferior Postagem
     const divInferior = document.createElement('div')
@@ -99,14 +149,50 @@ function criarTela(post, user) {
     const save = document.createElement('img')
     save.src = '../img/FavoritoVazio.svg'
 
-    //Adiciona na divTituloBotao
-    divtituloBotao.append(titulo, editar)
+    // Localizações
+    const divLocalizacao = document.createElement('div')
+    divLocalizacao.classList.add('localizacao')
+
+    const localizacao = document.createElement('strong')
+    localizacao.textContent = 'Localizações'
+
+    const conjuntoLocalizacoes = document.createElement('div')
+    conjuntoLocalizacoes.classList.add('conjuntoLocalizacao')
+
+    post.localizacao.forEach(pais => {
+        const nomePais = document.createElement('span')
+        nomePais.classList.add('pais-item')
+        nomePais.textContent = pais
+        conjuntoLocalizacoes.appendChild(nomePais)
+    })
+
+    // Descrições
+    const divCategoria = document.createElement('div')
+    divCategoria.classList.add('categoria')
+
+    const categoria = document.createElement('strong')
+    categoria.textContent = 'Categorias'
+
+    const conjuntoCategorias = document.createElement('div')
+    conjuntoCategorias.classList.add('conjuntoCategoria')
+
+    post.categoria.forEach(categoria => {
+        const nomeCategoria = document.createElement('span')
+        nomeCategoria.classList.add('categoria-item')
+        nomeCategoria.textContent = categoria
+        conjuntoCategorias.appendChild(nomeCategoria)
+    })
+
+    divLocalizacao.append(localizacao, conjuntoLocalizacoes)
+
+    divCategoria.append(categoria, conjuntoCategorias)
 
     // adiciona na div inferior
     divInferior.append(descricao, like, chat, save)
 
     // adiciona no container
-    div.append(divSuperior, divtituloBotao, imagem, divInferior);
+    div.append(divSuperior, divtituloBotao, carrossel, divInferior, divLocalizacao, divCategoria);
+
 
     // adiciona na tela
     document.getElementById('postagem').appendChild(div);

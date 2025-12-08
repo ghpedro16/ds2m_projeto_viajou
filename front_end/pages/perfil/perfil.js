@@ -26,9 +26,6 @@ async function carregarPerfil(id) {
 
 async function criarPerfil(user, idUsuarioLogado) {
 
-    //Verificaão se o id do usuario é igual o do usuario logado
-    const donoDoPerfil = Number(user.id) == Number(idUsuarioLogado)
-
     const dadosPerfil = document.getElementById('dadosPerfil')
 
     // Foto
@@ -87,6 +84,9 @@ async function criarPerfil(user, idUsuarioLogado) {
     // Botão
     const divBotao = document.createElement('div')
     divBotao.classList.add('botoes')
+
+    //Verificaão se o id do usuario é igual o do usuario logado
+    const donoDoPerfil = verificarDono(Number(user.id), Number(idUsuarioLogado))
 
     if (donoDoPerfil) {
         // PERFIL PRÓPRIO: Mostra o botão "Editar"

@@ -33,3 +33,20 @@ export async function criarPostagem(dados) {
 
     return response.ok
 }
+
+export async function editarPostagem(postagem) {
+    const url = "http://localhost:3003/postagemParaCriar"
+
+    const options = {
+        method: "PUT",
+        headers: {
+            "content-Type": "application/json"
+        },
+        body: JSON.stringify(postagem)
+    }
+
+    const response = await fetch(url, options)
+
+
+    return response.ok
+}

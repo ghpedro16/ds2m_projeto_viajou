@@ -28,31 +28,6 @@ header {
     height: 100%;
 }
 
-.input-container {
-    width: 80%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    border-radius: 15px;
-    border: solid 1px #9E9B9B;
-    padding-left: 12px;
-    padding-right: 12px;
-    gap: 12px;
-}
-
-.input-container input {
-    display: flex;
-    height: 100%;
-    width: 100%;
-    font-size: 2rem;
-    border: none;
-    outline: none;
-}
-
-.input-container .lupa {
-    height: 42px;
-}
-
 main {
     height: 100%;
     width: 100%;
@@ -75,12 +50,10 @@ main {
 
 .postagem {
     height: auto;
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 12px;
-    border: solid #9E9B9B 1px;
     gap: 18px;
     padding: 12px;
 }
@@ -117,10 +90,22 @@ main {
     padding-top: 3px;
 }
 
-.postagem .imagemPostagem {
-    max-height: 75%;
-    max-width: 100%;
-    border-radius: 15px;
+.divTituloBotao {
+    height: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.botaoEditar {
+    color: white;
+    background-color: #C79A8A;
+    padding: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 12px;
+    border: none;
 }
 
 .inferiorPostagem {
@@ -135,45 +120,78 @@ main {
     height: 18px;
 }
 
-/* PESQUISA */
-#resultadoPesquisa {
-    width: 90%;
+.localizacao,
+.categoria {
+    height: auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.cardUsuario {
+.conjuntoLocalizacao,
+.conjuntoCategoria {
+    height: auto;
     width: 100%;
-    height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pais-item,
+.categoria-item {
+    background-color: #D8C4C4;
+    border-radius: 6px;
+    padding: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.carrossel {
+    position: relative; /* necessário para os botões absolutos */
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px;
-    border-radius: 12px;
-    border: 1px solid #e1e1e1;
+    justify-content: center;
+    width: 100%;
 }
 
-.cardUsuario:hover {
-    background-color: #C79A8A;
+.carrossel-btn {
+    height: 100%;
+    width: 8%;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #00000055;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.cardUsuario img {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
+/* Botão esquerdo */
+.carrossel-btn.left {
+    left: 0;
+}
+
+/* Botão direito */
+.carrossel-btn.right {
+    right: 0;
+}
+
+/* Mostrar botões no hover do carrossel */
+.carrossel:hover .carrossel-btn {
+    opacity: 1;
+}
+
+
+.imagemPostagem {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
     border: solid 1px #9E9B9B;
-}
-
-.divNomes {
-    display: flex;
-    flex-direction: column;
-}
-
-.divNomes strong {
-    font-size: 1.1rem;
-}
-
-.divNomes span {
-    font-size: 0.7rem;
 }

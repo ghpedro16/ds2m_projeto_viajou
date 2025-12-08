@@ -131,12 +131,16 @@ input, select, textarea{
     gap: 12px;
 }
 
-.paisesEscolhidos {
+.paisesEscolhidos, .categoriasEscolhidas  {
     display: flex;
+    max-width: 100%;
+    height: auto;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
-.paisesEscolhidos span {
+.paisesEscolhidos span,
+.categoriasEscolhidas span {
     background-color: #D8C4C4;
     border-radius: 6px;
     padding: 4px;
@@ -145,6 +149,19 @@ input, select, textarea{
 }
 
 .paisesEscolhidos span:hover {
+    background-color: #9E9B9B;
+}
+
+.categoriaEscolhida {
+    background-color: #D8C4C4;
+    border-radius: 6px;
+    padding: 4px 12px;
+    cursor: pointer;
+    margin-top: 6px;
+    width: fit-content;
+}
+
+.categoriaEscolhida:hover {
     background-color: #9E9B9B;
 }
 

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viajou</title>
     <link rel="stylesheet" href="criarPostagem.css">
-    <script src="criarPostagem.js" defer></script>
+    <script type="module" src="criarPostagem.js" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,21 +26,21 @@
 
     <main>
         <span class="tituloPagina">NEW POST</span>
-        
+
         <form action="">
 
             <section class="titulo">
                 <label for="">Titulo</label>
-                <input type="text" placeholder="ex: Viagem a Paris">
+                <input id="inputTitulo" type="text" placeholder="ex: Viagem a Paris">
             </section>
 
             <section class="descricao">
                 <label for="">Descrição</label>
-                <textarea name="descricao" id=""></textarea>
+                <textarea id="inputDescricao" name="descricao" id=""></textarea>
             </section>
 
             <section class="arquivos">
-                <label for="">Imagens/Videos</label>
+                <label for="foto">Imagens/Videos</label>
                 <input class="preview-input" id="foto" type="file" accept="image/*">
                 <label class="preview-label" for="foto"></label>
                 <img class="preview-image" id="preview-image" src="./img/preview-icon.png">
@@ -51,39 +51,36 @@
 
                 <select id="paises" name="paises">
                     <option value="" disabled selected hidden>Escolha um País</option>
-                    <option value="brasil">Brasil</option>
-                    <option value="canada">Canada</option>
-                    <option value="alemanha">Alemanha</option>
                 </select>
 
-                <div class="paisesEscolhidos">
-                    <span>Brasil</span>
-                    <span>Canada</span>
-                    <span>Alemanha</span>
-                </div>
+                <div id="paisesEscolhidos" class="paisesEscolhidos"></div>
             </section>
 
             <section class="categoria">
                 <label for="">Categoria</label>
                 <select id="categoria" name="categoria">
                     <option value="" disabled selected hidden>Escolha uma categoria</option>
-                    <option value="aventura">Aventura</option>
-                    <option value="cultural">Cultural</option>
-                    <option value="gastronomica">Gastronômica</option>
                 </select>
+
+                <div id="categoriasEscolhidas" class="categoriasEscolhidas"></div>
+            </section>
+
+            <section class="data">
+                <label for="">Data</label>
+                <input id="inputData" type="date" placeholder="dd/mm/aaaa">
             </section>
 
             <section class="publico">
-                <input type="checkbox" checked id="" name="" value="">
-                <label for="">Publico</label>    
+                <input type="checkbox" checked id="publico" name="" value="">
+                <label for="">Publico</label>
             </section>
         </form>
 
         <div class="botoes">
-            <button class="cancelar">Cancelar</button>
-            <button class="salvar">Salvar</button>
+            <button id="cancelar" class="cancelar">Cancelar</button>
+            <button id="salvar" class="salvar">Salvar</button>
         </div>
-        
+
     </main>
 
 

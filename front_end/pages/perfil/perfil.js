@@ -110,7 +110,13 @@ async function criarPerfil(user, idUsuarioLogado) {
     dadosPerfil.appendChild(alinhamento)
     dadosPerfil.appendChild(divBotao)
 }
-carregarPerfil(idPerfilParaExibir)
+if (!idPerfilParaExibir) {
+    let proprioPerfil = idUsuarioLogado
+    carregarPerfil(proprioPerfil)
+} else {
+    carregarPerfil(idPerfilParaExibir)
+}
+
 
 //Variavel que guarda todas as postagens
 let todasPostagens = []

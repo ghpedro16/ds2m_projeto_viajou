@@ -1,4 +1,5 @@
 'use strict'
+
 //Não temos sistema de login, então estamos simulando o usuario logado
 const idUsuarioLogado = 1;
 
@@ -13,22 +14,22 @@ let todosUsuarios = []
 
 async function carregarUsuarios() {
     try {
-        const resposta = await fetch("http://localhost:8080/v1/viajou/usuario")
+        const resposta = await fetch('http://localhost:8080/v1/viajou/usuario')
         const dadosCompletosUsuario = await resposta.json()
         todosUsuarios = dadosCompletosUsuario.itens.usuarios
     } catch (erro) {
-        console.error("Erro ao carregar usuários:", erro)
+        console.error('Erro ao carregar usuários:', erro)
     }
 }
 
 carregarUsuarios()
 
-const inputPesquisa = document.getElementById("campoPesquisa")
-const resultadoPesquisa = document.getElementById("resultadoPesquisa")
-const cardsPostagens = document.querySelectorAll(".postagem")
+const inputPesquisa = document.getElementById('campoPesquisa')
+const resultadoPesquisa = document.getElementById('resultadoPesquisa')
+const cardsPostagens = document.querySelectorAll('.postagem')
 
 //Input aciona com cada letra digitada, assim conseguindo limpar as postagens
-inputPesquisa.addEventListener("input", pesquisa)
+inputPesquisa.addEventListener('input', pesquisa)
 
 function pesquisa() {
     const texto = inputPesquisa.value.trim().toLowerCase()
@@ -58,23 +59,23 @@ function criarCardUsuario(user) {
 
     const id_usuario = Number(user.id)
 
-    const card = document.createElement("div")
-    card.classList.add("cardUsuario")
+    const card = document.createElement('div')
+    card.classList.add('cardUsuario')
 
     // foto
-    const fotoUsuario = document.createElement("img")
+    const fotoUsuario = document.createElement('img')
     fotoUsuario.src = user.url_foto
 
     // div que guarda nomes
-    const divNomes = document.createElement("div")
+    const divNomes = document.createElement('div')
     divNomes.classList.add('divNomes')
 
     // nome exibido
-    const nome = document.createElement("strong")
+    const nome = document.createElement('strong')
     nome.textContent = user.nome
 
     // nome de usuário
-    const nomeUsuario = document.createElement("span")
+    const nomeUsuario = document.createElement('span')
     nomeUsuario.textContent = user.nome_usuario
 
     // adicionando filhos
@@ -92,7 +93,7 @@ function renderizarUsuarios(lista) {
     limparResultado()
 
     if (lista.length === 0) {
-        resultadoPesquisa.innerHTML = "<p>Nenhum usuário encontrado...</p>"
+        resultadoPesquisa.innerHTML = '<p>Nenhum usuário encontrado...</p>'
         return
     }
 
@@ -104,17 +105,17 @@ function renderizarUsuarios(lista) {
 
 
 function limparResultado() {
-    resultadoPesquisa.innerHTML = ""
+    resultadoPesquisa.innerHTML = ''
 }
 
 function esconderPostagens() {
-    const container = document.getElementById("listaPostagens")
-    container.style.display = "none"
+    const container = document.getElementById('listaPostagens')
+    container.style.display = 'none'
 }
 
 function mostrarPostagens() {
-        const container = document.getElementById("listaPostagens")
-    container.style.display = "flex"
+        const container = document.getElementById('listaPostagens')
+    container.style.display = 'flex'
 }
 
 
@@ -124,25 +125,27 @@ let postagens = []
 
 async function carregarDados() {
     try {
-        const respostaUsuarios = await fetch("http://localhost:8080/v1/viajou/usuario")
+        const respostaUsuarios = await fetch('http://localhost:8080/v1/viajou/usuario')
         const dadosCompletosUsuario = await respostaUsuarios.json()
         usuarios = dadosCompletosUsuario.itens.usuarios
 
-        const respostaPostagens = await fetch("http://localhost:3003/postagem")
+        const respostaPostagens = await fetch('http://localhost:3003/postagem')
         postagens = await respostaPostagens.json()
 
         montarFeed()
 
     } catch (erro) {
-        console.error("Erro ao carregar dados:", erro)
+        console.error('Erro ao carregar dados:', erro)
     }
 }
 
 function montarFeed() {
-    const container = document.getElementById("listaPostagens")
-    container.innerHTML = ""
+    const container = document.getElementById('listaPostagens')
+    container.innerHTML = ''
 
     postagens.forEach(post => {
+        if (post.publico === false) return //Se a postagem for privada ela não aparece
+
         const usuario = usuarios.find(usuario => Number(usuario.id) === Number(post.id_usuario))
 
         if (!usuario) return
@@ -154,71 +157,77 @@ function montarFeed() {
 
 function criarPostagem(post, user) {
 
-    const div = document.createElement("div")
-    div.classList.add("postagem")
+    const id = post.id
+
+    const div = document.createElement('div')
+    div.classList.add('postagem')
 
     // ======= PARTE SUPERIOR =======
-    const topo = document.createElement("div")
-    topo.classList.add("superiorPostagem")
+    const topo = document.createElement('div')
+    topo.classList.add('superiorPostagem')
 
-    const imgPerfil = document.createElement("img")
+    const imgPerfil = document.createElement('img')
     imgPerfil.src = user.url_foto
-    imgPerfil.classList.add("imagemPerfil")
+    imgPerfil.classList.add('imagemPerfil')
     imgPerfil.onerror = () => {
         imgPerfil.src = '../img/no_image.jpg';
     };
 
-    const divNomedata = document.createElement("div")
-    divNomedata.classList.add("divNomedata")
+    const divNomedata = document.createElement('div')
+    divNomedata.classList.add('divNomedata')
 
-    const nome = document.createElement("span")
-    nome.classList.add("nome")
+    const nome = document.createElement('span')
+    nome.classList.add('nome')
     nome.textContent = user.nome
 
-    const data = document.createElement("span")
-    data.classList.add("data")
+    const data = document.createElement('span')
+    data.classList.add('data')
     data.textContent = formatarData(post.data_postagem)
 
     divNomedata.append(nome, data)
     topo.append(imgPerfil, divNomedata)
 
-    const midia = document.createElement("img")
+    const midia = document.createElement('img')
     midia.src = post.midia[0]
-    midia.classList.add("imagemPostagem")
+    midia.classList.add('imagemPostagem')
     midia.onerror = () => {
         midia.src = '../img/no_image.jpg';
     };
 
 
     // ======= PARTE INFERIOR =======
-    const inferior = document.createElement("div")
-    inferior.classList.add("inferiorPostagem")
+    const inferior = document.createElement('div')
+    inferior.classList.add('inferiorPostagem')
 
-    const desc = document.createElement("p")
-    desc.classList.add("descricao")
-    desc.textContent = post.descricao
+    const titulo = document.createElement('p')
+    titulo.classList.add('titulo')
+    titulo.textContent = post.titulo
 
-    const like = document.createElement("img")
-    like.src = "../img/CoracaoVazio.svg"
-    like.classList.add("interacaoPostagem")
+    const like = document.createElement('img')
+    like.src = '../img/CoracaoVazio.svg'
+    like.classList.add('interacaoPostagem')
 
-    const chat = document.createElement("img")
-    chat.src = "../img/Chat.svg"
-    chat.classList.add("interacaoPostagem")
+    const chat = document.createElement('img')
+    chat.src = '../img/Chat.svg'
+    chat.classList.add('interacaoPostagem')
 
-    const save = document.createElement("img")
-    save.src = "../img/FavoritoVazio.svg"
-    save.classList.add("interacaoPostagem")
+    const save = document.createElement('img')
+    save.src = '../img/FavoritoVazio.svg'
+    save.classList.add('interacaoPostagem')
 
-    inferior.append(desc, like, chat, save)
+    inferior.append(titulo, like, chat, save)
 
     // juntar tudo
     div.append(topo, midia, inferior)
+
+    div.addEventListener('click', () => {
+        window.location.href = `../postagem/postagem.html?id=${id}`
+    })
     return div
 }
 
 function formatarData(data) {
-    return new Date(data).toLocaleDateString("pt-BR")
+    return new Date(data).toLocaleDateString('pt-BR')
 }
 
 carregarDados()

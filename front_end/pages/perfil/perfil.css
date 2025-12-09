@@ -5,43 +5,57 @@
 }
 
 body {
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafafa;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 header {
-    height: 8%;
+    height: 70px;
     width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
     padding: 8px;
     background-color: white;
-    z-index: 999;
+    z-index: 900;
+    border-top: 1px solid #dbdbdb;
 }
 
 .icons {
-    height: 100%;
+    height: 30px;
+    width: auto;
+    transition: 0.2s;
+}
+
+.icons:hover {
+    transform: scale(1.1);
 }
 
 main {
-    height: 100%;
+    height: auto;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     gap: 24px;
-    overflow-y: auto;
+    padding-bottom: 90px;
 }
 
 .dadosPerfil {
     height: auto;
     width: 96%;
+    max-width: 800px;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -49,115 +63,110 @@ main {
     border-bottom: solid #A8A8A8 1px;
     padding-top: 18px;
     padding-bottom: 18px;
-
+    margin-top: 10px;
 }
 
 .dadosPerfil img {
-    height: 60px;
-    width: 60px;
+    height: 80px;
+    width: 80px;
     border-radius: 50%;
     border: solid 1px #9E9B9B;
+    object-fit: cover;
 }
 
 .alinhamento {
     width: auto;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    font-size: 0.7rem;
+    gap: 5px;
+    font-size: 0.8rem;
 }
 
 .nomes {
     display: flex;
     flex-direction: column;
-    gap: 0px;
 }
 
 .nomes .nomeExibicao {
-    font-size: 1rem;
-    height: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .nomes .nomeUsuario {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    color: #666;
 }
 
 .dadosPerfil .interacoes {
     display: flex;
     justify-content: space-between;
-    gap: 2px;
+    gap: 10px;
     text-align: center;
 }
 
 .dadosPerfil .botoes {
     display: flex;
-    color: white;
+    gap: 10px;
 }
 
 .botoes button {
-    width: 60px;
+    width: auto;
+    min-width: 80px;
     color: white;
     background-color: #C79A8A;
     border: none;
-    border-radius: 12px;
-    padding: 3px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .filtros {
-    height: 6%;
-    width: 90%;
+    height: auto;
+    width: 96%;
+    max-width: 800px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
 }
 
-.filtros button {
-    color: white;
-    background-color: #C79A8A;
-    border: none;
-    border-radius: 12px;
-    padding: 3px;
-}
-
-.filtros .popular {
-    width: 100px;
-}
-
-.filtros .filtroData {
-    width: 125px;
-}
-
+.filtros button,
 .filtros select {
     color: white;
     background-color: #C79A8A;
     border: none;
     border-radius: 12px;
-    padding: 3px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Poppins';
 }
 
 .conjuntoPostagens {
     height: auto;
     width: 100%;
+    max-width: 1000px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 18px;
-    padding-bottom: 72px;
+    padding-bottom: 20px;
 }
 
 .postagem {
     height: auto;
     width: 45%;
+    max-width: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 12px;
     border: solid #9E9B9B 1px;
     gap: 6px;
-    padding: 12px;
+    padding: 10px;
     position: relative;
+    background-color: white;
 }
 
 .cadeado {
@@ -167,68 +176,74 @@ main {
     height: 12px;
 }
 
-
 .imagemContainer {
     position: relative;
-    height: 150px;
-    width: 150px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
 }
 
 .postagem .imagemContainer .imagemPostagem {
-    height: 150px;
-    width: 150px;
-    border-radius: 15px;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
     border: solid #9E9B9B 1px;
-    position: relative;
+    object-fit: cover;
     display: block;
 }
 
 .inferiorPostagem {
-    height: 15%;
     width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     gap: 3px;
     font-size: 0.7rem;
+    padding-top: 5px;
+}
+
+.inferiorPostagem p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
 }
 
 .inferiorPostagem img {
-    height: 12px;
+    height: 16px;
+    cursor: pointer;
 }
 
-/* Overlay que vai aparecer no hover */
 .overlayPostagem {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    border-radius: 15px;
-    background-color: rgba(0, 0, 0, 0.0);
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     transition: 0.3s ease-in-out;
+    pointer-events: none;
 }
 
-/* APARECER O TEXTO NO HOVER */
 .postagem:hover .overlayPostagem {
     opacity: 1;
-    background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Fundo escuro */
 .fundoModal {
-    display: none; /* escondido por padrão */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(2px);
     align-items: center;
     justify-content: center;
@@ -236,88 +251,175 @@ main {
 }
 
 .modal {
-    height: 400px;
-    width: 96%;
-    padding: 18px;
+    height: auto;
+    width: 90%;
+    max-width: 500px;
+    padding: 24px;
     border-radius: 22px;
     display: flex;
     flex-direction: column;
     background: #4b372f;
     animation: abrir 0.2s ease;
+    gap: 20px;
+}
+
+@keyframes abrir {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .preview {
     position: relative;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 112px;
+    height: 112px;
 }
 
 .preview-input {
     display: none;
 }
+
 .preview-image {
     height: 112px;
     width: 112px;
     border-radius: 50%;
-    background-color: rebeccapurple;
+    background-color: #ddd;
+    object-fit: cover;
+    border: 2px solid white;
 }
 
 .preview-label {
-    width: 100px;
-    height: 100px;
-    position:absolute;
-    display: block;
+    width: 112px;
+    height: 112px;
+    position: absolute;
+    top: 0;
+    left: 0;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .modal .informacoes {
     width: 100%;
-    height: 90%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 20px;
+}
+
+.arquivos {
+    display: flex;
+    justify-content: center;
+    position: relative;
 }
 
 .campos {
-    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
     gap: 12px;
     color: white;
 }
+
 .campos div {
-    width: 200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .modal input,
 .modal textarea {
-    width: 200px;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     border-radius: 10px;
     border: none;
     outline: none;
-    background-color: #C79A8A;
+    background-color: #dfbdae;
+    color: #4b372f;
+    font-family: 'Poppins';
 }
 
 .campos .biografia {
-    height: 100px;
+    height: 80px;
+    resize: none;
 }
 
 .botoesModal {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 12px;
-    margin-top: 10px;
+    width: 100%;
 }
 
 .botoesModal button {
-    padding: 10px 20px;
+    padding: 10px 24px;
     border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-weight: 400;
+    font-weight: 500;
     color: white;
     background-color: #C79A8A;
+    transition: 0.2s;
+}
+
+.botoesModal button:hover {
+    filter: brightness(0.9);
+}
+
+@media (min-width: 768px) {
+    body {
+        flex-direction: row;
+    }
+
+    header {
+        width: 80px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: auto;
+        right: auto;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        border-top: none;
+        border-right: 1px solid #dbdbdb;
+    }
+
+    .icons {
+        height: 32px;
+        width: 32px;
+    }
+
+    main {
+        padding-left: 80px;
+        padding-bottom: 24px;
+        padding-top: 24px;
+    }
+
+    .modal .informacoes {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 30px;
+    }
+
+    .arquivos {
+        margin-top: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    header {
+        width: 100px;
+    }
+
+    main {
+        padding-left: 100px;
+    }
 }

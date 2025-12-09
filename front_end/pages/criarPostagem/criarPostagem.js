@@ -19,7 +19,6 @@ const divPaisesEscolhidos = document.getElementById('paisesEscolhidos')
 const selectCategoria = document.getElementById('categoria')
 const divCategoriasEscolhidas = document.getElementById('categoriasEscolhidas')
 
-const inputData = document.getElementById('inputData')
 const inputPublico = document.getElementById('publico')
 
 const botaoSalvar = document.getElementById('salvar')
@@ -151,7 +150,6 @@ botaoSalvar.addEventListener('click', async () => {
     const postagem = {
         titulo: inputTitulo.value,
         descricao: inputDescricao.value,
-        data_postagem: inputData.value,
         publico: inputPublico.checked ? 1 : 0,
         midia: midias.map(url => ({ url })),
         categoria: categorias.map(id => ({ id })),
@@ -176,22 +174,18 @@ botaoSalvar.addEventListener('click', async () => {
 
     if (criado) {
         alert('Postagem criada com sucesso!')
-        window.location.reload()
+        
     } else {
         alert('Erro ao criar postagem!')
     }
 })
 
-// ========================
-// CANCELAR
-// ========================
+// botão cancelar
 botaoCancelar.addEventListener('click', () => {
     window.location.href = '../feed/feed.html'
 })
 
-// ========================
-// CARREGAR POSTAGEM PARA EDITAR
-// ========================
+// carregar a postagem
 async function carregarPostagemParaEditar(id) {
     const resposta = await fetch(`http://localhost:8080/v1/viajou/postagem/${id}`)
     const json = await resposta.json()
@@ -200,14 +194,13 @@ async function carregarPostagemParaEditar(id) {
 
     inputTitulo.value = postagemOriginal.titulo
     inputDescricao.value = postagemOriginal.descricao
-    inputData.value = postagemOriginal.data_postagem.split('T')[0]
     inputPublico.checked = postagemOriginal.publico === 1
 
-    // MIDIAS — extrair URLs
+    // midias
     midias = postagemOriginal.midia.map(m => m.url)
     if (midias.length > 0) previewImagem.src = midias[0]
 
-    // LOCALIZAÇÃO — IDs
+    //localização
     locais = postagemOriginal.localizacao.map(l => l.id)
     locais.forEach(id => {
         const option = selectPaises.querySelector(`option[value='${id}']`)
@@ -215,7 +208,7 @@ async function carregarPostagemParaEditar(id) {
     })
     atualizarPaises()
 
-    // CATEGORIAS — IDs
+    // categorias
     categorias = postagemOriginal.categoria.map(c => c.id)
     categorias.forEach(id => {
         const option = selectCategoria.querySelector(`option[value='${id}']`)

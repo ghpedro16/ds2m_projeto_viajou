@@ -160,7 +160,7 @@ function criarPostagem(post, user) {
 
     const data = document.createElement('span')
     data.classList.add('data')
-    data.textContent = formatarData(post.data_postagem)
+    data.textContent = formatarData(post.data_postagem.split('T')[0])
 
     divNomedata.append(nome, data)
     topo.append(imgPerfil, divNomedata)
@@ -208,7 +208,7 @@ function criarPostagem(post, user) {
 }
 
 function formatarData(data) {
-    return new Date(data).toLocaleDateString('pt-BR')
+    return new Date(data + "T00:00:00").toLocaleDateString('pt-BR')
 }
 
 carregarDados()

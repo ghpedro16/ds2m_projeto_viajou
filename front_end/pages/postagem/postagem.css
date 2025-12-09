@@ -10,33 +10,44 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafafa;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 header {
-    height: 8%;
+    height: 70px;
     width: 100%;
     display: flex;
     justify-content: space-around;
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
     padding: 8px;
     background-color: white;
+    z-index: 900;
+    border-top: 1px solid #dbdbdb;
 }
 
 .icons {
-    height: 100%;
+    height: 30px;
+    width: auto;
+    transition: 0.2s;
+}
+
+.icons:hover{
+    transform: scale(1.1);
 }
 
 main {
-    height: 100%;
+    height: auto;
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 24px;
     gap: 24px;
-    overflow-y: auto;
     padding-bottom: 72px;
 }
 
@@ -118,6 +129,7 @@ main {
 }
 
 .inferiorPostagem .divIcons {
+    height: auto;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -202,4 +214,54 @@ main {
     object-fit: cover;
     border-radius: 10px;
     border: solid 1px #9E9B9B;
+}
+
+@media (min-width: 768px) {
+
+    header {
+        width: 80px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: auto;
+        right: auto;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        border-top: none;
+        border-right: 1px solid #dbdbdb;
+    }
+
+    .postagem {
+        height: auto;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 12px;
+    }
+    
+
+    .icons {
+        height: 32px;
+        width: 32px;
+    }
+
+    main {
+        padding-left: 80px;
+        padding-bottom: 24px;
+        padding-top: 24px;
+    }
+   
+}
+
+@media (min-width: 1200px) {
+    header {
+        width: 100px;
+    }
+
+    main {
+        padding-left: 100px;
+    }
 }

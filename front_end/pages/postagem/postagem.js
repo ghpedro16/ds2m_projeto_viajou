@@ -63,7 +63,7 @@ function criarTela(post, user) {
 
     const data = document.createElement('span')
     data.classList.add('data')
-    data.textContent = formatarData(post.data_postagem)
+    data.textContent = formatarData(post.data_postagem.split('T')[0])
 
     nomeData.append(nome, data)
     divSuperior.append(imgPerfil, nomeData)
@@ -201,7 +201,7 @@ function criarTela(post, user) {
 }
 
 function formatarData(data) {
-    return new Date(data).toLocaleDateString('pt-BR')
+    return new Date(data + "T00:00:00").toLocaleDateString('pt-BR')
 }
 
 carregarDadosPostagem()

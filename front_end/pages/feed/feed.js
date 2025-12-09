@@ -1,7 +1,7 @@
 'use strict'
 
 // usuario logado
-const idUsuarioLogado = 1
+const idUsuarioLogado = 4
 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {

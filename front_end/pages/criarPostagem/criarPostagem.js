@@ -174,7 +174,7 @@ botaoSalvar.addEventListener('click', async () => {
 
     if (criado) {
         alert('Postagem criada com sucesso!')
-        
+        window.location.href = `../perfil/perfil.html`
     } else {
         alert('Erro ao criar postagem!')
     }

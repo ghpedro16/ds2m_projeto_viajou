@@ -11,5 +11,5 @@ export function podeVerPostagem(post, idLogado) {
     } 
 
     // se não é dono, só pode ver se for pública
-    return post.publico === true;
+    return post.publico === 1;
 }

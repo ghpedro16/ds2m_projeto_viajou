@@ -110,24 +110,19 @@ async function criarPerfil(user, idUsuarioLogado) {
     dadosPerfil.appendChild(alinhamento)
     dadosPerfil.appendChild(divBotao)
 }
-if (!idPerfilParaExibir) {
-    let proprioPerfil = idUsuarioLogado
-    carregarPerfil(proprioPerfil)
-} else {
-    carregarPerfil(idPerfilParaExibir)
-}
-
 
 //Variavel que guarda todas as postagens
 let todasPostagens = []
 
 // CARREGAR TODAS AS POSTAGENS
-async function carregarPostagem() {
-    const url = 'http://localhost:3003/postagem'
+async function carregarPostagem(idPerfilParaExibir) {
+    console.log(idPerfilParaExibir)
+    const url = `http://localhost:8080/v1/viajou/postagem/usuario/${idPerfilParaExibir}`
 
     try {
         const resposta = await fetch(url)
-        todasPostagens = await resposta.json()
+        const dadosPostagens = await resposta.json()
+        todasPostagens = dadosPostagens.itens.postagens
 
         todasPostagens.forEach(post => {
             criarPostagem(post, idUsuarioLogado)
@@ -154,6 +149,7 @@ async function carregarPostagem() {
 
 // criando a postagem
 function criarPostagem(dadosPostagem, idUsuarioLogado) {
+    console.log(dadosPostagem)
 
     if (!podeVerPostagem(dadosPostagem, idUsuarioLogado)) {
         return;
@@ -174,7 +170,7 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
     // Imagem
     const imagem = document.createElement('img')
     imagem.classList.add('imagemPostagem')
-    imagem.src = dadosPostagem.midia[0]   // primeira imagem da lista
+    imagem.src = dadosPostagem.midia[0].url   // primeira imagem da lista
     imagem.alt = "Imagem da postagem"
     imagem.onerror = () => {
         imagem.src = '../img/no_image.jpg';
@@ -228,7 +224,16 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
     conjuntoPostagens.appendChild(postagem)
 
 }
-carregarPostagem()
+
+//Verificando id dos dados para carregar
+if (!idPerfilParaExibir) {
+    let proprioPerfil = idUsuarioLogado
+    carregarPerfil(proprioPerfil)
+    carregarPostagem(proprioPerfil)
+} else {
+    carregarPerfil(idPerfilParaExibir)
+    carregarPostagem(idPerfilParaExibir)
+}
 
 //Editando o perfil
 // Abrir modal preenchendo com os dados do usuário

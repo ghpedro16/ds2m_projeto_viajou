@@ -1,22 +1,24 @@
 'use strict'
 
-//Não temos sistema de login, então estamos simulando o usuario logado
-const idUsuarioLogado = 1;
+// usuario logado
+const idUsuarioLogado = 1
 
-//pegando o elemento 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {
     localStorage.setItem('idUsuarioLogado', idUsuarioLogado)
-    window.location.href = `../perfil/perfil.html?id=${idUsuarioLogado}` //pasando o usuario logado no params para carregar o proprio perfil
+    window.location.href = `../perfil/perfil.html?id=${idUsuarioLogado}`
 })
 
 let todosUsuarios = []
+let usuarios = []
+let postagens = []
 
+// carregando usuarios para a pesquisa
 async function carregarUsuarios() {
     try {
         const resposta = await fetch('http://localhost:8080/v1/viajou/usuario')
-        const dadosCompletosUsuario = await resposta.json()
-        todosUsuarios = dadosCompletosUsuario.itens.usuarios
+        const dados = await resposta.json()
+        todosUsuarios = dados.itens.usuarios
     } catch (erro) {
         console.error('Erro ao carregar usuários:', erro)
     }
@@ -28,7 +30,6 @@ const inputPesquisa = document.getElementById('campoPesquisa')
 const resultadoPesquisa = document.getElementById('resultadoPesquisa')
 const cardsPostagens = document.querySelectorAll('.postagem')
 
-//Input aciona com cada letra digitada, assim conseguindo limpar as postagens
 inputPesquisa.addEventListener('input', pesquisa)
 
 function pesquisa() {
@@ -45,8 +46,6 @@ function pesquisa() {
     renderizarUsuarios(filtrados)
 }
 
-
-
 function filtrarUsuarios(texto) {
     return todosUsuarios.filter(user =>
         user.nome.toLowerCase().includes(texto) ||
@@ -54,31 +53,24 @@ function filtrarUsuarios(texto) {
     )
 }
 
-
 function criarCardUsuario(user) {
-
     const id_usuario = Number(user.id)
 
     const card = document.createElement('div')
     card.classList.add('cardUsuario')
 
-    // foto
     const fotoUsuario = document.createElement('img')
     fotoUsuario.src = user.url_foto
 
-    // div que guarda nomes
     const divNomes = document.createElement('div')
     divNomes.classList.add('divNomes')
 
-    // nome exibido
     const nome = document.createElement('strong')
     nome.textContent = user.nome
 
-    // nome de usuário
     const nomeUsuario = document.createElement('span')
     nomeUsuario.textContent = user.nome_usuario
 
-    // adicionando filhos
     divNomes.append(nome, nomeUsuario)
     card.append(fotoUsuario, divNomes)
 
@@ -98,39 +90,31 @@ function renderizarUsuarios(lista) {
     }
 
     lista.forEach(user => {
-        const card = criarCardUsuario(user)
-        resultadoPesquisa.appendChild(card)
+        resultadoPesquisa.appendChild(criarCardUsuario(user))
     })
 }
-
 
 function limparResultado() {
     resultadoPesquisa.innerHTML = ''
 }
 
 function esconderPostagens() {
-    const container = document.getElementById('listaPostagens')
-    container.style.display = 'none'
+    document.getElementById('listaPostagens').style.display = 'none'
 }
 
 function mostrarPostagens() {
-        const container = document.getElementById('listaPostagens')
-    container.style.display = 'flex'
+    document.getElementById('listaPostagens').style.display = 'flex'
 }
-
-
-
-let usuarios = []
-let postagens = []
 
 async function carregarDados() {
     try {
         const respostaUsuarios = await fetch('http://localhost:8080/v1/viajou/usuario')
-        const dadosCompletosUsuario = await respostaUsuarios.json()
-        usuarios = dadosCompletosUsuario.itens.usuarios
+        const dadosUsuarios = await respostaUsuarios.json()
+        usuarios = dadosUsuarios.itens.usuarios
 
-        const respostaPostagens = await fetch('http://localhost:3003/postagem')
-        postagens = await respostaPostagens.json()
+        const respostaPostagens = await fetch('http://localhost:8080/v1/viajou/postagem')
+        const dadosPostagens = await respostaPostagens.json()
+        postagens = dadosPostagens.itens.postagens
 
         montarFeed()
 
@@ -144,34 +128,28 @@ function montarFeed() {
     container.innerHTML = ''
 
     postagens.forEach(post => {
-        if (post.publico === false) return //Se a postagem for privada ela não aparece
+        if (post.publico === 0) return
 
-        const usuario = usuarios.find(usuario => Number(usuario.id) === Number(post.id_usuario))
-
+        const usuario = usuarios.find(u => Number(u.id) === Number(post.id_usuario))
         if (!usuario) return
 
-        const elemento = criarPostagem(post, usuario)
-        container.appendChild(elemento)
+        container.appendChild(criarPostagem(post, usuario))
     })
 }
 
 function criarPostagem(post, user) {
 
-    const id = post.id
-
     const div = document.createElement('div')
     div.classList.add('postagem')
 
-    // ======= PARTE SUPERIOR =======
+    // Superior Postagem
     const topo = document.createElement('div')
     topo.classList.add('superiorPostagem')
 
     const imgPerfil = document.createElement('img')
     imgPerfil.src = user.url_foto
     imgPerfil.classList.add('imagemPerfil')
-    imgPerfil.onerror = () => {
-        imgPerfil.src = '../img/no_image.jpg';
-    };
+    imgPerfil.onerror = () => imgPerfil.src = '../img/no_image.jpg'
 
     const divNomedata = document.createElement('div')
     divNomedata.classList.add('divNomedata')
@@ -187,21 +165,22 @@ function criarPostagem(post, user) {
     divNomedata.append(nome, data)
     topo.append(imgPerfil, divNomedata)
 
+    //Imagem
     const midia = document.createElement('img')
-    midia.src = post.midia[0]
     midia.classList.add('imagemPostagem')
-    midia.onerror = () => {
-        midia.src = '../img/no_image.jpg';
-    };
+    midia.src = post.midia?.[0]?.url || '../img/no_image.jpg'
+    midia.onerror = () => midia.src = '../img/no_image.jpg'
 
-
-    // ======= PARTE INFERIOR =======
+    //Inferior
     const inferior = document.createElement('div')
     inferior.classList.add('inferiorPostagem')
 
     const titulo = document.createElement('p')
     titulo.classList.add('titulo')
     titulo.textContent = post.titulo
+
+    const icons = document.createElement('div')
+    icons.classList.add('divIcons')
 
     const like = document.createElement('img')
     like.src = '../img/CoracaoVazio.svg'
@@ -211,18 +190,20 @@ function criarPostagem(post, user) {
     chat.src = '../img/Chat.svg'
     chat.classList.add('interacaoPostagem')
 
-    const save = document.createElement('img')
-    save.src = '../img/FavoritoVazio.svg'
-    save.classList.add('interacaoPostagem')
+    const favorito = document.createElement('img')
+    favorito.src = '../img/FavoritoVazio.svg'
+    favorito.classList.add('interacaoPostagem')
 
-    inferior.append(titulo, like, chat, save)
+    icons.append(like, chat, favorito)
 
-    // juntar tudo
+    inferior.append(titulo, icons)
+
     div.append(topo, midia, inferior)
 
     div.addEventListener('click', () => {
-        window.location.href = `../postagem/postagem.html?id=${id}`
+        window.location.href = `../postagem/postagem.html?id=${post.id}`
     })
+
     return div
 }
 

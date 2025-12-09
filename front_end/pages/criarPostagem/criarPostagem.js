@@ -8,10 +8,8 @@ const idPostagemParaEditar = params.get('idPostagem')
 let modoEdicao = false
 let postagemOriginal = null
 
-
 const inputTitulo = document.getElementById('inputTitulo')
 const inputDescricao = document.getElementById('inputDescricao')
-
 const inputImagem = document.getElementById('foto')
 const previewImagem = document.getElementById('preview-image')
 
@@ -22,16 +20,20 @@ const selectCategoria = document.getElementById('categoria')
 const divCategoriasEscolhidas = document.getElementById('categoriasEscolhidas')
 
 const inputData = document.getElementById('inputData')
-
 const inputPublico = document.getElementById('publico')
 
 const botaoSalvar = document.getElementById('salvar')
 const botaoCancelar = document.getElementById('cancelar')
 
+let midias = []
+let locais = []
+let categorias = []
 
+// Carregar categorias
 async function carregarCategorias() {
-    const resposta = await fetch('http://localhost:3003/categoria')
-    const lista = await resposta.json()
+    const resposta = await fetch('http://localhost:8080/v1/viajou/categoria')
+    const json = await resposta.json()
+    const lista = json.itens.categoria
 
     lista.forEach(categoria => {
         const option = document.createElement('option')
@@ -41,9 +43,11 @@ async function carregarCategorias() {
     })
 }
 
+// Carregar paises
 async function carregarPaises() {
-    const resposta = await fetch('http://localhost:3003/localizacao')
-    const lista = await resposta.json()
+    const resposta = await fetch('http://localhost:8080/v1/viajou/localizacao')
+    const json = await resposta.json()
+    const lista = json.itens.localizacao
 
     lista.forEach(localizacao => {
         const option = document.createElement('option')
@@ -53,12 +57,7 @@ async function carregarPaises() {
     })
 }
 
-
-let midias = []
-let locais = []
-let categorias = []
-
-// Espera tudo carregar para fazer
+//Faz carregar só depois de tudo estar carregado
 window.addEventListener('DOMContentLoaded', async () => {
     await carregarCategorias()
     await carregarPaises()
@@ -69,18 +68,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
+
 inputImagem.addEventListener('change', () => {
     const arquivo = inputImagem.files[0]
     if (!arquivo) return
 
     const url = URL.createObjectURL(arquivo)
-
-    if (midias.includes(url)) {
-        midias = []
-        previewImagem.src = './img/preview-icon.png'
-        return
-    }
-
     midias = [url]
     previewImagem.src = url
 })
@@ -105,10 +98,9 @@ function atualizarPaises() {
     locais.forEach(id => {
         const option = selectPaises.querySelector(`option[value='${id}']`)
         if (!option) return
-        const nome = option.textContent
 
         const span = document.createElement('span')
-        span.textContent = nome
+        span.textContent = option.textContent
         span.classList.add('pais-item')
 
         span.addEventListener('click', () => {
@@ -139,10 +131,9 @@ function atualizarCategorias() {
     categorias.forEach(id => {
         const option = selectCategoria.querySelector(`option[value='${id}']`)
         if (!option) return
-        const nome = option.textContent
 
         const span = document.createElement('span')
-        span.textContent = nome
+        span.textContent = option.textContent
         span.classList.add('categoriaEscolhida')
 
         span.addEventListener('click', () => {
@@ -154,21 +145,23 @@ function atualizarCategorias() {
     })
 }
 
+// Salvar
 botaoSalvar.addEventListener('click', async () => {
+
     const postagem = {
         titulo: inputTitulo.value,
         descricao: inputDescricao.value,
         data_postagem: inputData.value,
-        publico: inputPublico.checked,
-        midia: midias,
-        categoria: categorias,
-        localizacao: locais,
+        publico: inputPublico.checked ? 1 : 0,
+        midia: midias.map(url => ({ url })),
+        categoria: categorias.map(id => ({ id })),
+        localizacao: locais.map(id => ({ id })),
         id_usuario: Number(localStorage.getItem('idUsuarioLogado'))
     }
 
-    // EDITAR
     if (modoEdicao) {
-        const atualizado = editarPostagem(postagem)
+        const atualizado = await editarPostagem(postagem, idPostagemParaEditar)
+
         if (atualizado) {
             alert('Postagem atualizada!')
             window.location.href = `../postagem/postagem.html?id=${idPostagemParaEditar}`
@@ -178,8 +171,9 @@ botaoSalvar.addEventListener('click', async () => {
         return
     }
 
-    // CRIAR
-    const criado = criarPostagem(postagem)
+    console.log("POSTAGEM ENVIADA:", postagem)
+    const criado = await criarPostagem(postagem)
+
     if (criado) {
         alert('Postagem criada com sucesso!')
         window.location.reload()
@@ -188,44 +182,44 @@ botaoSalvar.addEventListener('click', async () => {
     }
 })
 
-//Botão cancelar
+// ========================
+// CANCELAR
+// ========================
 botaoCancelar.addEventListener('click', () => {
     window.location.href = '../feed/feed.html'
 })
 
-// Se estiver editando
+// ========================
+// CARREGAR POSTAGEM PARA EDITAR
+// ========================
 async function carregarPostagemParaEditar(id) {
-    const resposta = await fetch(`http://localhost:3003/postagem/${id}`)
-    postagemOriginal = await resposta.json()
+    const resposta = await fetch(`http://localhost:8080/v1/viajou/postagem/${id}`)
+    const json = await resposta.json()
+
+    postagemOriginal = json.itens.postagem[0]
 
     inputTitulo.value = postagemOriginal.titulo
     inputDescricao.value = postagemOriginal.descricao
-    inputData.value = postagemOriginal.data_postagem
-    inputPublico.checked = postagemOriginal.publico
+    inputData.value = postagemOriginal.data_postagem.split('T')[0]
+    inputPublico.checked = postagemOriginal.publico === 1
 
-    // IMAGEM
-    if (postagemOriginal.midia?.length > 0) {
-        previewImagem.src = postagemOriginal.midia[0]
-        midias = [...postagemOriginal.midia]
-    }
+    // MIDIAS — extrair URLs
+    midias = postagemOriginal.midia.map(m => m.url)
+    if (midias.length > 0) previewImagem.src = midias[0]
 
-    // PAISES
-    locais = [...postagemOriginal.localizacao]
-
+    // LOCALIZAÇÃO — IDs
+    locais = postagemOriginal.localizacao.map(l => l.id)
     locais.forEach(id => {
         const option = selectPaises.querySelector(`option[value='${id}']`)
         if (option) option.selected = true
     })
-
     atualizarPaises()
 
-    // CATEGORIAS
-    categorias = [...postagemOriginal.categoria]
-
+    // CATEGORIAS — IDs
+    categorias = postagemOriginal.categoria.map(c => c.id)
     categorias.forEach(id => {
         const option = selectCategoria.querySelector(`option[value='${id}']`)
         if (option) option.selected = true
     })
-
     atualizarCategorias()
 }

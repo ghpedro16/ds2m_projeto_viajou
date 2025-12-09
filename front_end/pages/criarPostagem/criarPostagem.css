@@ -175,7 +175,8 @@ textarea:focus {
     accent-color: #C79A8A;
 }
 
-.paisesEscolhidos {
+.paisesEscolhidos
+ {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -196,6 +197,31 @@ textarea:focus {
     background-color: #C79A8A;
     color: white;
 }
+
+
+.categoriasEscolhidas
+ {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 5px;
+}
+
+.categoriasEscolhidas span {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.categoriasEscolhidas span:hover {
+    background-color: #C79A8A;
+    color: white;
+}
+
 
 .botoes {
     width: 90%;

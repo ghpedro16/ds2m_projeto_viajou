@@ -17,7 +17,6 @@ const listarUsuarios = async function(){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
     try {
-        
         //Chama a função do DAO para retornar a lista de usuarios do BD
         let resultUsers = await usuarioDAO.getSelectAllUsers()
 
@@ -66,6 +65,39 @@ const buscarUsuarioId = async function(id){
         }else{
             MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
             return MESSAGES.ERROR_REQUIRED_FIELDS // 400
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
+
+const buscarUsuarioLogin = async function(usuario, senha){
+    //Criando um objeto novo para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    try {
+        let resultUser = await usuarioDAO.getSelectUserByLogin(usuario, senha)
+
+        if(resultUser.status_code != 200){
+
+            if(resultUser){
+
+                if(resultUser.length > 0){
+
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.itens.usuario = resultUser
+
+                    return MESSAGES.DEFAULT_HEADER // 200
+                }else{
+                    return MESSAGES.ERROR_NOT_FOUND // 404
+                }
+            }else{
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+            }
+        }else{
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [Usuario ou Senha inválidos]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
         }
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
@@ -196,7 +228,7 @@ const excluirUsuario = async function(id){
             }else{
                 return MESSAGES.ERROR_NOT_FOUND // 404
             }
-
+            
         }else{
             MESSAGES.ERROR_REQUIRED_FIELDS.message += ' [ID Incorreto!]'
             return MESSAGES.ERROR_REQUIRED_FIELDS // 400
@@ -245,6 +277,7 @@ const validarDadosUsuario = async function(user){
 module.exports = {
     listarUsuarios,
     buscarUsuarioId,
+    buscarUsuarioLogin,
     inserirUsuario,
     atualizarUsuario,
     excluirUsuario

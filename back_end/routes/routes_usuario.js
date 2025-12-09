@@ -34,10 +34,19 @@ app.get('/v1/viajou/usuario', cors(), async (request, response) => {
 
 //Rota para buscar um usuario pelo ID
 app.get('/v1/viajou/usuario/:id', cors(), async (request, response) => {
-let id = request.params.id
-let usuario = await controller_usuario.buscarUsuarioId(id);
-response.status(usuario.status_code)
-response.json(usuario)
+    let id = request.params.id
+    let usuario = await controller_usuario.buscarUsuarioId(id);
+    response.status(usuario.status_code)
+    response.json(usuario)
+})
+
+//Rota para buscar um Usuario por username e senha
+app.get('/v1/viajou/login/usuario', cors(), async (request, response) => {
+    let usuario = request.query.usuario
+    let senha = request.query.senha
+
+    let login = await controller_usuario.buscarUsuarioLogin(usuario, senha)
+    response.status(login.status_code).json(login)
 })
 
 //rota para inserir um novo usuario

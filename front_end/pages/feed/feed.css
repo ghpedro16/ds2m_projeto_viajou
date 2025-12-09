@@ -5,82 +5,44 @@
 }
 
 body {
-   min-height: 100vh;
-   width: 100vw;
-   display: flex;
-   flex-direction: column;
-   font-family: 'Poppins';
-   padding-bottom: 8%;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 header {
-    height: 8%;
+    height: 70px;
     width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
     left: 0;
     padding: 8px;
     background-color: white;
-    z-index: 10;
+    z-index: 100;
+    border-top: 1px solid #dbdbdb;
 }
 
 .icons {
-    height: 100%;
+    height: 30px;
+    width: auto;
+    transition: 0.2s;
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-    
-    body {
-        flex-direction: row;
-        padding-left: 10%; 
-        padding-bottom: 0; 
-    }
-    header {
-        position: fixed; 
-        width: 10%;      
-        height: 100vh;
-        top: 0;
-        left: 0;
-        
-        flex-direction: column; 
-        justify-content: flex-start;
-        justify-content: center; 
-        gap: 15px;
-    }
-    .icons{
-    height: 85px;
-    }
-
+.icons:hover {
+    transform: scale(1.1);
 }
 
-@media (min-width: 1024px) {
-
-    body {
-        flex-direction: row;
-        padding-left: 5%; 
-        padding-bottom: 0;
-    }
-    
-    header {
-        position: fixed;
-        width: 5%;      
-        height: 100vh;
-        top: 0;
-        left: 0;
-        
-        flex-direction: column;
-        justify-content: flex-start;
-        justify-content: center; 
-        gap: 15px;
-    }
-     .icons{
-    height: 85px;
-    }
-}
 .input-container {
-    width: 80%;
+    width: 90%;
+    max-width: 600px;
     height: 50px;
     display: flex;
     align-items: center;
@@ -89,19 +51,21 @@ header {
     padding-left: 12px;
     padding-right: 12px;
     gap: 12px;
+    background-color: white;
 }
 
 .input-container input {
     display: flex;
     height: 100%;
     width: 100%;
-    font-size: 2rem;
+    font-size: 1rem;
     border: none;
     outline: none;
+    background: transparent;
 }
 
 .input-container .lupa {
-    height: 42px;
+    height: 24px;
 }
 
 main {
@@ -112,12 +76,11 @@ main {
     flex-direction: column;
     padding-top: 24px;
     gap: 24px;
-    overflow-y: auto;
-    padding-bottom: 72px;
+    padding-bottom: 90px;
 }
 
 .listaPostagens {
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,17 +90,18 @@ main {
 .postagem {
     height: auto;
     width: 90%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 12px;
-    border: solid #9E9B9B 1px;
+    border: solid #dbdbdb 1px;
     gap: 18px;
-    padding: 12px;
+    padding: 15px;
+    background-color: white;
 }
 
 .superiorPostagem {
-    height: 15%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -146,42 +110,59 @@ main {
 }
 
 .superiorPostagem .imagemPerfil {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
-    border: solid 1px #9E9B9B;
+    border: solid 1px #e1e1e1;
+    object-fit: cover;
 }
 
 .superiorPostagem .nome {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .superiorPostagem .data {
-    font-size: 0.8rem;
-    padding-top: 3px;
+    font-size: 0.75rem;
+    color: #8e8e8e;
+    margin-left: auto;
 }
 
 .postagem .imagemPostagem {
-    max-height: 75%;
-    max-width: 100%;
-    border-radius: 15px;
+    height: auto;
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .inferiorPostagem {
-    height: auto;
     width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 12px;
+    gap: 15px;
 }
 
 .inferiorPostagem img {
-    height: 18px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.inferiorPostagem img:hover {
+    transform: scale(1.1);
+}
+
+.descricao {
+    width: 100%;
+    font-size: 0.9rem;
+    color: #333;
+    padding-bottom: 5px;
 }
 
 /* PESQUISA */
 #resultadoPesquisa {
     width: 90%;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -196,6 +177,9 @@ main {
     padding: 8px;
     border-radius: 12px;
     border: 1px solid #e1e1e1;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .cardUsuario:hover {
@@ -203,10 +187,10 @@ main {
 }
 
 .cardUsuario img {
-    height: 45px;
-    width: 45px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
-    border: solid 1px #9E9B9B;
+    object-fit: cover;
 }
 
 .divNomes {
@@ -215,9 +199,54 @@ main {
 }
 
 .divNomes strong {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .divNomes span {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    color: #8e8e8e;
+}
+
+@media (min-width: 768px) {
+
+    body {
+        flex-direction: row;
+    }
+
+    header {
+        width: 80px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: auto;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        border-top: none;
+        border-right: 1px solid #dbdbdb;
+    }
+
+    .icons {
+        height: 32px;
+        width: 32px;
+    }
+
+    main {
+        width: 100%;
+        padding-left: 80px;
+        padding-bottom: 24px;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+    header {
+        width: 100px;
+    }
+
+    main {
+        margin-left: 100px;
+
+    }
 }

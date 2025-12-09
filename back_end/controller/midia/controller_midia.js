@@ -17,7 +17,7 @@ const listaMidia = async function () {
     
     try {
         
-        //Chama a função do DAO para retornar a lista de usuarios do BD
+        //Chama a função do DAO para retornar a lista de midias do BD
         let resultMidias = await midiaDAO.getSelectAllMidia()
 
         if(resultMidias){
@@ -38,6 +38,7 @@ const listaMidia = async function () {
     }
 }
 
+//Busca uma midia pelo ID
 const buscarMidiaId = async function (id) {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -69,6 +70,7 @@ const buscarMidiaId = async function (id) {
     }
 }
 
+//Busca as midias da postagem
 const buscarMidiaIdPostagem = async function(id_postagem){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -76,7 +78,7 @@ const buscarMidiaIdPostagem = async function(id_postagem){
     try {
         if(!isNaN(id_postagem) && id_postagem != '' && id_postagem != null && id_postagem > 0){
 
-            //Chama a função do DAO para retornar a lista de usuarios do BD
+            //Chama a função do DAO para retornar a lista de midia do BD
             let resultMidia = await midiaDAO.getSelectMidiaByIdPost(Number(id_postagem))
 
             if(resultMidia){
@@ -113,7 +115,7 @@ const inserirMidia = async function (midia, contentType) {
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo filme no banco de dados
+                //Chama a função para inserir uma nova midia no banco de dados
                 let resultMidia = await midiaDAO.setInsertMidia(midia)
                 
                 if(resultMidia){
@@ -121,7 +123,7 @@ const inserirMidia = async function (midia, contentType) {
                     let lastId = await midiaDAO.getSelectLastID()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados da midia
                         midia.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -165,11 +167,9 @@ const atualizarMidia = async function (midia, id, contentType) {
                 let validarId = await buscarMidiaId(id)
                 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID da midia no JSON de dados para ser encaminhado ao DAO
                     midia.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultMidia = await midiaDAO.setUpdadeMidia(midia)
                 
                     if(resultMidia){
@@ -196,6 +196,7 @@ const atualizarMidia = async function (midia, id, contentType) {
     }
 }
 
+//Exclui uma midia do BD
 const excluirMidia = async function (id) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -236,6 +237,7 @@ const excluirMidia = async function (id) {
     }
 }
 
+//Valida todos os dados da midia
 const validarDadosMidia = async function(midia){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

@@ -11,13 +11,13 @@ const itemSalvoDAO = require('../../model/DAO/item_salvo.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-//Retorna uma lista de todos os comentarios
+//Retorna uma lista de todos os itens salvos
 const listarItensSalvo = async function () {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
     try {
-        //Chama a função do DAO para retornar a lista de usuarios do BD
+        //Chama a função do DAO para retornar a lista de itens salvos do BD
         let resultItemSalvo = await itemSalvoDAO.getSelectAllSavedItem()
 
         if(resultItemSalvo){
@@ -38,7 +38,7 @@ const listarItensSalvo = async function () {
     }
 }
 
-//Retorna um comentario filtrado pelo ID 
+//Retorna um item salvo filtrado pelo ID 
 const buscarItemSalvoId = async function (id) {
 
     //Criando um objeto novo para as mensagens
@@ -71,6 +71,7 @@ const buscarItemSalvoId = async function (id) {
     }
 }
 
+// Busca os item salvos do usuario
 const buscarItemSalvoIdUsuario = async function(id_usuario){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -103,7 +104,7 @@ const buscarItemSalvoIdUsuario = async function(id_usuario){
     }
 }
 
-//Inserir um novo comentario 
+//Inserir um novo item salvo
 const inserirItemSalvo = async function (itemSalvo, contentType) {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -116,7 +117,7 @@ const inserirItemSalvo = async function (itemSalvo, contentType) {
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo comentario no banco de dados
+                //Chama a função para inserir um novo item salvo no banco de dados
                 let resultItemSalvo = await itemSalvoDAO.setInsertSavedItem(itemSalvo)
                 
                 if(resultItemSalvo){
@@ -124,7 +125,7 @@ const inserirItemSalvo = async function (itemSalvo, contentType) {
                     let lastId = await itemSalvoDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados do item salvo
                         itemSalvo.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -151,7 +152,7 @@ const inserirItemSalvo = async function (itemSalvo, contentType) {
     }
 }
 
-//Atualiza um comentario 
+//Atualiza um item salvo
 const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -169,11 +170,9 @@ const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
                 let validarId = await buscarItemSalvoId(id)
                 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID do item salvo no JSON de dados para ser encaminhado ao DAO
                     itemSalvo.id = Number(id)
-
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
+                    
                     let resultItemSalvo = await itemSalvoDAO.setUpdateSavedItem(itemSalvo)
                 
                     if(resultItemSalvo){
@@ -187,7 +186,7 @@ const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return validarId // A função buscarComentarioID poderá retornar um erro 400, 404 ou 500
+                    return validarId // A função buscarItemSalvoID poderá retornar um erro 400, 404 ou 500
                 }
             }else{
                 return validar // 400
@@ -200,7 +199,7 @@ const atualizarItemSalvo = async function (itemSalvo, id, contentType) {
     }
 }
 
-//Excluir um comentario
+//Excluir um item salvo
 const excluirItemSalvo = async function (id) {
 
     let messages = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -238,7 +237,7 @@ const excluirItemSalvo = async function (id) {
     }
 }
 
-// Validação dos dados do comentário 
+// Validação dos dados do item salvo
 const validarDadosItemSalvo = async function (itemSalvo) {
 
     if(itemSalvo.id_usuario == undefined || isNaN(itemSalvo.id_usuario || itemSalvo.id_usuario <= 0) || itemSalvo.id_usuario == null || itemSalvo.id_usuario == ''){

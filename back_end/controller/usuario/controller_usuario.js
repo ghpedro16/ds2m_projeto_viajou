@@ -11,6 +11,7 @@ const usuarioDAO = require('../../model/DAO/usuario.js')
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
+//Lista todos os usuarios
 const listarUsuarios = async function(){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -38,6 +39,7 @@ const listarUsuarios = async function(){
     }
 }
 
+//Busca usuario por id
 const buscarUsuarioId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -70,6 +72,7 @@ const buscarUsuarioId = async function(id){
     }
 }
 
+//Insere um novo usuario
 const inserirUsuario = async function(user, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -82,7 +85,7 @@ const inserirUsuario = async function(user, contentType){
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo filme no banco de dados
+                //Chama a função para inserir um novo usuario no banco de dados
                 let resultUser = await usuarioDAO.setInsertUser(user)
                 
                 if(resultUser){
@@ -90,7 +93,7 @@ const inserirUsuario = async function(user, contentType){
                     let lastId = await usuarioDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados do usuario
                         user.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -117,6 +120,7 @@ const inserirUsuario = async function(user, contentType){
     }
 }
 
+//Atualiza um usuario
 const atualizarUsuario = async function(user, id, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -135,11 +139,9 @@ const atualizarUsuario = async function(user, id, contentType){
                 let validarId = await buscarUsuarioId(id)
                 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID do usuario no JSON de dados para ser encaminhado ao DAO
                     user.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultUser = await usuarioDAO.setUpdateUser(user)
                 
                     if(resultUser){
@@ -166,6 +168,7 @@ const atualizarUsuario = async function(user, id, contentType){
     }
 }
 
+//Exclui um usuario
 const excluirUsuario = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -203,6 +206,7 @@ const excluirUsuario = async function(id){
     }
 }
 
+//Valida todos os dados de inserção do usuario
 const validarDadosUsuario = async function(user){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

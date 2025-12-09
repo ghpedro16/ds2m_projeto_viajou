@@ -174,7 +174,6 @@ const excluirCategoria = async function (id) {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
 
             let validarID = await buscarCategoriaId(id)
-            console.log("VALIDAR ID =>", validarID)
 
             if (validarID.status_code == 200) {
 

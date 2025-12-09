@@ -32,12 +32,13 @@ const controllerMidia = require('../midia/controller_midia.js')
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
+//Lista todas as postagens do BD
 const listarPostagens = async function(){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        //Chama a função do DAO para retornar a lista de usuarios do BD
+        //Chama a função do DAO para retornar a lista de postagens do BD
         let resultPosts = await postagemDAO.getSelectAllPostagens()
 
         if(resultPosts){
@@ -84,6 +85,7 @@ const listarPostagens = async function(){
     }
 }
 
+//Busca postagem pelo id
 const buscarPostagemId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -91,7 +93,7 @@ const buscarPostagemId = async function(id){
     try {
         if(!isNaN(id) && id != '' && id != null && id > 0){
 
-            //Chama a função do DAO para retornar a lista de usuarios do BD
+            //Chama a função do DAO para retornar a lista de postagens do BD
             let resultPost = await postagemDAO.getSelectPostagemById(Number(id))
 
             if(resultPost){
@@ -144,6 +146,7 @@ const buscarPostagemId = async function(id){
     }
 }
 
+//Busca postagens pelo id do usuario
 const buscarPostagemIdUsuario = async function(id_usuario){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -151,7 +154,7 @@ const buscarPostagemIdUsuario = async function(id_usuario){
     try {
         if(!isNaN(id_usuario) && id_usuario != '' && id_usuario != null && id_usuario > 0){
 
-            //Chama a função do DAO para retornar a lista de usuarios do BD
+            //Chama a função do DAO para retornar a lista de postagens do BD
             let resultPost = await postagemDAO.getSelectPostagemByIdUser(Number(id_usuario))
 
             if(resultPost){
@@ -204,6 +207,7 @@ const buscarPostagemIdUsuario = async function(id_usuario){
     }
 }
 
+//Insere uma nova postagem
 const inserirPostagem = async function(post, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -220,7 +224,7 @@ const inserirPostagem = async function(post, contentType){
                 let validarIdUser = await controllerUsuario.buscarUsuarioId(post.id_usuario)
 
                 if(validarIdUser.status_code == 200){
-                //Chama a função para inserir um novo filme no banco de dados
+                //Chama a função para inserir uma nova postagem no banco de dados
                 let resultPost = await postagemDAO.setInsertPostagem(post)
                 
                     if(resultPost){
@@ -230,10 +234,10 @@ const inserirPostagem = async function(post, contentType){
                         if(lastId){
 
                             for(categoria of post.categoria){
-                                //Cria o JSON com o id do filme e o id do genero
+                                //Cria o JSON com o id da postagem e o id da categoria
                                 let categoriaPostagem = {id_postagem: lastId, id_categoria: categoria.id}
     
-                                //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                                //Encaminha o JSON com o id da postagem e da categoria para a controller de categoria_postagem
                                 let resultCategoriaPostagem = await controllerCategoriaPostagem.inserirCategoriaPostagem(categoriaPostagem, contentType)
     
                                 if(resultCategoriaPostagem.status_code != 201){
@@ -242,10 +246,10 @@ const inserirPostagem = async function(post, contentType){
                             }            
 
                             for(localizacao of post.localizacao){
-                                //Cria o JSON com o id do filme e o id do genero
+                                //Cria o JSON com o id da postagem e id da localizacao
                                 let localizacaoPostagem = {id_postagem: lastId, id_localizacao: localizacao.id}
     
-                                //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                                //Encaminha o JSON com o id da postagem e da localizacao para a controller de localizacao_postagem
                                 let resultLocalizacaoPostagem = await controllerLocalizacaoPostagem.inserirLocalizacaoPostagem(localizacaoPostagem, contentType)
     
                                 if(resultLocalizacaoPostagem.status_code != 201){
@@ -254,8 +258,10 @@ const inserirPostagem = async function(post, contentType){
                             }
 
                             for(midia of post.midia){
+                                //Cria o JSON com url da midia e o id da postagem
                                 let midiaPostagem = {url: midia.url, id_postagem: lastId}
 
+                                //Encaminha o JSON com url da midia e id da postagem para controller midia 
                                 let resultMidiaPostagem = await controllerMidia.inserirMidia(midiaPostagem, contentType)
 
                                 if(resultMidiaPostagem.status_code != 201){
@@ -306,6 +312,7 @@ const inserirPostagem = async function(post, contentType){
     }
 }
 
+//Atualiza uma postagem
 const atualizarPostagem = async function(post, id, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -323,12 +330,12 @@ const atualizarPostagem = async function(post, id, contentType){
                 let validarId = await buscarPostagemId(id)
 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID da postagem no JSON de dados para ser encaminhado ao DAO
                     post.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultPost = await postagemDAO.setUpdatePostagem(post)
+
+                    //Chama as funções para deletarem os registros na tabela relacional pelo id da postagem
                     let atualizaCategoriaPostagem = await categoriaPostagemDAO.setDeleteCategoryByIdPost(id)
                     let atualizaLocalizacaoPostagem = await localizacaoPostagemDAO.setDeleteLocationByIdPost(id)
                     let atualizaMidiaPostagem = await midiaDAO.setDeleteMidiaByIdPost(id)
@@ -336,22 +343,26 @@ const atualizarPostagem = async function(post, id, contentType){
                     if(resultPost){
 
                         for(categoria of post.categoria){
-                            //Cria o JSON com o id do filme e o id do genero
+                            //Cria o JSON com o id da postagem e o id da categoria
                             let categoriaPostagem = {id_postagem: id, id_categoria: categoria.id}
     
-                            //Encaminha o JSON com o id do filme e do genero para a controller de filme_genero
+                            //Encaminha o JSON com o id da postagem e da categoria para a controller de categoria_postagem
                             let resultCategoriaPostagem = await controllerCategoriaPostagem.inserirCategoriaPostagem(categoriaPostagem, contentType)
                         }
 
                         for(localizacao of post.localizacao){
+                            //Cria o JSON com o id da postagem e o id da localizacao
                             let localizacaoPostagem = {id_postagem: id, id_localizacao: localizacao.id}
 
+                            //Encaminha o JSON com o id da postagem e da localizacao para a controller de localizacao_postagem
                             let resultLocalizacaoPostagem = await controllerLocalizacaoPostagem.inserirLocalizacaoPostagem(localizacaoPostagem, contentType)
                         }
 
                         for(midia of post.midia){
+                            //Cria o JSON com a url da midia e o id da postagem
                             let midiaPostagem = {url: midia.url, id_postagem: id}
 
+                            //Encaminha o JSON com url da midia e id da postagem para controller midia 
                             let resultMidiaPostagem = await controllerMidia.inserirMidia(midiaPostagem, contentType)
                         }
 
@@ -391,6 +402,7 @@ const atualizarPostagem = async function(post, id, contentType){
     }
 }
 
+//Deleta uma postagem
 const excluirPostagem = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -428,6 +440,7 @@ const excluirPostagem = async function(id){
     }
 }
 
+//Valida se todos os dados da postagem foram inseridos
 const validarDadosPostagem = async function(post){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -452,6 +465,7 @@ const validarDadosPostagem = async function(post){
     }
 }
 
+//Valida apenas os dados da postagem que podem ser alterados
 const validarDadosUpdatePostagem = async function(post){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

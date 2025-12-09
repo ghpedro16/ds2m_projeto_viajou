@@ -1,5 +1,5 @@
 /***********************************************************************************************************************************************
- * Objetivo: Arquivo responsavel pelo CRUD de dados no Mysql referente ao genero
+ * Objetivo: Arquivo responsavel pelo CRUD de dados no Mysql referente a midia das postagens
  * Data: 02/12/2025
  * Autor: Pedro
  * Versão: 1.0

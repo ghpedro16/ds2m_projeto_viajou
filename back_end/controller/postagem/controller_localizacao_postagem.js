@@ -11,7 +11,7 @@ const localizacaoPostagemDAO = require('../../model/DAO/localizacao_postagem.js'
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-//Lista todos os generos
+//Lista todas as localizacoes
 const listarLocalizacaoPostagens = async function(){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -38,7 +38,7 @@ const listarLocalizacaoPostagens = async function(){
     }
 }
 
-//Lista genero pelo id
+//Lista localizacao pelo id
 const buscarLocalizacaoPostagemId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -71,7 +71,7 @@ const buscarLocalizacaoPostagemId = async function(id){
     }
 }
 
-//Lista genero pelo id
+//Lista localizacao pelo id da postagem
 const buscarLocalizacaoIdPostagem = async function(id_postagem){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -104,7 +104,7 @@ const buscarLocalizacaoIdPostagem = async function(id_postagem){
     }
 }
 
-//Lista genero pelo id
+//Lista postagens pelo id da localizacao
 const buscarPostagemIdLocalizacao = async function(id_localizacao){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -137,7 +137,7 @@ const buscarPostagemIdLocalizacao = async function(id_localizacao){
     }
 }
 
-//Insere genero
+//Insere na tabela relacional de localizacao postagem
 const inserirLocalizacaoPostagem = async function(localizacaoPostagem, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -150,7 +150,7 @@ const inserirLocalizacaoPostagem = async function(localizacaoPostagem, contentTy
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo genero no banco de dados
+                //Chama a função para inserir uma nova localizacao postagem no banco de dados
                 let resultLocalizacaoPostagem = await localizacaoPostagemDAO.setInsertLocationPost(localizacaoPostagem)
                 
                 if(resultLocalizacaoPostagem){
@@ -158,7 +158,7 @@ const inserirLocalizacaoPostagem = async function(localizacaoPostagem, contentTy
                     let lastId = await localizacaoPostagemDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados da localizacao postagem
                         localizacaoPostagem.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -184,7 +184,7 @@ const inserirLocalizacaoPostagem = async function(localizacaoPostagem, contentTy
     }
 }
 
-//Atualizar genero
+//Atualiza a localizacao postagem
 const atualizarLocalizacaoPostagem = async function(localizacaoPostagem, id, contentType){
 
     //Criando um objeto novo para as mensagens
@@ -204,11 +204,9 @@ const atualizarLocalizacaoPostagem = async function(localizacaoPostagem, id, con
 
                 if(validarId.status_code == 200){
 
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID da localizacao postagem no JSON de dados para ser encaminhado ao DAO
                     localizacaoPostagem.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultLocalizacaoPostagem = await localizacaoPostagemDAO.setUpdateLocationPost(localizacaoPostagem)
                 
                     if(resultLocalizacaoPostagem){
@@ -235,7 +233,7 @@ const atualizarLocalizacaoPostagem = async function(localizacaoPostagem, id, con
     }
 }
 
-//Excluir genero
+//Excluir localizacao postagem
 const excluirLocalizacaoPostagem = async function(id){
 
     //Criando um objeto novo para as mensagens
@@ -274,6 +272,7 @@ const excluirLocalizacaoPostagem = async function(id){
     }
 }
 
+//Valida os dados da localizacao postagem
 const validarDadosLocalizacaoPostagem = async function(localizacaoPostagem){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

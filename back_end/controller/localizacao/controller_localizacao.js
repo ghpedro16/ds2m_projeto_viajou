@@ -207,6 +207,7 @@ const excluirLocalizacao = async function (id) {
     }
 }
 
+//Valida os dados da localizacao
 const validarDadosLocalizacao = async function(localizacao){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

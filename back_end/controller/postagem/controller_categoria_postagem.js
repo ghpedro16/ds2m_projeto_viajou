@@ -11,7 +11,7 @@ const categoriaPostagemDAO = require('../../model/DAO/categoria_postagem.js')
 //Import do arquivo de mensagens
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
-//Lista todos os generos
+//Lista todas as categorias
 const listarCategoriasPostagens = async function(){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -38,7 +38,7 @@ const listarCategoriasPostagens = async function(){
     }
 }
 
-//Lista genero pelo id
+//Lista categoria pelo id
 const buscarCategoriaPostagemId = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -71,7 +71,7 @@ const buscarCategoriaPostagemId = async function(id){
     }
 }
 
-//Lista genero pelo id
+//Lista categorias pelo id da postagem
 const buscarCategoriaIdPostagem = async function(id_postagem){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -104,7 +104,7 @@ const buscarCategoriaIdPostagem = async function(id_postagem){
     }
 }
 
-//Lista genero pelo id
+//Lista postagens pelo id da categoria
 const buscarPostagemIdCategoria = async function(id_categoria){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -137,7 +137,7 @@ const buscarPostagemIdCategoria = async function(id_categoria){
     }
 }
 
-//Insere genero
+//Insere na tabela relacional uma categoria e uma postagem
 const inserirCategoriaPostagem = async function(categoriaPostagem, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -150,7 +150,7 @@ const inserirCategoriaPostagem = async function(categoriaPostagem, contentType){
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo genero no banco de dados
+                //Chama a função para inserir uma nova categoria postagem no banco de dados
                 let resultCategoriaPostagem = await categoriaPostagemDAO.setInsertCategoryPost(categoriaPostagem)
                 
                 if(resultCategoriaPostagem){
@@ -158,7 +158,7 @@ const inserirCategoriaPostagem = async function(categoriaPostagem, contentType){
                     let lastId = await categoriaPostagemDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados da categoria postagem
                         categoriaPostagem.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -184,7 +184,7 @@ const inserirCategoriaPostagem = async function(categoriaPostagem, contentType){
     }
 }
 
-//Atualizar genero
+//Atualizar categoria postagem
 const atualizarCategoriaPostagem = async function(categoriaPostagem, id, contentType){
 
     //Criando um objeto novo para as mensagens
@@ -204,11 +204,9 @@ const atualizarCategoriaPostagem = async function(categoriaPostagem, id, content
 
                 if(validarId.status_code == 200){
 
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID da categoria postagem no JSON de dados para ser encaminhado ao DAO
                     categoriaPostagem.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultCategoriaPostagem = await categoriaPostagemDAO.setUpdateCategoryPost(categoriaPostagem)
                 
                     if(resultCategoriaPostagem){
@@ -222,7 +220,7 @@ const atualizarCategoriaPostagem = async function(categoriaPostagem, id, content
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return validarId // A função buscarFilmeId poderá retornar um erro 400, 404 ou 500
+                    return validarId // A função buscarCategoriaPostagemId poderá retornar um erro 400, 404 ou 500
                 }
             }else{
                 return validar // 400
@@ -235,7 +233,7 @@ const atualizarCategoriaPostagem = async function(categoriaPostagem, id, content
     }
 }
 
-//Excluir genero
+//Excluir categoria postagem
 const excluirCategoriaPostagem = async function(id){
 
     //Criando um objeto novo para as mensagens
@@ -274,6 +272,7 @@ const excluirCategoriaPostagem = async function(id){
     }
 }
 
+//Valida os dados da categoria postagem
 const validarDadosCategoriaPostagem = async function(categoriaPostagem){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))

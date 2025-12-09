@@ -12,13 +12,13 @@ const curtidaDAO = require('../../model/DAO/curtida.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
 
-//Retorna uma lista de todos os comentarios
+//Retorna uma lista de todas as curtidas
 const listarCurtidas = async function () {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
     try {
-        //Chama a função do DAO para retornar a lista de usuarios do BD
+        //Chama a função do DAO para retornar a lista de curtidas do BD
         let resultCurtidas = await curtidaDAO.getSelectAllLikes()
 
         if(resultCurtidas){
@@ -39,7 +39,7 @@ const listarCurtidas = async function () {
     }
 }
 
-//Retorna um comentario filtrado pelo ID 
+//Retorna uma curtida filtrado pelo ID 
 const buscarCurtidaId = async function (id) {
 
     //Criando um objeto novo para as mensagens
@@ -104,7 +104,7 @@ const buscarCurtidaIdPostagem = async function(id_postagem){
     }
 }
 
-//Inserir um novo comentario 
+//Inserir uma nova curtida
 const inserirCurtida = async function (curtida, contentType) {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -117,7 +117,7 @@ const inserirCurtida = async function (curtida, contentType) {
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo comentario no banco de dados
+                //Chama a função para inserir uma nova curtida no banco de dados
                 let resultCurtida = await curtidaDAO.setInsertLike(curtida)
                 
                 if(resultCurtida){
@@ -125,7 +125,7 @@ const inserirCurtida = async function (curtida, contentType) {
                     let lastId = await curtidaDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados da curtida
                         curtida.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -170,11 +170,9 @@ const atualizarCurtida = async function (curtida, id, contentType) {
                 let validarId = await buscarCurtidaId(id)
                 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID da curtida no JSON de dados para ser encaminhado ao DAO
                     curtida.id = Number(id)
 
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
                     let resultCurtida = await curtidaDAO.setUpdateLike(curtida)
                 
                     if(resultCurtida){
@@ -188,7 +186,7 @@ const atualizarCurtida = async function (curtida, id, contentType) {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return validarId // A função buscarComentarioID poderá retornar um erro 400, 404 ou 500
+                    return validarId // A função buscarCurtidaID poderá retornar um erro 400, 404 ou 500
                 }
             }else{
                 return validar // 400
@@ -239,7 +237,7 @@ const excluirCurtida = async function (id) {
     }
 }
 
-// Validação dos dados do comentário 
+// Validação dos dados da curtida 
 const validarDadosCurtida = async function (curtida) {
 
     if(curtida.id_usuario == undefined || isNaN(curtida.id_usuario || curtida.id_usuario <= 0) || curtida.id_usuario == null || curtida.id_usuario == ''){

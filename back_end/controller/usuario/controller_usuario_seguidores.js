@@ -11,6 +11,7 @@ const usuarioSeguidoresDAO = require('../../model/DAO/usuario_seguidores.js')
 //Import do arquivo de mensagens personalizadas
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 
+//Lista todos os usuarios que o usuario esta seguindo
 const listarSeguindosUsuario = async function(id_usuario){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -43,6 +44,7 @@ const listarSeguindosUsuario = async function(id_usuario){
     }
 }
 
+//Lista todos os usuarios que seguem o usuario
 const listarSeguidoresUsuario = async function(id_usuario){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -75,6 +77,7 @@ const listarSeguidoresUsuario = async function(id_usuario){
     }
 }
 
+//Busca na tabela relacional usuario seguidores pelo id
 const buscarUsuarioSeguidorId = async function (id) {
 
     //Criando um objeto novo para as mensagens
@@ -107,6 +110,7 @@ const buscarUsuarioSeguidorId = async function (id) {
     }
 }
 
+//Insere um seguindo (Segue outro usuario)
 const inserirSeguindo = async function(userSeguindo, contentType){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -119,7 +123,7 @@ const inserirSeguindo = async function(userSeguindo, contentType){
 
             if(!validar){
                 //Processamento
-                //Chama a função para inserir um novo comentario no banco de dados
+                //Chama a função para inserir um novo seguindo no banco de dados
                 let resultSeguindo = await usuarioSeguidoresDAO.setInsertUserFollow(userSeguindo)
                 
                 if(resultSeguindo){
@@ -127,7 +131,7 @@ const inserirSeguindo = async function(userSeguindo, contentType){
                     let lastId = await usuarioSeguidoresDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados do usuario seguindo
                         userSeguindo.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -154,6 +158,7 @@ const inserirSeguindo = async function(userSeguindo, contentType){
     }
 }
 
+//Exclui um seguindo (deixa de seguir)
 const excluirSeguindo = async function(id){
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -190,6 +195,7 @@ const excluirSeguindo = async function(id){
     }
 }
 
+//Valida os dados do usuario seguidores
 const validarDadosUsuario = async function (usuario){
 
     if(usuario.id_usuario_seguindo == undefined || isNaN(usuario.id_usuario_seguindo || usuario.id_usuario_seguindo <= 0) || usuario.id_usuario_seguindo == null || usuario.id_usuario_seguindo == ''){

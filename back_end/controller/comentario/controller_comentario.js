@@ -17,7 +17,7 @@ const listaComentarios = async function () {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     
     try {
-        //Chama a função do DAO para retornar a lista de usuarios do BD
+        //Chama a função do DAO para retornar a lista de comentarios do BD
         let resultComentarios = await comentarioDAO.getSelectAllComments()
 
         if(resultComentarios){
@@ -124,7 +124,7 @@ const inserirComentario = async function (comentario, contentType) {
                     let lastId = await comentarioDAO.getSelectLastId()
                     
                     if(lastId){
-                        //Adiciona o ID no JSON de dados do filme
+                        //Adiciona o ID no JSON de dados do comentario
                         comentario.id = lastId
 
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
@@ -169,11 +169,9 @@ const atualizarComentario = async function (comentario, id, contentType) {
                 let validarId = await buscarComentarioId(id)
                 
                 if(validarId.status_code == 200){
-                    //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                    //Adiciona o ID do comentario no JSON de dados para ser encaminhado ao DAO
                     comentario.id = Number(id)
-
-                    //Processamento
-                    //Chama a função para inserir um novo filme no banco de dados
+                    
                     let resultComentario = await comentarioDAO.setUpdateComment(comentario)
                 
                     if(resultComentario){

@@ -116,7 +116,7 @@ let todasPostagens = []
 
 // CARREGAR TODAS AS POSTAGENS
 async function carregarPostagem(idPerfilParaExibir) {
-    console.log(idPerfilParaExibir)
+
     const url = `http://localhost:8080/v1/viajou/postagem/usuario/${idPerfilParaExibir}`
 
     try {
@@ -147,12 +147,12 @@ async function carregarPostagem(idPerfilParaExibir) {
 }
 
 
+
 // criando a postagem
 function criarPostagem(dadosPostagem, idUsuarioLogado) {
-    console.log(dadosPostagem)
 
     if (!podeVerPostagem(dadosPostagem, idUsuarioLogado)) {
-        return;
+        return
     }
 
     const donoDoPost = verificarDono(dadosPostagem.id_usuario, idUsuarioLogado)
@@ -209,7 +209,7 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
     imagemContainer.appendChild(imagem)
     imagemContainer.appendChild(overlay)
 
-    if (dadosPostagem.publico === false && donoDoPost) {
+    if (dadosPostagem.publico === 0 && donoDoPost) {
         //Imagem do cadeado
         const imagemCadeado = document.createElement('img')
         imagemCadeado.classList.add('cadeado')
@@ -223,6 +223,9 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
 
     conjuntoPostagens.appendChild(postagem)
 
+    postagem.addEventListener('click', () => {
+        window.location.href = `../postagem/postagem.html?id=${dadosPostagem.id}`
+    })
 }
 
 //Verificando id dos dados para carregar
@@ -245,11 +248,25 @@ function abrirModalEditar(user) {
     const inputNome = document.getElementById('inputNome')
     const inputNomeUsuario = document.getElementById('inputUser')
     const inputBiografia = document.getElementById('inputBiografia')
+    const inputImagem = document.getElementById('foto')
+    const previewImagem = document.getElementById('preview-image')
+
+    let midia = []
 
     // Preenchendo o modal com os dados atuais
     inputNome.value = user.nome
     inputNomeUsuario.value = user.nome_usuario
     inputBiografia.value = user.biografia
+
+    //Pegar imagem
+    inputImagem.addEventListener('change', () => {
+        const arquivo = inputImagem.files[0]
+        if (!arquivo) return
+    
+        const url = URL.createObjectURL(arquivo)
+        midia = [url]
+        previewImagem.src = url
+    })
 
     // Botões
     const botaoCancelar = document.getElementById('botaoCancelar')
@@ -263,6 +280,7 @@ function abrirModalEditar(user) {
             nome: inputNome.value,
             nome_usuario: inputNomeUsuario.value,
             biografia: inputBiografia.value,
+            url_foto: inputImagem.value,
 
             //Correção do formato das datas
             data_nascimento: usuarioSemId.data_nascimento.split("T")[0], //Isso separa a data em um array, deixando a data no modelo correto
@@ -294,3 +312,50 @@ function filtroPopular(todasPostagens) {
 
     return postagemFiltrada;
 }
+
+const selectPaises = document.getElementById('paises')
+
+const selectCategoria = document.getElementById('categoria')
+
+let categorias = []
+
+// Carregar categorias
+async function carregarCategorias() {
+    const resposta = await fetch('http://localhost:8080/v1/viajou/categoria')
+    const json = await resposta.json()
+    const lista = json.itens.categoria
+
+    lista.forEach(categoria => {
+        const option = document.createElement('option')
+        option.value = categoria.id
+        option.textContent = categoria.nome
+        selectCategoria.appendChild(option)
+    })
+}
+
+// Carregar paises
+async function carregarPaises() {
+    const resposta = await fetch('http://localhost:8080/v1/viajou/localizacao')
+    const json = await resposta.json()
+    const lista = json.itens.localizacao
+
+    lista.forEach(localizacao => {
+        const option = document.createElement('option')
+        option.value = localizacao.id
+        option.textContent = localizacao.pais
+        selectPaises.appendChild(option)
+    })
+}
+
+
+//Faz carregar só depois de tudo estar carregado
+window.addEventListener('DOMContentLoaded', async () => {
+    await carregarCategorias()
+    await carregarPaises()
+
+    if (idPostagemParaEditar) {
+        modoEdicao = true
+        carregarPostagemParaEditar(idPostagemParaEditar)
+    }
+})
+

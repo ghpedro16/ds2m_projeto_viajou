@@ -14,18 +14,30 @@ body {
 }
 
 header {
-    height: 8%;
+    height: 70px;
     width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
+    left: 0;
     padding: 8px;
     background-color: white;
+    z-index: 100;
+    border-top: 1px solid #dbdbdb;
 }
 
 .icons {
-    height: 100%;
+    display: flex;
+    align-items: center ;
+    height: 30px;
+    width: auto;
+    transition: 0.2s;
+}
+
+.icons:hover{
+    transform: scale(1.1);
 }
 
 main {

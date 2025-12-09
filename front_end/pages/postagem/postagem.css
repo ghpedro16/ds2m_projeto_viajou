@@ -32,6 +32,8 @@ header {
 }
 
 .icons {
+    display: flex;
+    align-items: center ;
     height: 30px;
     width: auto;
     transition: 0.2s;

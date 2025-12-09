@@ -18,8 +18,8 @@ export async function atualizarPerfil(id, dados) {
 }
 
 export async function criarPostagem(dados) {
-    const url = "http://localhost:3003/postagemParaCriar"
-
+    const url = "http://localhost:8080/v1/viajou/postagem"
+    console.log(dados)
     const options = {
         method: "POST",
         headers: {
@@ -34,8 +34,10 @@ export async function criarPostagem(dados) {
     return response.ok
 }
 
-export async function editarPostagem(postagem) {
-    const url = "http://localhost:3003/postagemParaCriar"
+export async function editarPostagem(postagem, id_postagem) {
+    console.log(id_postagem)
+    console.log(postagem)
+    const url = `http://localhost:8080/v1/viajou/postagem/${id_postagem}`
 
     const options = {
         method: "PUT",

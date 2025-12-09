@@ -149,6 +149,12 @@ main {
     gap: 15px;
 }
 
+.inferiorPostagem .divIcons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .inferiorPostagem img {
     height: 24px;
     cursor: pointer;

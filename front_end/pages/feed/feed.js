@@ -1,11 +1,10 @@
 'use strict'
 
 // usuario logado
-const idUsuarioLogado = 4
+const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {
-    localStorage.setItem('idUsuarioLogado', idUsuarioLogado)
     window.location.href = `../perfil/perfil.html?id=${idUsuarioLogado}`
 })
 

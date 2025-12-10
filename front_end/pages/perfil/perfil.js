@@ -4,7 +4,7 @@ import { verificarDono, podeVerPostagem } from '../../utils/authUtils.js'
 import { atualizarPerfil } from '../../utils/apiUtils.js'
 
 //Vai vir do localStorage futuramente
-const idUsuarioLogado = localStorage.getItem('idUsuarioLogado');
+const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
 
 const params = new URLSearchParams(window.location.search)
 const idPerfilParaExibir = params.get("id")

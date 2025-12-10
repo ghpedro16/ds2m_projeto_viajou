@@ -1,7 +1,17 @@
+import { criarUsuario } from '../../utils/apiUtils.js'
+
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
-const enterBtn = document.getElementById('enter')
+const enterBtn = document.getElementById('enter');
+const createBtn = document.getElementById('create');
+
+//Import dos inputs de cadastro
+const inputNome = document.getElementById('nome');
+const inputUsername = document.getElementById('username');
+const inputEmail = document.getElementById('email');
+const inputSenha = document.getElementById('nova-senha');
+const inputDataNasc = document.getElementById('data-nascimento');
 
 registerBtn.addEventListener('click', () => {
     container.classList.add("active");
@@ -12,7 +22,7 @@ loginBtn.addEventListener('click', () => {
 });
 
 async function usuarioLogin(event){
-    event.preventDefault(); // impede recarregamento do formulário
+    event.preventDefault();
 
     let usuario = document.getElementById('usuario').value;
     let senha = document.getElementById('senha').value;
@@ -25,7 +35,7 @@ async function usuarioLogin(event){
             return;
         }
 
-        const dados = await resposta.json(); // <- aqui sim vem o JSON
+        const dados = await resposta.json();
 
         const id = dados.itens.usuario[0].id;
         console.log("Login bem-sucedido", id);
@@ -41,3 +51,25 @@ async function usuarioLogin(event){
 
 enterBtn.addEventListener('click', usuarioLogin);
 
+
+
+createBtn.addEventListener('click', async () =>{
+
+    const usuario = {
+        nome: inputNome.value,
+        email: inputEmail.value,
+        nome_usuario: inputUsername.value,
+        data_nascimento: inputDataNasc.value,
+        senha: inputSenha.value,
+        biografia: "",
+        url_foto: ""
+    }
+
+    let usuarioCriado = criarUsuario(usuario)
+
+    if (usuarioCriado) {
+        alert('Usuário criado com sucesso!')
+    } else {
+        alert('Erro ao criar usuário!')
+    }
+})

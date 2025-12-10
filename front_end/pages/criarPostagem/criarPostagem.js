@@ -154,7 +154,7 @@ botaoSalvar.addEventListener('click', async () => {
         midia: midias.map(url => ({ url })),
         categoria: categorias.map(id => ({ id })),
         localizacao: locais.map(id => ({ id })),
-        id_usuario: Number(localStorage.getItem('idUsuarioLogado'))
+        id_usuario: localStorage.getItem('idUsuarioLogado')
     }
 
     if (modoEdicao) {

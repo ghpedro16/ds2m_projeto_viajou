@@ -52,3 +52,20 @@ export async function editarPostagem(postagem, id_postagem) {
 
     return response.ok
 }
+
+export async function criarUsuario(dados) {
+    const url = "http://localhost:8080/v1/viajou/usuario"
+    console.log(dados)
+    const options = {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    }
+
+    const response = await fetch(url, options)
+
+    return response.ok
+}
+

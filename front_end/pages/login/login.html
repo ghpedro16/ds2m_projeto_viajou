@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./login.css">
+    <script type="module" src="login.js" defer></script>
     <title>Viajou!</title>
 </head>
 <body>
@@ -13,15 +14,15 @@
             <form>
                 <h1>Crie sua conta</h1>
                 <input type="text" 
-                placeholder="Nome">
+                placeholder="Nome" id="nome">
                 <input type="text" 
-                placeholder="Nome de Usuario">
+                placeholder="Nome de Usuario" id="username">
                 <input type="email" 
-                placeholder="Email">
+                placeholder="Email" id="email">
                 <input type="password" 
-                placeholder="Senha">
+                placeholder="Senha" id="nova-senha">
                 <input type="date" 
-                placeholder="Data de Nascimento">
+                placeholder="Data de Nascimento" id="data-nascimento">
                 <button id="create">Cadastrar-se</button>
             </form>
         </div>
@@ -52,6 +53,5 @@
         </div>
     </div>
 
-    <script src="login.js"></script>
 </body>
 </html>

@@ -10,8 +10,10 @@ let postagemOriginal = null
 
 const inputTitulo = document.getElementById('inputTitulo')
 const inputDescricao = document.getElementById('inputDescricao')
+
 const inputImagem = document.getElementById('foto')
 const previewImagem = document.getElementById('preview-image')
+const divImagensEscolhidas = document.getElementById('imagensEscolhidas')
 
 const selectPaises = document.getElementById('paises')
 const divPaisesEscolhidos = document.getElementById('paisesEscolhidos')
@@ -76,6 +78,14 @@ inputImagem.addEventListener('change', () => {
     const url = URL.createObjectURL(arquivo)
     midias = [url]
     previewImagem.src = url
+
+    if (midias.includes(previewImagem)) {
+        midias = midias.filter(m => m !== previewImagem)
+    } else {
+        midias.push(previewImagem)
+    }
+
+    atualizarArquivos()
 })
 
 
@@ -91,6 +101,14 @@ selectPaises.addEventListener('change', () => {
 
     atualizarPaises()
 })
+
+// function atualizarArquivos() {
+//     divImagensEscolhidas.innerHTML = ''
+
+//     midias.forEach(previewImagem => {
+//         const option = 
+//     })
+// }
 
 function atualizarPaises() {
     divPaisesEscolhidos.innerHTML = ''

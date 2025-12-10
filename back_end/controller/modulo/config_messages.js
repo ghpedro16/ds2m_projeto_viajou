@@ -50,7 +50,7 @@ const SUCCESS_DELETED_ITEM = {
 const ERROR_NOT_FOUND = {
     status: false,
     status_code: 404,
-    message: "Não foram encontrados dados de retorno"
+    message: "Não foram encontrados dados de retorno!"
 }
 
 const ERROR_INTERNAL_SERVER_CONTROLLER = {
@@ -68,7 +68,7 @@ const ERROR_INTERNAL_SERVER_MODEL = {
 const ERROR_REQUIRED_FIELDS = {
     status: false,
     status_code: 400,
-    message: "Não foi possível processar a requisição pois existem campos obrigatórios que devem ser encaminhados e atendidos confome a documentação"
+    message: "Não foi possível processar a requisição pois existem campos obrigatórios que devem ser encaminhados e atendidos conforme a documentação."
 }
 
 const ERROR_CONTENT_TYPE = {
@@ -83,6 +83,12 @@ const ERROR_RELATIONAL_INSERTION = {
     message: "A requisição do item principal foi processada com sucesso, porem houveram problemas ao inserir dados na tabela de relação!!!"
 }
 
+const ERROR_UNIQUE_CONFLICT = {
+    status: false,
+    status_code: 409,
+    message: "Não foi possivel processar a requisição pois o item principal causará um conflito na base de dados."
+}
+
 module.exports = {
     DEFAULT_HEADER,
     SUCCESS_REQUEST,
@@ -94,5 +100,6 @@ module.exports = {
     ERROR_INTERNAL_SERVER_MODEL,
     ERROR_REQUIRED_FIELDS,
     ERROR_CONTENT_TYPE,
-    ERROR_RELATIONAL_INSERTION
+    ERROR_RELATIONAL_INSERTION,
+    ERROR_UNIQUE_CONFLICT
 }

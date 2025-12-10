@@ -84,6 +84,23 @@ const getSelectUserByLogin = async function(usuario, senha){
     }
 }
 
+const getSelectUserByUsername = async function(username){
+    try {
+        let sql = `select * from tbl_usuario where nome_usuario = '${username}'`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+      
+        if (result.length > 0){
+            return result
+        } else {
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
+}
+
 //Insere um usuario novo no BD
 const setInsertUser = async function(user){
     try{
@@ -156,6 +173,7 @@ module.exports = {
     getSelectUserById,
     getSelectLastId,
     getSelectUserByLogin,
+    getSelectUserByUsername,
     setInsertUser,
     setUpdateUser,
     setDeleteUser

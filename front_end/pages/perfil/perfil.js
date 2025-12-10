@@ -131,14 +131,8 @@ async function carregarPostagem(idPerfilParaExibir) {
         //Botao popular
         const buttonPopular = document.getElementById('popular')
         buttonPopular.addEventListener('click', () => {
-            const postagensPorLike = filtroPopular(todasPostagens)
-
-            const conjuntoPostagens = document.getElementById("conjuntoPostagens")
-            conjuntoPostagens.innerHTML = ''
-
-            postagensPorLike.forEach(post => {
-                criarPostagem(post, idUsuarioLogado)
-            })
+            buttonPopular.classList.toggle("ativo")
+            filtrarPostagens()
         })
 
     } catch (erro) {
@@ -262,7 +256,7 @@ function abrirModalEditar(user) {
     inputImagem.addEventListener('change', () => {
         const arquivo = inputImagem.files[0]
         if (!arquivo) return
-    
+
         const url = URL.createObjectURL(arquivo)
         midia = [url]
         previewImagem.src = url
@@ -303,21 +297,9 @@ function fecharModal() {
 }
 
 //Filtros
-function filtroPopular(todasPostagens) {
-    const postagemFiltrada = [...todasPostagens] //os 3 pontos é para fazer uma copia, não modificando o original
-
-    postagemFiltrada.sort((a, b) => b.quantidade_curtidas - a.quantidade_curtidas);
-    //.sort utilizado para ordernar o array
-    //verifica se o resultado de b for positivo ele vem antes do a, se for negativo o a vem na frente
-
-    return postagemFiltrada;
-}
-
 const selectPaises = document.getElementById('paises')
 
 const selectCategoria = document.getElementById('categoria')
-
-let categorias = []
 
 // Carregar categorias
 async function carregarCategorias() {
@@ -350,8 +332,42 @@ async function carregarPaises() {
 
 //Faz carregar só depois de tudo estar carregado
 window.addEventListener('DOMContentLoaded', async () => {
+
     await carregarCategorias()
     await carregarPaises()
+
+    selectCategoria.addEventListener('change', filtrarPostagens)
+    selectPaises.addEventListener('change', filtrarPostagens)
+
+    // FIltro e data
+    const btnFiltroData = document.getElementById("btnFiltroData")
+
+    const filtroDataContainer = document.getElementById("filtroDataContainer")
+    filtroDataContainer.style.display = "none";
+
+    const btnBuscarData = document.getElementById("btnBuscarData")
+
+
+    btnFiltroData.addEventListener("click", () => {
+        filtroDataContainer.style.display =
+            btnFiltroData.addEventListener("click", () => {
+                if (filtroDataContainer.style.display === "none") {
+                    filtroDataContainer.style.display = "flex"; // mostrar
+                } else {
+                    filtroDataContainer.style.display = "none"; // escondee
+                }
+            })
+    })
+
+    btnBuscarData.addEventListener("click", () => {
+        const inicio = document.getElementById("dataInicio").value
+        const fim = document.getElementById("dataFinal").value
+
+        filtrarPostagensPorData(inicio, fim)
+
+        // Fecha a tela
+        filtroDataContainer.style.display = "none"
+    })
 
     if (idPostagemParaEditar) {
         modoEdicao = true
@@ -359,3 +375,113 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
+
+
+function filtrarPostagens() {
+    const idCategoria = selectCategoria.value
+    const idPais = selectPaises.value
+
+    const conjuntoPostagens = document.getElementById('conjuntoPostagens')
+    conjuntoPostagens.innerHTML = ''
+
+    let filtradas = todasPostagens.filter(post => {
+
+        const categoriaDaPostagem = post.categoria?.[0]?.id //o ? serve para devolver undefined se
+        const localDaPostagem = post.localizacao?.[0]?.id   //der erro para não quebrar o código
+
+        const categoriaOk =
+            idCategoria === "" || categoriaDaPostagem == idCategoria
+
+        const paisOk =
+            idPais === "" || localDaPostagem == idPais
+
+        return categoriaOk && paisOk
+    })
+
+    // Popular
+    const popularSelecionado = document.getElementById("popular")?.classList.contains("ativo")
+    if (popularSelecionado) {
+        filtradas.sort((a, b) => b.quantidade_curtidas - a.quantidade_curtidas)
+    }
+
+    // criando postagem
+    filtradas.forEach(post => {
+        criarPostagem(post, idUsuarioLogado)
+    })
+}
+
+// filtar por data
+function filtrarPostagensPorData(dataInicio, dataFim) {
+
+    const conjuntoPostagens = document.getElementById('conjuntoPostagens')
+    conjuntoPostagens.innerHTML = ''
+
+    // Converter datas para comparar
+    let inicio = null;
+    let fim = null;
+
+    if (dataInicio) {
+        inicio = new Date(dataInicio);
+    }
+
+    if (dataFim) {
+        fim = new Date(dataFim);
+    }
+
+    let filtradas = todasPostagens.filter(post => {
+
+        const dataPost = new Date(post.data_postagem);
+
+        let inicioOk = true;
+        let fimOk = true;
+
+        if (inicio !== null) {
+            if (!(dataPost >= inicio)) {
+                inicioOk = false;
+            }
+        }
+
+        if (fim !== null) {
+            if (!(dataPost <= fim)) {
+                fimOk = false;
+            }
+        }
+
+        if (inicioOk && fimOk) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+
+
+    //juntando categoria e pais
+    const idCategoria = selectCategoria.value
+    const idPais = selectPaises.value
+
+    filtradas = filtradas.filter(post => {
+        const categoriaDaPostagem = post.categoria?.[0]?.id
+        const localDaPostagem = post.localizacao?.[0]?.id
+
+        const categoriaOk =
+            idCategoria === "" || categoriaDaPostagem == idCategoria
+
+        const paisOk =
+            idPais === "" || localDaPostagem == idPais
+
+        return categoriaOk && paisOk
+    })
+
+    // popular
+    const popularSelecionado =
+        document.getElementById("popular")?.classList.contains("ativo")
+
+    if (popularSelecionado) {
+        filtradas.sort((a, b) => b.quantidade_curtidas - a.quantidade_curtidas)
+    }
+
+    // recriando as postagens
+    filtradas.forEach(post => {
+        criarPostagem(post, idUsuarioLogado)
+    })
+}

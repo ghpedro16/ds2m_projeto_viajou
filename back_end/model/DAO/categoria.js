@@ -38,7 +38,7 @@ const getSelectLastID = async function (){
 const getSelectAllCategorias = async function(){
     try {
         //Scrip SQL
-        let sql = "select * from tbl_categoria order by id desc"
+        let sql = "select * from tbl_categoria order by nome asc"
 
         //Encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)

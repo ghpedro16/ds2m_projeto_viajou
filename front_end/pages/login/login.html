@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./login.css">
+    <title>Viajou!</title>
+</head>
+<body>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form>
+                <h1>Crie sua conta</h1>
+                <input type="text" 
+                placeholder="Nome">
+                <input type="text" 
+                placeholder="Nome de Usuario">
+                <input type="email" 
+                placeholder="Email">
+                <input type="password" 
+                placeholder="Senha">
+                <input type="date" 
+                placeholder="Data de Nascimento">
+                <button>Cadastrar-se</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Entrar</h1>
+                <p>Entre com seu nome de usuário e senha</p>
+                <input type="email" 
+                placeholder="Nome de usuario">
+                <input type="password" 
+                placeholder="Senha">
+                <button>Entrar</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bem-Vindo de volta!</h1>
+                    <p>Insira seus dados pessoais para usar todos os recursos do Viajou!</p>
+                    <button class="hidden" id="login">Entrar</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Ainda não possui uma conta?</h1>
+                    <p>Cadastre-se com seus dados pessoais para usar todos os recursos do Viajou!</p>
+                    <button class="hidden" id="register">Cadastrar-se</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

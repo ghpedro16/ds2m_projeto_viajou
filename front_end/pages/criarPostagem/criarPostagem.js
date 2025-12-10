@@ -1,6 +1,6 @@
 'use strict'
 
-import { criarPostagem, editarPostagem } from '../../utils/apiUtils.js'
+import { criarPostagem, editarPostagem, deletarPostagem } from '../../utils/apiUtils.js'
 
 const params = new URLSearchParams(window.location.search)
 const idPostagemParaEditar = params.get('idPostagem')
@@ -23,6 +23,7 @@ const inputPublico = document.getElementById('publico')
 
 const botaoSalvar = document.getElementById('salvar')
 const botaoCancelar = document.getElementById('cancelar')
+const botaoExcluir = document.getElementById('excluir')
 
 let midias = []
 let locais = []
@@ -157,27 +158,37 @@ botaoSalvar.addEventListener('click', async () => {
         id_usuario: Number(localStorage.getItem('idUsuarioLogado'))
     }
 
+
+
     if (modoEdicao) {
-        const atualizado = await editarPostagem(postagem, idPostagemParaEditar)
+        if (postagem.titulo != '' && postagem.descricao != '' && postagem.midia.length > 0 && postagem.categoria.length > 0 && postagem.localizacao.length > 0) {
+            
+            const atualizado = await editarPostagem(postagem, idPostagemParaEditar)
 
-        if (atualizado) {
-            alert('Postagem atualizada!')
-            window.location.href = `../postagem/postagem.html?id=${idPostagemParaEditar}`
+            if (atualizado) {
+                alert('Postagem atualizada!')
+                window.location.href = `../postagem/postagem.html?id=${idPostagemParaEditar}`
+            } else {
+                alert('Erro ao atualizar postagem.')
+            }
+            return
         } else {
-            alert('Erro ao atualizar postagem.')
+            alert('Alguns dados não foram passados')
         }
-        return
     }
 
-    console.log("POSTAGEM ENVIADA:", postagem)
-    const criado = await criarPostagem(postagem)
-
-    if (criado) {
-        alert('Postagem criada com sucesso!')
-        window.location.href = `../perfil/perfil.html`
+    if (postagem.titulo != '' && postagem.descricao != '' && postagem.midia.length > 0 && postagem.categoria.length > 0 && postagem.localizacao.length > 0) {
+        const criado = await criarPostagem(postagem)
+        if (criado) {
+            alert('Postagem criada com sucesso!')
+            window.location.href = `../perfil/perfil.html`
+        } else {
+            alert('Erro ao criar postagem!')
+        }
     } else {
-        alert('Erro ao criar postagem!')
+        alert('Alguns dados não foram passados')
     }
+
 })
 
 // botão cancelar
@@ -213,6 +224,18 @@ async function carregarPostagemParaEditar(id) {
     categorias.forEach(id => {
         const option = selectCategoria.querySelector(`option[value='${id}']`)
         if (option) option.selected = true
+    })
+
+    botaoExcluir.style.visibility = 'visible'
+    botaoExcluir.addEventListener('click', () => {
+        const excluido = deletarPostagem(id)
+        if (excluido) {
+            alert('Postagem excluida!')
+            window.location.href = `../perfil/perfil.html`
+        } else {
+            alert('Erro ao atualizar postagem.')
+        }
+        return
     })
     atualizarCategorias()
 }

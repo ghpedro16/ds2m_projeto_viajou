@@ -352,9 +352,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         filtroDataContainer.style.display =
             btnFiltroData.addEventListener("click", () => {
                 if (filtroDataContainer.style.display === "none") {
-                    filtroDataContainer.style.display = "flex"; // mostrar
+                    filtroDataContainer.style.display = "flex" // mostrar
                 } else {
-                    filtroDataContainer.style.display = "none"; // escondee
+                    filtroDataContainer.style.display = "none" // escondee
                 }
             })
     })

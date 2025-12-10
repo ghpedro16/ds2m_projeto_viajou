@@ -19,7 +19,6 @@ export async function atualizarPerfil(id, dados) {
 
 export async function criarPostagem(dados) {
     const url = "http://localhost:8080/v1/viajou/postagem"
-    console.log(dados)
     const options = {
         method: "POST",
         headers: {
@@ -35,8 +34,6 @@ export async function criarPostagem(dados) {
 }
 
 export async function editarPostagem(postagem, id_postagem) {
-    console.log(id_postagem)
-    console.log(postagem)
     const url = `http://localhost:8080/v1/viajou/postagem/${id_postagem}`
 
     const options = {
@@ -49,6 +46,18 @@ export async function editarPostagem(postagem, id_postagem) {
 
     const response = await fetch(url, options)
 
+
+    return response.ok
+}
+
+export async function deletarPostagem (id_postagem) {
+    const url = `http://localhost:8080/v1/viajou/postagem/${id_postagem}`
+
+    const options = {
+        method: 'DELETE'
+    }
+
+    const response = await fetch(url, options)
 
     return response.ok
 }

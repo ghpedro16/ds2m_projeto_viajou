@@ -255,6 +255,11 @@ textarea:focus {
     background-color: #9E9B9B;
 }
 
+.botoes .excluir {
+    visibility: hidden;
+    background-color: #9E9B9B;
+}
+
 @media (min-width: 768px) {
     body {
         flex-direction: row;

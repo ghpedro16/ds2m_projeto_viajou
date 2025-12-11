@@ -203,7 +203,6 @@ textarea:focus {
     display: flex;
     gap: 12px;
     overflow-x: scroll;
-    background-color: rgba(255, 0, 0, 0.171);
 }
 
 .escolhidoImagem, .escolhidoVideo {

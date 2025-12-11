@@ -1,8 +1,7 @@
 'use strict'
 
 import { verificarDono, podeVerPostagem } from '../../utils/authUtils.js'
-import { atualizarPerfil } from '../../utils/apiUtils.js'
-import { seguirUsuario } from '../../utils/apiUtils.js'
+import { seguirUsuario, atualizarPerfil, uploadImageToAzure, deletarImagemAzure } from '../../utils/apiUtils.js'
 
 //Vai vir do localStorage futuramente
 const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
@@ -271,24 +270,66 @@ function abrirModalEditar(user) {
         const arquivo = inputImagem.files[0]
         if (!arquivo) return
 
+        // gera a URL blob temporária
         const url = URL.createObjectURL(arquivo)
-        midia = [url]
+
+        // mostra no preview
         previewImagem.src = url
+
+        // guarda para enviar depois ao backend
+        midia = [{ file: arquivo, url: url }]
     })
+
+    async function uploadImage() {
+        const uploadParams = {
+            storageAccount: 'midias',
+            containerName: 'midias',
+            file: document.getElementById('foto').files[0],
+            sasToken: 'InserirToken'
+        }
+        const urlFinal = await uploadImageToAzure(uploadParams)
+        return urlFinal
+    }
+
+    // DELETANDO IMAGEM SE ELA JÁ EXISTIR
+    function extrairNomeArquivo(url) {
+        return url.split('/').pop();
+    }
 
     // Botões
     const botaoCancelar = document.getElementById('botaoCancelar')
     botaoCancelar.addEventListener('click', fecharModal)
 
     const botaoSalvar = document.getElementById('botaoSalvar')
-    botaoSalvar.addEventListener('click', () => {
+    botaoSalvar.addEventListener('click', async () => {
+
+        let urlNovaImagem = null
+
+        // verifica se 
+        if (document.getElementById('foto').files.length > 0) {
+
+            // Deleta imagem antiga no Azure
+            const nomeArquivoAntigo = extrairNomeArquivo(user.url_foto);
+
+            await deletarImagemAzure({
+                storageAccount: 'midias',
+                containerName: 'midias',
+                file: nomeArquivoAntigo,
+                sasToken: 'InserirToken'
+            });
+
+            // Faz upload da nova imagem
+            urlNovaImagem = await uploadImage();
+        }
+
+
         const { id, ...usuarioSemId } = user
         const dados = {
             ...usuarioSemId,
             nome: inputNome.value,
             nome_usuario: inputNomeUsuario.value,
             biografia: inputBiografia.value,
-            url_foto: inputImagem.value,
+            url_foto: urlNovaImagem ?? user.url_foto,
 
             //Correção do formato das datas
             data_nascimento: usuarioSemId.data_nascimento.split("T")[0], //Isso separa a data em um array, deixando a data no modelo correto
@@ -297,6 +338,7 @@ function abrirModalEditar(user) {
 
         const atualizado = atualizarPerfil(id, dados)
         if (atualizado) {
+            alert('Perfil atualizado com sucesso!')
             fecharModal()
             window.location.reload();
         } else {

@@ -1,7 +1,7 @@
 'use strict'
 
 // usuario logado
-const idUsuarioLogado = 4
+const idUsuarioLogado = 1
 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {
@@ -208,7 +208,7 @@ function criarPostagem(post, user) {
 }
 
 function formatarData(data) {
-    return new Date(data + "T00:00:00").toLocaleDateString('pt-BR')
+    return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR')
 }
 
 carregarDados()

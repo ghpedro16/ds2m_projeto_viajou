@@ -59,7 +59,7 @@ async function carregarPaises() {
     })
 }
 
-//Faz carregar só depois de tudo estar carregado
+// Faz carregar só depois de tudo estar carregado
 window.addEventListener('DOMContentLoaded', async () => {
     await carregarCategorias()
     await carregarPaises()
@@ -69,25 +69,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         carregarPostagemParaEditar(idPostagemParaEditar)
     }
 })
-
-
-inputImagem.addEventListener('change', () => {
-    const arquivo = inputImagem.files[0]
-    if (!arquivo) return
-
-    const url = URL.createObjectURL(arquivo)
-    midias = [url]
-    previewImagem.src = url
-
-    if (midias.includes(previewImagem)) {
-        midias = midias.filter(m => m !== previewImagem)
-    } else {
-        midias.push(previewImagem)
-    }
-
-    atualizarArquivos()
-})
-
 
 selectPaises.addEventListener('change', () => {
     const id = Number(selectPaises.value)
@@ -102,13 +83,95 @@ selectPaises.addEventListener('change', () => {
     atualizarPaises()
 })
 
-// function atualizarArquivos() {
-//     divImagensEscolhidas.innerHTML = ''
+inputImagem.addEventListener('change', () => {
+    const arquivos = Array.from(inputImagem.files)
 
-//     midias.forEach(previewImagem => {
-//         const option = 
-//     })
-// }
+    arquivos.forEach(file => {
+        const url = URL.createObjectURL(file)
+
+        midias.push({
+            url: url,
+            file: file,
+            tipo: file.type.startsWith('video') ? 'video' : 'image'
+        })
+    })
+
+    atualizarArquivos()
+    atualizarPreviewPrincipal()
+})
+
+function atualizarPreviewPrincipal() {
+    const container = document.getElementById('preview-container')
+
+    // Pausa vídeo e limpa div
+    const oldVideo = container.querySelector('video')
+    if (oldVideo) {
+        oldVideo.pause()
+        oldVideo.src = ''
+    }
+
+    container.innerHTML = ''
+
+    // Recriando o label
+    const label = document.createElement('label')
+    label.classList.add('preview-label')
+    label.setAttribute('for', 'foto')
+    label.style.zIndex = 999
+    container.appendChild(label)
+
+    // Caso não tenha arquivos
+    if (midias.length === 0) {
+        const img = document.createElement('img')
+        img.src = './img/preview-icon.png'
+        img.classList.add('preview-image')
+        container.appendChild(img)
+        return
+    }
+
+    const ultima = midias[midias.length - 1]
+
+    if (ultima.tipo === 'image') {
+        const img = document.createElement('img')
+        img.src = ultima.url
+        img.classList.add('preview-image')
+        container.appendChild(img)
+    } else {
+        const video = document.createElement('video')
+        video.src = ultima.url
+        video.controls = true
+        video.loop = true
+        video.classList.add('preview-video')
+
+        label.style.height = '70%'
+        container.appendChild(video)
+    }
+}
+
+function atualizarArquivos() {
+    divImagensEscolhidas.innerHTML = ''
+
+    midias.forEach((midia, index) => {
+        let elemento
+
+        if (midia.tipo === 'image') {
+            elemento = document.createElement('img')
+            elemento.src = midia.url
+            elemento.classList.add('escolhidoImagem')
+        } else {
+            elemento = document.createElement('video')
+            elemento.src = midia.url
+            elemento.classList.add('escolhidoVideo')
+        }
+
+        elemento.addEventListener('click', () => {
+            midias.splice(index, 1)
+            atualizarArquivos()
+            atualizarPreviewPrincipal() // <<< ATUALIZA O QUADRADO GRANDE
+        })
+
+        divImagensEscolhidas.appendChild(elemento)
+    })
+}
 
 function atualizarPaises() {
     divPaisesEscolhidos.innerHTML = ''
@@ -165,22 +228,24 @@ function atualizarCategorias() {
 
 // Salvar
 botaoSalvar.addEventListener('click', async () => {
-
     const postagem = {
         titulo: inputTitulo.value,
         descricao: inputDescricao.value,
         publico: inputPublico.checked ? 1 : 0,
-        midia: midias.map(url => ({ url })),
+        midia: midias.map(m => ({ url: m.url })),
         categoria: categorias.map(id => ({ id })),
         localizacao: locais.map(id => ({ id })),
         id_usuario: Number(localStorage.getItem('idUsuarioLogado'))
     }
 
-
-
     if (modoEdicao) {
-        if (postagem.titulo != '' && postagem.descricao != '' && postagem.midia.length > 0 && postagem.categoria.length > 0 && postagem.localizacao.length > 0) {
-            
+        if (
+            postagem.titulo != '' &&
+            postagem.descricao != '' &&
+            postagem.midia.length > 0 &&
+            postagem.categoria.length > 0 &&
+            postagem.localizacao.length > 0
+        ) {
             const atualizado = await editarPostagem(postagem, idPostagemParaEditar)
 
             if (atualizado) {
@@ -195,18 +260,23 @@ botaoSalvar.addEventListener('click', async () => {
         }
     }
 
-    if (postagem.titulo != '' && postagem.descricao != '' && postagem.midia.length > 0 && postagem.categoria.length > 0 && postagem.localizacao.length > 0) {
+    if (
+        postagem.titulo != '' &&
+        postagem.descricao != '' &&
+        postagem.midia.length > 0 &&
+        postagem.categoria.length > 0 &&
+        postagem.localizacao.length > 0
+    ) {
         const criado = await criarPostagem(postagem)
         if (criado) {
             alert('Postagem criada com sucesso!')
-            window.location.href = `../perfil/perfil.html`
+            window.location.href = '../perfil/perfil.html'
         } else {
             alert('Erro ao criar postagem!')
         }
     } else {
         alert('Alguns dados não foram passados')
     }
-
 })
 
 // botão cancelar
@@ -229,7 +299,7 @@ async function carregarPostagemParaEditar(id) {
     midias = postagemOriginal.midia.map(m => m.url)
     if (midias.length > 0) previewImagem.src = midias[0]
 
-    //localização
+    // localização
     locais = postagemOriginal.localizacao.map(l => l.id)
     locais.forEach(id => {
         const option = selectPaises.querySelector(`option[value='${id}']`)
@@ -249,11 +319,12 @@ async function carregarPostagemParaEditar(id) {
         const excluido = deletarPostagem(id)
         if (excluido) {
             alert('Postagem excluida!')
-            window.location.href = `../perfil/perfil.html`
+            window.location.href = '../perfil/perfil.html'
         } else {
             alert('Erro ao atualizar postagem.')
         }
         return
     })
+
     atualizarCategorias()
 }

@@ -343,20 +343,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     const btnFiltroData = document.getElementById("btnFiltroData")
 
     const filtroDataContainer = document.getElementById("filtroDataContainer")
-    filtroDataContainer.style.display = "none";
 
     const btnBuscarData = document.getElementById("btnBuscarData")
 
 
     btnFiltroData.addEventListener("click", () => {
-        filtroDataContainer.style.display =
-            btnFiltroData.addEventListener("click", () => {
-                if (filtroDataContainer.style.display === "none") {
-                    filtroDataContainer.style.display = "flex" // mostrar
-                } else {
-                    filtroDataContainer.style.display = "none" // escondee
-                }
-            })
+        filtroDataContainer.style.display = "none"
+
+        if (filtroDataContainer.style.display === "none") {
+            filtroDataContainer.style.display = "flex" // mostrar
+        } else {
+            filtroDataContainer.style.display = "none" // escondee
+        }
     })
 
     btnBuscarData.addEventListener("click", () => {

@@ -60,6 +60,7 @@ function criarCardUsuario(user) {
 
     const fotoUsuario = document.createElement('img')
     fotoUsuario.src = user.url_foto
+    fotoUsuario.onerror = () => fotoUsuario.src = '../img/icon_perfil.png'
 
     const divNomes = document.createElement('div')
     divNomes.classList.add('divNomes')
@@ -148,7 +149,7 @@ function criarPostagem(post, user) {
     const imgPerfil = document.createElement('img')
     imgPerfil.src = user.url_foto
     imgPerfil.classList.add('imagemPerfil')
-    imgPerfil.onerror = () => imgPerfil.src = '../img/icon_perfil.webp'
+    imgPerfil.onerror = () => imgPerfil.src = '../img/icon_perfil.png'
 
     const divNomedata = document.createElement('div')
     divNomedata.classList.add('divNomedata')
@@ -167,8 +168,8 @@ function criarPostagem(post, user) {
     //Imagem
     const midia = document.createElement('img')
     midia.classList.add('imagemPostagem')
-    midia.src = post.midia?.[0]?.url || '../img/no_image.jpg'
-    midia.onerror = () => midia.src = '../img/no_image.jpg'
+    midia.src = post.midia?.[0]?.url || '../img/no_image.png'
+    midia.onerror = () => midia.src = '../img/no_image.png'
 
     //Inferior
     const inferior = document.createElement('div')

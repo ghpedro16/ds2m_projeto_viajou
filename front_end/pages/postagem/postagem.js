@@ -52,7 +52,10 @@ function criarTela(post, user) {
     const imgPerfil = document.createElement('img')
     imgPerfil.src = user.url_foto
     imgPerfil.classList.add('imagemPerfil')
-    imgPerfil.onerror = () => imgPerfil.src = '../img/no_image.jpg'
+    imgPerfil.onerror = () => imgPerfil.src = '../img/icon_perfil.png'
+    imgPerfil.addEventListener('click', () => {
+        window.location.href = `../perfil/perfil.html?id=${user.id}`
+    })
 
     const nomeData = document.createElement('div')
     nomeData.classList.add('divNomedata')
@@ -60,6 +63,9 @@ function criarTela(post, user) {
     const nome = document.createElement('strong')
     nome.classList.add('nome')
     nome.textContent = user.nome
+    nome.addEventListener('click', () => {
+        window.location.href = `../perfil/perfil.html?id=${user.id}`
+    })
 
     const data = document.createElement('span')
     data.classList.add('data')
@@ -107,7 +113,7 @@ function criarTela(post, user) {
     const imgCarrossel = document.createElement('img')
     imgCarrossel.classList.add('imagemPostagem')
     imgCarrossel.src = post.midia[0].url
-    imgCarrossel.onerror = () => imgCarrossel.src = '../img/no_image.jpg'
+    imgCarrossel.onerror = () => imgCarrossel.src = '../img/no_image.png'
 
     const btnAvancar = document.createElement('button')
     btnAvancar.textContent = '>'

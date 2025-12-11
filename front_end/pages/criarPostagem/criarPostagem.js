@@ -1,6 +1,6 @@
 'use strict'
 
-import { criarPostagem, editarPostagem, deletarPostagem } from '../../utils/apiUtils.js'
+import { criarPostagem, editarPostagem, deletarPostagem, uploadImageToAzure, deletarImagemAzure } from '../../utils/apiUtils.js'
 
 const params = new URLSearchParams(window.location.search)
 const idPostagemParaEditar = params.get('idPostagem')
@@ -166,7 +166,7 @@ function atualizarArquivos() {
         elemento.addEventListener('click', () => {
             midias.splice(index, 1)
             atualizarArquivos()
-            atualizarPreviewPrincipal() // <<< ATUALIZA O QUADRADO GRANDE
+            atualizarPreviewPrincipal()
         })
 
         divImagensEscolhidas.appendChild(elemento)
@@ -226,58 +226,133 @@ function atualizarCategorias() {
     })
 }
 
-// Salvar
-botaoSalvar.addEventListener('click', async () => {
-    const postagem = {
-        titulo: inputTitulo.value,
-        descricao: inputDescricao.value,
-        publico: inputPublico.checked ? 1 : 0,
-        midia: midias.map(m => ({ url: m.url })),
-        categoria: categorias.map(id => ({ id })),
-        localizacao: locais.map(id => ({ id })),
-        id_usuario: localStorage.getItem('idUsuarioLogado')
+async function processarMidiasDaPostagem(midias, midiasOriginais = []) {
+
+    const midiasNovas = []
+    const midiasMantidas = []
+
+    // separando quais midias existem e quais são novas
+    for (const m of midias) {
+        if (m.file) {
+            midiasNovas.push(m) //midias novas
+        } else {
+            midiasMantidas.push(m) //midias que já existem
+        }
     }
 
-    if (modoEdicao) {
-        if (
-            postagem.titulo != '' &&
-            postagem.descricao != '' &&
-            postagem.midia.length > 0 &&
-            postagem.categoria.length > 0 &&
-            postagem.localizacao.length > 0
-        ) {
-            const atualizado = await editarPostagem(postagem, idPostagemParaEditar)
+    // Verificando mídias removidas
+    if (midiasOriginais.length > 0) {
+        const midiasRemovidas = midiasOriginais.filter(old =>
+            !midiasMantidas.some(nova => nova.url === old.url)
+        )
 
-            if (atualizado) {
-                alert('Postagem atualizada!')
-                window.location.href = `../postagem/postagem.html?id=${idPostagemParaEditar}`
+        // deletar as removidas
+        for (const removida of midiasRemovidas) {
+            const nomeArquivo = removida.url.split('/').pop()
+
+            try {
+                await deletarImagemAzure({
+                    storageAccount: 'midias',
+                    containerName: 'midias',
+                    file: nomeArquivo,
+                    sasToken: 'colocarToken'
+                })
+            } catch (erro) {
+                console.warn('Erro ao apagar imagem removida:', erro)
+            }
+        }
+    }
+
+    // Upload das mídias novas
+    for (const nova of midiasNovas) {
+
+        const uploadParams = {
+            storageAccount: 'midias',
+            containerName: 'midias',
+            file: nova.file,
+            sasToken: 'colocarToken'
+        }
+
+        try {
+            const uploadedUrl = await uploadImageToAzure(uploadParams)
+            nova.url = uploadedUrl // pega a url da azure
+        } catch (erro) {
+            console.error('Erro ao subir imagem:', erro)
+        }
+    }
+
+    // Retornar lista final
+    return [
+        ...midiasMantidas.map(m => ({ url: m.url })), // já existiam
+        ...midiasNovas.map(m => ({ url: m.url }))     // agora com URL da azure
+    ]
+}
+
+
+
+// Salvar
+botaoSalvar.addEventListener('click', async () => {
+    try {
+        let ok = false
+
+        if (modoEdicao) {
+
+            // processa usando as mídias originais
+            const midiasFinal = await processarMidiasDaPostagem(
+                midias,
+                postagemOriginal.midia
+            )
+
+            const dadosEdicao = {
+                titulo: inputTitulo.value,
+                descricao: inputDescricao.value,
+                publico: inputPublico.checked ? 1 : 0,
+                categoria: categorias.map(id => ({ id })),
+                localizacao: locais.map(id => ({ id })),
+                midia: midiasFinal
+            }
+
+            ok = await editarPostagem(dadosEdicao, idPostagemParaEditar)
+
+            if (ok) {
+                alert('Post atualizado com sucesso!')
+                window.location.href = `../postagem/postagem.html?idPostagem=${idPostagemParaEditar}`
             } else {
                 alert('Erro ao atualizar postagem.')
             }
-            return
-        } else {
-            alert('Alguns dados não foram passados')
-        }
-    }
 
-    if (
-        postagem.titulo != '' &&
-        postagem.descricao != '' &&
-        postagem.midia.length > 0 &&
-        postagem.categoria.length > 0 &&
-        postagem.localizacao.length > 0
-    ) {
-        const criado = await criarPostagem(postagem)
-        if (criado) {
-            alert('Postagem criada com sucesso!')
-            window.location.href = '../perfil/perfil.html'
         } else {
-            alert('Erro ao criar postagem!')
+
+            // processa sem mídias originais
+            const midiasFinal = await processarMidiasDaPostagem(midias, [])
+
+            const dados = {
+                titulo: inputTitulo.value,
+                descricao: inputDescricao.value,
+                publico: inputPublico.checked ? 1 : 0,
+                id_usuario: Number(localStorage.getItem('idUsuarioLogado')),
+                categoria: categorias.map(id => ({ id })),
+                localizacao: locais.map(id => ({ id })),
+                midia: midiasFinal
+            }
+
+            ok = await criarPostagem(dados)
+
+            if (ok) {
+                alert('Post criado com sucesso!')
+                window.location.href = '../perfil/perfil.html'
+            } else {
+                alert('Erro ao criar postagem.')
+            }
         }
-    } else {
-        alert('Alguns dados não foram passados')
+
+    } catch (error) {
+        console.error('Erro:', error)
     }
 })
+
+
+
 
 // botão cancelar
 botaoCancelar.addEventListener('click', () => {
@@ -296,8 +371,14 @@ async function carregarPostagemParaEditar(id) {
     inputPublico.checked = postagemOriginal.publico === 1
 
     // midias
-    midias = postagemOriginal.midia.map(m => m.url)
-    if (midias.length > 0) previewImagem.src = midias[0]
+    midias = postagemOriginal.midia.map(m => ({
+        url: m.url,
+        file: null, // null porque já existe no servidor
+        tipo: m.url.endsWith('.mp4') ? 'video' : 'image'
+    }))
+
+    atualizarArquivos()
+    atualizarPreviewPrincipal()
 
     // localização
     locais = postagemOriginal.localizacao.map(l => l.id)
@@ -315,16 +396,35 @@ async function carregarPostagemParaEditar(id) {
     })
 
     botaoExcluir.style.visibility = 'visible'
-    botaoExcluir.addEventListener('click', () => {
-        const excluido = deletarPostagem(id)
+    botaoExcluir.onclick = async () => {
+        if (!confirm('Tem certeza que deseja excluir esta postagem?')) return
+
+        // apagar mídias da Azure
+        for (const m of postagemOriginal.midia) {
+            const nomeArquivo = m.url.split('/').pop().split('?')[0]
+
+            try {
+                await deletarImagemAzure({
+                    storageAccount: 'midias',
+                    containerName: 'midias',
+                    file: nomeArquivo,
+                    sasToken: 'colocarToken'
+                })
+            } catch (error) {
+                console.warn('Erro ao excluir imagem da Azure:', error)
+            }
+        }
+
+        // excluir no backend
+        const excluido = await deletarPostagem(idPostagemParaEditar)
+
         if (excluido) {
-            alert('Postagem excluida!')
+            alert('Postagem excluída!')
             window.location.href = '../perfil/perfil.html'
         } else {
-            alert('Erro ao atualizar postagem.')
+            alert('Erro ao excluir postagem.')
         }
-        return
-    })
+    }
 
     atualizarCategorias()
 }

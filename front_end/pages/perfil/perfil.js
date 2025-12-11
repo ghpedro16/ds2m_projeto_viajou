@@ -32,7 +32,7 @@ async function criarPerfil(user, idUsuarioLogado) {
     const imagemPerfil = document.createElement('img')
     imagemPerfil.src = user.url_foto
     imagemPerfil.onerror = () => {
-        imagemPerfil.src = '../img/icon_perfil.webp';
+        imagemPerfil.src = '../img/icon_perfil.png';
     };
 
     // Div somente de alinhamento
@@ -89,7 +89,7 @@ async function criarPerfil(user, idUsuarioLogado) {
     const donoDoPerfil = verificarDono(Number(user.id), Number(idUsuarioLogado))
 
     if (donoDoPerfil) {
-        // proprio perfil Mostra o botão Sair e Editar
+        // proprio perfil mostra o botão Sair e Editar
 
         const btnSair = document.createElement('button')
         btnSair.textContent = 'Sair'
@@ -109,7 +109,7 @@ async function criarPerfil(user, idUsuarioLogado) {
         })
 
     } else {
-        // PERFIL DE TERCEIRO: Mostra o botão "Seguir"
+        //Perfil de outra pessoa mostra o botão "Seguir"
         const btnSeguir = document.createElement('button')
         btnSeguir.textContent = 'Seguir'
 
@@ -180,7 +180,7 @@ function criarPostagem(dadosPostagem, idUsuarioLogado) {
     imagem.src = dadosPostagem.midia[0].url   // primeira imagem da lista
     imagem.alt = "Imagem da postagem"
     imagem.onerror = () => {
-        imagem.src = '../img/no_image.jpg';
+        imagem.src = '../img/no_image.png';
     };
 
     // Parte inferior
@@ -265,6 +265,8 @@ function abrirModalEditar(user) {
     inputNomeUsuario.value = user.nome_usuario
     inputBiografia.value = user.biografia
 
+    //Exibe a foto atual da pessoa
+    previewImagem.src = user.url_foto || '../img/no_image.png';
     //Pegar imagem
     inputImagem.addEventListener('change', () => {
         const arquivo = inputImagem.files[0]
@@ -280,20 +282,21 @@ function abrirModalEditar(user) {
         midia = [{ file: arquivo, url: url }]
     })
 
+    //Enviando a imagem para a função que envia para a azure
     async function uploadImage() {
         const uploadParams = {
             storageAccount: 'midias',
             containerName: 'midias',
             file: document.getElementById('foto').files[0],
-            sasToken: 'InserirToken'
+            sasToken: 'colocarToken'
         }
         const urlFinal = await uploadImageToAzure(uploadParams)
         return urlFinal
     }
 
-    // DELETANDO IMAGEM SE ELA JÁ EXISTIR
+    // Pegando a imagem se ela já existir
     function extrairNomeArquivo(url) {
-        return url.split('/').pop();
+        return url.split('/').pop()
     }
 
     // Botões
@@ -304,24 +307,30 @@ function abrirModalEditar(user) {
     botaoSalvar.addEventListener('click', async () => {
 
         let urlNovaImagem = null
+        let houveErroNaImagem = false;
 
-        // verifica se 
+        // verifica se tem alguma foto no array
         if (document.getElementById('foto').files.length > 0) {
 
-            // Deleta imagem antiga no Azure
-            const nomeArquivoAntigo = extrairNomeArquivo(user.url_foto);
+            const nomeArquivoAntigo = extrairNomeArquivo(user.url_foto)
 
-            await deletarImagemAzure({
-                storageAccount: 'midias',
-                containerName: 'midias',
-                file: nomeArquivoAntigo,
-                sasToken: 'InserirToken'
-            });
+            // Deleta se tiver imagem antiga
+            if (nomeArquivoAntigo) {
+                await deletarImagemAzure({
+                    storageAccount: 'midias',
+                    containerName: 'midias',
+                    file: nomeArquivoAntigo,
+                    sasToken: 'colocarToken'
+                });
+            }
 
-            // Faz upload da nova imagem
-            urlNovaImagem = await uploadImage();
+            // Faz upload da imagem
+            urlNovaImagem = await uploadImage()
+
+            if (!urlNovaImagem) {
+                houveErroNaImagem = true
+            }
         }
-
 
         const { id, ...usuarioSemId } = user
         const dados = {
@@ -329,7 +338,7 @@ function abrirModalEditar(user) {
             nome: inputNome.value,
             nome_usuario: inputNomeUsuario.value,
             biografia: inputBiografia.value,
-            url_foto: urlNovaImagem ?? user.url_foto,
+            url_foto: urlNovaImagem || user.url_foto, //Se receber null do uploadImagem insere a imagem antiga
 
             //Correção do formato das datas
             data_nascimento: usuarioSemId.data_nascimento.split("T")[0], //Isso separa a data em um array, deixando a data no modelo correto
@@ -338,9 +347,16 @@ function abrirModalEditar(user) {
 
         const atualizado = atualizarPerfil(id, dados)
         if (atualizado) {
-            alert('Perfil atualizado com sucesso!')
+
+            if (houveErroNaImagem) {
+                alert("Perfil atualizado, mas houve erro ao enviar a imagem.")
+            } else {
+                alert("Perfil atualizado com sucesso!")
+            }
+
             fecharModal()
-            window.location.reload();
+            window.location.reload()
+
         } else {
             alert('Erro ao atualizar dados!')
         }
@@ -422,11 +438,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         // Fecha a tela
         filtroDataContainer.style.display = "none"
     })
-
-    if (idPostagemParaEditar) {
-        modoEdicao = true
-        carregarPostagemParaEditar(idPostagemParaEditar)
-    }
 })
 
 
@@ -540,14 +551,14 @@ function filtrarPostagensPorData(dataInicio, dataFim) {
     })
 }
 
-async function seguindoUsuario(){
+async function seguindoUsuario() {
     const seguindo = {
         id_usuario_seguindo: idUsuarioLogado,
         id_usuario_seguidor: idPerfilParaExibir
     }
-    
+
     let seguindoCriado = seguirUsuario(seguindo)
-    
+
     if (seguindoCriado) {
         alert('Usuário seguido com sucesso!')
     } else {

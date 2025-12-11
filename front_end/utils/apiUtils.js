@@ -114,7 +114,8 @@ export async function uploadImageToAzure(uploadParams) {
     if (response.ok) {
         return baseUrl
     } else {
-        return response.ok
+        console.error("Erro no upload Azure:", await response.text()) //Devolve mensagem de erro
+        return null
     }
 }
 

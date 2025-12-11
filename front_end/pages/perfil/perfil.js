@@ -89,7 +89,16 @@ async function criarPerfil(user, idUsuarioLogado) {
     const donoDoPerfil = verificarDono(Number(user.id), Number(idUsuarioLogado))
 
     if (donoDoPerfil) {
-        // PERFIL PRÓPRIO: Mostra o botão "Editar"
+        // proprio perfil Mostra o botão Sair e Editar
+
+        const btnSair = document.createElement('button')
+        btnSair.textContent = 'Sair'
+        divBotao.appendChild(btnSair)
+
+        btnSair.addEventListener('click', () => {
+            //Chamar função de deslogar a conta
+        })
+
         const btnEditar = document.createElement('button')
         btnEditar.textContent = 'Editar'
         divBotao.appendChild(btnEditar)
@@ -97,6 +106,7 @@ async function criarPerfil(user, idUsuarioLogado) {
         btnEditar.addEventListener('click', () => {
             abrirModalEditar(user)
         })
+
     } else {
         // PERFIL DE TERCEIRO: Mostra o botão "Seguir"
         const btnSeguir = document.createElement('button')

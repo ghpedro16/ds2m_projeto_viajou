@@ -108,6 +108,8 @@ main {
 
 .dadosPerfil .botoes {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .botoes button {

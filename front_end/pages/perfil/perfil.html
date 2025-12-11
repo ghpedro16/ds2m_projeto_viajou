@@ -32,15 +32,37 @@
         <div class="filtros">
             <button id="popular" class="popular">Popular</button>
 
-            <select id="categoria" name="categoria">
+            <button id="btnFiltroData" class="filtroData">Data específica</button>
+
+            <div id="filtroDataContainer" class="filtroDataContainer">
+
+                <div class="datas">
+                    <div class="inicio">
+                        <label>Data Início</label>
+                        <input type="date" id="dataInicio">
+                    </div>
+
+                    <div class="final">
+                        <label>Data Final</label>
+                        <input type="date" id="dataFinal">
+                    </div>
+                </div>
+
+                <button id="btnBuscarData">Buscar</button>
+
+            </div>
+
+            <select class="categoria" id="categoria" name="categoria">
                 <option value="" disabled selected hidden>Categoria</option>
             </select>
 
-            <select id="paises" name="paises">
+            <select class="paises" id="paises" name="paises">
                 <option value="" disabled selected hidden>Países</option>
             </select>
 
-            <button class="filtroData">Data específica</button>
+            <a href="./perfil.html"><button id="removerFiltros" class="remover">Remover filtros</button></a>
+
+
         </div>
 
         <div class="conjuntoPostagens" id="conjuntoPostagens">

@@ -1,7 +1,11 @@
 'use strict'
 
 // usuario logado
+<<<<<<< HEAD
 const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
+=======
+const idUsuarioLogado = 1
+>>>>>>> guilherme
 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {
@@ -207,7 +211,7 @@ function criarPostagem(post, user) {
 }
 
 function formatarData(data) {
-    return new Date(data + "T00:00:00").toLocaleDateString('pt-BR')
+    return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR')
 }
 
 carregarDados()

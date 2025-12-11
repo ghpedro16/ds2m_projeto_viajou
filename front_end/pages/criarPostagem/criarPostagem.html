@@ -40,10 +40,23 @@
             </section>
 
             <section class="arquivos">
-                <label for="foto">Imagens/Videos</label>
-                <input class="preview-input" id="foto" type="file" accept="image/*">
-                <label class="preview-label" for="foto"></label>
-                <img class="preview-image" id="preview-image" src="./img/preview-icon.png">
+                <div class="fotoPrincipal">
+                    <label for="foto">Imagens/Videos</label>
+                    <input id="foto" class="preview-input" type="file" accept="image/*,video/*" multiple>
+
+                    <div id="preview-container" class="preview-container">
+                        <img id="preview-image" class="preview-image" src="./img/preview-icon.png">
+                        <video id="preview-video" class="preview-video"></video>
+                        <label class="preview-label" for="foto"></label>
+                    </div>
+                </div>
+
+
+                <div class="selecionados">
+                    <span>Arquivos</span>
+                    <div id="imagensEscolhidas" class="imagensEscolhidas"></div>
+                </div>
+
             </section>
 
             <section class="paises">
@@ -72,6 +85,7 @@
         </form>
 
         <div class="botoes">
+            <button id="excluir" class="excluir">Excluir</button>
             <button id="cancelar" class="cancelar">Cancelar</button>
             <button id="salvar" class="salvar">Salvar</button>
         </div>

@@ -34,7 +34,7 @@ header {
 
 .icons {
     display: flex;
-    align-items: center ;
+    align-items: center;
     height: 30px;
     width: auto;
     transition: 0.2s;
@@ -69,8 +69,8 @@ main {
 }
 
 .dadosPerfil img {
-    height: 80px;
-    width: 80px;
+    height: 72px;
+    width: 72px;
     border-radius: 50%;
     border: solid 1px #9E9B9B;
     object-fit: cover;
@@ -108,22 +108,21 @@ main {
 
 .dadosPerfil .botoes {
     display: flex;
-    gap: 10px;
 }
 
 .botoes button {
-    width: auto;
-    min-width: 80px;
+    width: 72px;
     color: white;
     background-color: #C79A8A;
     border: none;
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 8px 12px;
     cursor: pointer;
     font-size: 0.9rem;
 }
 
 .filtros {
+    position: relative;
     height: auto;
     width: 96%;
     max-width: 800px;
@@ -136,6 +135,7 @@ main {
 
 .filtros button,
 .filtros select {
+    height: 36px;
     color: white;
     background-color: #C79A8A;
     border: none;
@@ -143,6 +143,62 @@ main {
     padding: 8px 12px;
     cursor: pointer;
     font-family: 'Poppins';
+}
+
+.filtros .remover {
+    color: black;
+}
+
+select option {
+    width: auto;
+    font-size: 10px;
+}
+
+.filtroDataContainer {
+    position: absolute;
+    height: 150px;
+    width: 275px;
+    border-radius: 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    background: #d2a59a;
+    color: white;
+    z-index: 999;
+}
+
+.datas {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.datas input {
+    width: 100px;
+    border-radius: 15px;
+    background: #d2a59a;
+}
+
+.inicio, .final {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.inicio{
+    border-right: solid 1px white;
+}
+
+.paises {
+    width: 180px;
+    text-align: center;
+}
+
+.categoria {
+    text-align: center;
 }
 
 .conjuntoPostagens {
@@ -376,7 +432,7 @@ main {
 }
 
 @media (min-width: 768px) {
-  
+
     header {
         width: 80px;
         height: 100vh;

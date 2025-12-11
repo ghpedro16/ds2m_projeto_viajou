@@ -1,11 +1,7 @@
 'use strict'
 
 // usuario logado
-<<<<<<< HEAD
 const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
-=======
-const idUsuarioLogado = 1
->>>>>>> guilherme
 
 const linkPerfil = document.getElementById('linkPerfil')
 linkPerfil.addEventListener('click', () => {

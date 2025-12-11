@@ -122,30 +122,39 @@ const inserirSeguindo = async function(userSeguindo, contentType){
             let validar = await validarDadosUsuario(userSeguindo)
 
             if(!validar){
-                //Processamento
-                //Chama a função para inserir um novo seguindo no banco de dados
-                let resultSeguindo = await usuarioSeguidoresDAO.setInsertUserFollow(userSeguindo)
+
+                //Valida se o usuario ja segue o perfil
+                let resultCheckUserFollow = await usuarioSeguidoresDAO.getSelectCheckUserFollow(userSeguindo)
+
+                if(!resultCheckUserFollow){
+                    //Processamento
+                    //Chama a função para inserir um novo seguindo no banco de dados
+                    let resultSeguindo = await usuarioSeguidoresDAO.setInsertUserFollow(userSeguindo)
                 
-                if(resultSeguindo){
+                    if(resultSeguindo){
                     //Chama a função para receber o ID gerado no BD
-                    let lastId = await usuarioSeguidoresDAO.getSelectLastId()
+                        let lastId = await usuarioSeguidoresDAO.getSelectLastId()
                     
-                    if(lastId){
-                        //Adiciona o ID no JSON de dados do usuario seguindo
-                        userSeguindo.id = lastId
+                        if(lastId){
+                            //Adiciona o ID no JSON de dados do usuario seguindo
+                            userSeguindo.id = lastId
 
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
+                            MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATE_ITEM.status
+                            MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATE_ITEM.status_code
+                            MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATE_ITEM.message
 
-                        MESSAGES.DEFAULT_HEADER.itens = userSeguindo
+                            MESSAGES.DEFAULT_HEADER.itens = userSeguindo
                     
-                        return MESSAGES.DEFAULT_HEADER //201
+                            return MESSAGES.DEFAULT_HEADER //201
+                        }else{
+                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                        }
                     }else{
-                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 }else{
-                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    MESSAGES.ERROR_UNIQUE_CONFLICT.message += ' [Usuário já segue esse perfil!]'
+                    return MESSAGES.ERROR_UNIQUE_CONFLICT
                 }
             }else{
                 return validar // 400

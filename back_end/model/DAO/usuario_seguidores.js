@@ -81,6 +81,23 @@ const getSelectFollowerByIdUser = async function(id_usuario){
     }
 }
 
+//Verifica se o Usuario ja segue esse perfil
+const getSelectCheckUserFollow = async function(userSeguindo){
+    try {
+        let sql = `select * from tbl_usuario_seguidores where id_usuario_seguindo = ${userSeguindo.id_usuario_seguindo} and id_usuario_seguidor = ${userSeguindo.id_usuario_seguidor}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+        
+        if (result.length > 0) {
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
 const getSelectLastId = async function(){
     try{
         //Script SQL para retornar o ultimo ID inserido 
@@ -160,6 +177,7 @@ module.exports = {
     getSelectUserFollowById,
     getSelectFollowingByIdUser,
     getSelectFollowerByIdUser,
+    getSelectCheckUserFollow,
     getSelectLastId,
     setInsertUserFollow,
     setUpdateUserFollow,

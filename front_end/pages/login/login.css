@@ -1,5 +1,3 @@
-login
-
 *{
     margin: 0;
     padding: 0;
@@ -196,50 +194,4 @@ body{
 
 .container.active .toggle-right{
     transform: translateX(200%);
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-        min-height: 550px;
-    }
-
-    .container form {
-        padding: 0 15px;
-    }
-
-    .container input {
-        font-size: 12px;
-        padding: 8px 10px;
-        margin: 5px 0;
-    }
-
-    .container h1 {
-        font-size: 20px;
-    }
-
-    .toggle-panel p {
-        display: none;
-    }
-
-    .toggle-panel h1 {
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    .toggle-panel button {
-        padding: 8px 25px;
-        font-size: 11px;
-    }
-}
-
-@media (max-width: 375px) {
-    .container form {
-        padding: 0 10px;
-    }
-
-    .sign-up h1,
-    .sign-in h1 {
-        font-size: 18px;
-    }
 }

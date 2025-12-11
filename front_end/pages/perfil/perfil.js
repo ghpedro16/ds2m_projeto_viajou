@@ -2,6 +2,7 @@
 
 import { verificarDono, podeVerPostagem } from '../../utils/authUtils.js'
 import { atualizarPerfil } from '../../utils/apiUtils.js'
+import { seguirUsuario } from '../../utils/apiUtils.js'
 
 //Vai vir do localStorage futuramente
 const idUsuarioLogado = localStorage.getItem('idUsuarioLogado')
@@ -32,7 +33,7 @@ async function criarPerfil(user, idUsuarioLogado) {
     const imagemPerfil = document.createElement('img')
     imagemPerfil.src = user.url_foto
     imagemPerfil.onerror = () => {
-        imagemPerfil.src = '../img/no_image.jpg';
+        imagemPerfil.src = '../img/icon_perfil.webp';
     };
 
     // Div somente de alinhamento
@@ -97,6 +98,7 @@ async function criarPerfil(user, idUsuarioLogado) {
 
         btnSair.addEventListener('click', () => {
             //Chamar função de deslogar a conta
+            window.location.href = "../login/login.html";
         })
 
         const btnEditar = document.createElement('button')
@@ -113,6 +115,8 @@ async function criarPerfil(user, idUsuarioLogado) {
         btnSeguir.textContent = 'Seguir'
 
         divBotao.appendChild(btnSeguir)
+
+        btnSeguir.addEventListener('click', seguindoUsuario)
     }
 
     // Adicionndo no div principal
@@ -492,4 +496,19 @@ function filtrarPostagensPorData(dataInicio, dataFim) {
     filtradas.forEach(post => {
         criarPostagem(post, idUsuarioLogado)
     })
+}
+
+async function seguindoUsuario(){
+    const seguindo = {
+        id_usuario_seguindo: idUsuarioLogado,
+        id_usuario_seguidor: idPerfilParaExibir
+    }
+    
+    let seguindoCriado = seguirUsuario(seguindo)
+    
+    if (seguindoCriado) {
+        alert('Usuário seguido com sucesso!')
+    } else {
+        alert('Erro ao seguir usuário!')
+    }
 }

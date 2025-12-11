@@ -66,3 +66,18 @@ export async function criarUsuario(dados) {
     return response.ok
 }
 
+export async function seguirUsuario(dados) {
+    const url = "http://localhost:8080/v1/viajou/usuario/seguindo"
+    console.log(dados)
+    const options = {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    }
+
+    const response = await fetch(url, options)
+
+    return response.ok
+}

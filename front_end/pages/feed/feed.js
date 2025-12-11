@@ -148,7 +148,7 @@ function criarPostagem(post, user) {
     const imgPerfil = document.createElement('img')
     imgPerfil.src = user.url_foto
     imgPerfil.classList.add('imagemPerfil')
-    imgPerfil.onerror = () => imgPerfil.src = '../img/no_image.jpg'
+    imgPerfil.onerror = () => imgPerfil.src = '../img/icon_perfil.webp'
 
     const divNomedata = document.createElement('div')
     divNomedata.classList.add('divNomedata')

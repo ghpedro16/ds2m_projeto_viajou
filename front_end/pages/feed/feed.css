@@ -279,10 +279,30 @@ main {
         width: 32px;
     }
 
-    main {
-        width: 100%;
-        padding-left: 80px;
-        padding-bottom: 24px;
+    .input-container {
+        max-width: 700px;
+    }
+
+    .postagem {
+        max-width: 700px;
+    }
+
+    .superiorPostagem .nome {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .superiorPostagem .data {
+        font-size: 1rem;
+        margin-left: auto;
+    }
+
+    .postagem .imagemPostagem {
+        max-height: 600px;
+    }
+
+    .descricao {
+        font-size: 1.5rem;
     }
 
 }
@@ -293,8 +313,12 @@ main {
         width: 100px;
     }
 
-    main {
-        margin-left: 100px;
-
+    .input-container {
+        max-width: 1000px;
     }
+
+    .postagem {
+        max-width: 1000px;
+    }
+
 }

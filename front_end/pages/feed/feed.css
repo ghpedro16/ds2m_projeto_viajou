@@ -29,6 +29,9 @@ header {
     z-index: 100;
     border-top: 1px solid #dbdbdb;
 }
+.logoViajou {
+    display: none;
+}
 
 .icons {
     display: flex;
@@ -240,9 +243,20 @@ main {
         bottom: auto;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         gap: 40px;
         border-top: none;
         border-right: 1px solid #dbdbdb;
+    }
+
+    .logoViajou {
+        display: flex;
+    }
+
+    .divIcons {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 
     .icons {

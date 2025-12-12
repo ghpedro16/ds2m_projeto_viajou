@@ -255,7 +255,7 @@ async function processarMidiasDaPostagem(midias, midiasOriginais = []) {
                     storageAccount: 'midias',
                     containerName: 'midias',
                     file: nomeArquivo,
-                    sasToken: 'colocarToken'
+                    sasToken: 'sp=cwd&st=2025-12-12T11:14:11Z&se=2025-12-18T02:50:00Z&sv=2024-11-04&sr=c&sig=40p7voflKqBTtYHPWNxDoVMqyaFwDGhE7fqBwUeW3Gs%3D'
                 })
             } catch (erro) {
                 console.warn('Erro ao apagar imagem removida:', erro)
@@ -270,7 +270,7 @@ async function processarMidiasDaPostagem(midias, midiasOriginais = []) {
             storageAccount: 'midias',
             containerName: 'midias',
             file: nova.file,
-            sasToken: 'colocarToken'
+            sasToken: 'sp=cwd&st=2025-12-12T11:14:11Z&se=2025-12-18T02:50:00Z&sv=2024-11-04&sr=c&sig=40p7voflKqBTtYHPWNxDoVMqyaFwDGhE7fqBwUeW3Gs%3D'
         }
 
         try {
@@ -408,7 +408,7 @@ async function carregarPostagemParaEditar(id) {
                     storageAccount: 'midias',
                     containerName: 'midias',
                     file: nomeArquivo,
-                    sasToken: 'colocarToken'
+                    sasToken: 'sp=cwd&st=2025-12-12T11:14:11Z&se=2025-12-18T02:50:00Z&sv=2024-11-04&sr=c&sig=40p7voflKqBTtYHPWNxDoVMqyaFwDGhE7fqBwUeW3Gs%3D'
                 })
             } catch (error) {
                 console.warn('Erro ao excluir imagem da Azure:', error)

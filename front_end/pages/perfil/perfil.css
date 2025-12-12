@@ -32,6 +32,10 @@ header {
     border-top: 1px solid #dbdbdb;
 }
 
+.logoViajou {
+    display: none;
+}
+
 .icons {
     display: flex;
     align-items: center;
@@ -449,6 +453,21 @@ select option {
         gap: 40px;
         border-top: none;
         border-right: 1px solid #dbdbdb;
+        padding-bottom: 10%;
+    }
+
+    .logoViajou {
+        display: flex;
+        height: 10%;
+    }
+
+    .divIconsHeader {
+        height: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 40px;
     }
 
     .icons {

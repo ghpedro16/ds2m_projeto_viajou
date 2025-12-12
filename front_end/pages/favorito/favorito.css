@@ -28,6 +28,10 @@ header {
     border-top: 1px solid #dbdbdb;
 }
 
+.logoViajou {
+    display: none;
+}
+
 .icons {
     display: flex;
     align-items: center ;
@@ -80,4 +84,45 @@ main {
     color: #555;
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    body {
+        flex-direction: row;
+    }
+
+    header {
+        width: 80px;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        bottom: auto;
+        right: auto;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        border-top: none;
+        border-right: 1px solid #dbdbdb;
+        padding-bottom: 10%;
+    }
+
+    .logoViajou {
+        display: flex;
+        height: 10%;
+    }
+
+    .divIconsHeader {
+        height: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .icons {
+        height: 32px;
+        width: 32px;
+    }
+
 }

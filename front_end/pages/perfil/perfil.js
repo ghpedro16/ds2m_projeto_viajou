@@ -288,7 +288,7 @@ function abrirModalEditar(user) {
             storageAccount: 'midias',
             containerName: 'midias',
             file: document.getElementById('foto').files[0],
-            sasToken: 'colocarToken'
+            sasToken: 'sp=cwd&st=2025-12-12T11:14:11Z&se=2025-12-18T02:50:00Z&sv=2024-11-04&sr=c&sig=40p7voflKqBTtYHPWNxDoVMqyaFwDGhE7fqBwUeW3Gs%3D'
         }
         const urlFinal = await uploadImageToAzure(uploadParams)
         return urlFinal
@@ -320,7 +320,7 @@ function abrirModalEditar(user) {
                     storageAccount: 'midias',
                     containerName: 'midias',
                     file: nomeArquivoAntigo,
-                    sasToken: 'colocarToken'
+                    sasToken: 'sp=cwd&st=2025-12-12T11:14:11Z&se=2025-12-18T02:50:00Z&sv=2024-11-04&sr=c&sig=40p7voflKqBTtYHPWNxDoVMqyaFwDGhE7fqBwUeW3Gs%3D'
                 });
             }
 

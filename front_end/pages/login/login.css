@@ -84,6 +84,28 @@ body {
     outline: none;
 }
 
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.input-wrapper input {
+    width: 100%;
+    margin: 0;
+    padding-right: 40px;
+}
+
+.input-wrapper i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 14px;
+}
+
 .form-container {
     position: absolute;
     top: 0;

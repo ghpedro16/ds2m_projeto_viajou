@@ -1,0 +1,838 @@
+openapi: 3.0.3
+info:
+  title: Projeto do SENAI Jandira - Viajou!
+  description: API destinada ao projeto integrado.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: gustavoflor2019@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost:8080
+  description: Servidor Local
+paths:
+  /v1/viajou/categoria:
+    get:
+      tags:
+      - Categoria
+      summary: Lista todas as categorias
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Categoria"
+    post:
+      tags:
+      - Categoria
+      summary: Adiciona uma nova Categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoriaInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+        "400":
+          description: Dados inválidos
+  /v1/viajou/categoria/{id}:
+    get:
+      tags:
+      - Categoria
+      summary: Busca uma categoria pelo ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Categoria"
+        "404":
+          description: Não encontrada
+    put:
+      tags:
+      - Categoria
+      summary: Atualiza uma categoria
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoriaInput"
+      responses:
+        "200":
+          description: Atualizada
+    delete:
+      tags:
+      - Categoria
+      summary: Exclui uma categoria
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Excluída
+  /v1/viajou/comentario:
+    get:
+      tags:
+      - Comentario
+      summary: Lista todos os comentários
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comentario"
+    post:
+      tags:
+      - Comentario
+      summary: Insere um novo comentário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComentarioInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+  /v1/viajou/comentario/{id}:
+    get:
+      tags:
+      - Comentario
+      summary: Busca comentário por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comentario"
+    put:
+      tags:
+      - Comentario
+      summary: Atualiza um comentário
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ComentarioInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Comentario
+      summary: Deleta um comentário
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Deletado
+  /v1/viajou/curtida:
+    get:
+      tags:
+      - Curtida
+      summary: Lista todas as curtidas
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Curtida"
+    post:
+      tags:
+      - Curtida
+      summary: Insere nova curtida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CurtidaInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+  /v1/viajou/curtida/{id}:
+    get:
+      tags:
+      - Curtida
+      summary: Busca curtida por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Curtida"
+    put:
+      tags:
+      - Curtida
+      summary: Atualiza uma curtida
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CurtidaInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Curtida
+      summary: Remove uma curtida
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Removido
+  /v1/viajou/item:
+    get:
+      tags:
+      - Item
+      summary: Lista todos os itens salvos
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+    post:
+      tags:
+      - Item
+      summary: Salva um novo item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemInput"
+        required: true
+      responses:
+        "201":
+          description: Salvo com sucesso
+  /v1/viajou/item/{id}:
+    get:
+      tags:
+      - Item
+      summary: Busca item salvo por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+    put:
+      tags:
+      - Item
+      summary: Atualiza um item salvo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Item
+      summary: Remove um item dos salvos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Removido
+  /v1/viajou/localizacao:
+    get:
+      tags:
+      - Localizacao
+      summary: Lista todas as localizações
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Localizacao"
+    post:
+      tags:
+      - Localizacao
+      summary: Insere nova localização
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocalizacaoInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+  /v1/viajou/localizacao/{id}:
+    get:
+      tags:
+      - Localizacao
+      summary: Busca localização por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Localizacao"
+    put:
+      tags:
+      - Localizacao
+      summary: Atualiza uma localização
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocalizacaoInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Localizacao
+      summary: Remove uma localização
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Removido
+  /v1/viajou/postagem:
+    get:
+      tags:
+      - Postagem
+      summary: Lista todas as postagens
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Postagem"
+    post:
+      tags:
+      - Postagem
+      summary: Cria uma nova postagem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostagemInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+  /v1/viajou/postagem/{id}:
+    get:
+      tags:
+      - Postagem
+      summary: Busca postagem pelo ID da postagem
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Postagem"
+    put:
+      tags:
+      - Postagem
+      summary: Atualiza uma postagem
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostagemInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Postagem
+      summary: Remove uma postagem
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Removido
+  /v1/viajou/postagem/usuario/{idUsuario}:
+    get:
+      tags:
+      - Postagem
+      summary: Busca postagens pelo ID do usuário
+      parameters:
+      - name: idUsuario
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Postagem"
+  /v1/viajou/usuario:
+    get:
+      tags:
+      - Usuario
+      summary: Lista todos os usuários
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"
+    post:
+      tags:
+      - Usuario
+      summary: Cadastra um novo usuário
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioInput"
+        required: true
+      responses:
+        "201":
+          description: Criado com sucesso
+  /v1/viajou/usuario/{id}:
+    get:
+      tags:
+      - Usuario
+      summary: Busca usuário por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Usuario"
+    put:
+      tags:
+      - Usuario
+      summary: Atualiza um usuário
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioInput"
+      responses:
+        "200":
+          description: Atualizado
+    delete:
+      tags:
+      - Usuario
+      summary: Remove um usuário
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Removido
+  /v1/viajou/usuario/seguindo:
+    post:
+      tags:
+      - UsuarioSeguidor
+      summary: Seguir um usuário
+      description: Cria o registro de que o usuário A começou a seguir o usuário B
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioSeguidorInput"
+        required: true
+      responses:
+        "201":
+          description: Sucesso
+  /v1/viajou/usuario/seguindo/{id}:
+    get:
+      tags:
+      - UsuarioSeguidor
+      summary: Lista quem o usuário está seguindo
+      parameters:
+      - name: id
+        in: path
+        description: ID do usuário que queremos saber quem ele segue
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"
+  /v1/viajou/usuario/seguidor/{id}:
+    get:
+      tags:
+      - UsuarioSeguidor
+      summary: Lista os seguidores do usuário
+      parameters:
+      - name: id
+        in: path
+        description: ID do usuário que queremos saber quem segue ele
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"
+  /v1/viajou/usuario_seguidores/{id}:
+    get:
+      tags:
+      - UsuarioSeguidor
+      summary: Busca registro de seguidor pelo ID do vínculo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioSeguidor"
+    delete:
+      tags:
+      - UsuarioSeguidor
+      summary: Deixar de seguir (Deletar vínculo)
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Sucesso
+components:
+  schemas:
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+          example: Turismo
+    CategoriaInput:
+      required:
+      - nome
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Turismo
+    Comentario:
+      type: object
+      properties:
+        id:
+          type: integer
+        texto:
+          type: string
+          example: Muito bom esse post!
+        data:
+          type: string
+          format: date-time
+        id_usuario:
+          type: integer
+        id_postagem:
+          type: integer
+    ComentarioInput:
+      required:
+      - id_postagem
+      - id_usuario
+      - texto
+      type: object
+      properties:
+        texto:
+          type: string
+          example: Muito bom esse post!
+        id_usuario:
+          type: integer
+        id_postagem:
+          type: integer
+    Curtida:
+      type: object
+      properties:
+        id:
+          type: integer
+        data_curtida:
+          type: string
+          format: date-time
+        id_usuario:
+          type: integer
+        id_postagem:
+          type: integer
+    CurtidaInput:
+      required:
+      - id_postagem
+      - id_usuario
+      type: object
+      properties:
+        id_usuario:
+          type: integer
+        id_postagem:
+          type: integer
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        data_salvo:
+          type: string
+          format: date-time
+        id_postagem:
+          type: integer
+        id_usuario:
+          type: integer
+    ItemInput:
+      required:
+      - id_postagem
+      - id_usuario
+      type: object
+      properties:
+        id_postagem:
+          type: integer
+        id_usuario:
+          type: integer
+    Localizacao:
+      type: object
+      properties:
+        id:
+          type: integer
+        pais:
+          type: string
+        estado:
+          type: string
+        cidade:
+          type: string
+    LocalizacaoInput:
+      type: object
+      properties:
+        pais:
+          type: string
+        estado:
+          type: string
+        cidade:
+          type: string
+    Postagem:
+      type: object
+      properties:
+        id:
+          type: integer
+        titulo:
+          type: string
+        conteudo:
+          type: string
+        data_publicacao:
+          type: string
+          format: date-time
+        id_usuario:
+          type: integer
+    PostagemInput:
+      type: object
+      properties:
+        titulo:
+          type: string
+        conteudo:
+          type: string
+        id_usuario:
+          type: integer
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+    UsuarioInput:
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+    UsuarioSeguidor:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único do registro/vínculo
+        id_usuario_seguidor:
+          type: integer
+          description: Quem está seguindo
+        id_usuario_seguindo:
+          type: integer
+          description: Quem está sendo seguido
+    UsuarioSeguidorInput:
+      required:
+      - id_usuario_seguidor
+      - id_usuario_seguindo
+      type: object
+      properties:
+        id_usuario_seguidor:
+          type: integer
+        id_usuario_seguido:
+          type: integer

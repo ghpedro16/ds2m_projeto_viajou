@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="./login.css">
     <script type="module" src="login.js" defer></script>
     <title>Viajou!</title>
 </head>
-<body>
+
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
                 <h1>Crie sua conta</h1>
-                <input type="text" 
-                placeholder="Nome" id="nome">
-                <input type="text" 
-                placeholder="Nome de Usuario" id="username">
-                <input type="email" 
-                placeholder="Email" id="email">
-                <input type="password" 
-                placeholder="Senha" id="nova-senha">
-                <input type="date" 
-                placeholder="Data de Nascimento" id="data-nascimento">
+                <input type="text" placeholder="Nome" id="nome">
+                <input type="text" placeholder="Nome de Usuario" id="username">
+                <input type="email" placeholder="Email" id="email">
+
+                <div class="input-wrapper">
+                    <input type="password" placeholder="Senha" id="nova-senha">
+                    <i class="fa-solid fa-eye" id="toggle-nova-senha"></i>
+                </div>
+
+                <input type="date" placeholder="Data de Nascimento" id="data-nascimento">
                 <button id="create">Cadastrar-se</button>
             </form>
         </div>
@@ -30,10 +32,13 @@
             <form>
                 <h1>Entrar</h1>
                 <p>Entre com seu nome de usuário e senha</p>
-                <input type="text" 
-                placeholder="Nome de usuario" id="usuario">
-                <input type="password" 
-                placeholder="Senha" id="senha">
+                <input type="text" placeholder="Nome de usuario" id="usuario">
+
+                <div class="input-wrapper">
+                    <input type="password" placeholder="Senha" id="senha">
+                    <i class="fa-solid fa-eye" id="toggle-login-senha"></i>
+                </div>
+
                 <button id="enter">Entrar</button>
             </form>
         </div>
@@ -52,6 +57,6 @@
             </div>
         </div>
     </div>
-
 </body>
+
 </html>

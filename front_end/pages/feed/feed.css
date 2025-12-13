@@ -45,7 +45,7 @@ header {
 
 .icons {
     display: flex;
-    align-items: center ;
+    align-items: center;
     height: 30px;
     width: auto;
     transition: 0.2s;
@@ -168,7 +168,8 @@ main {
     gap: 15px;
 }
 
-.inferiorPostagem, .divIcons {
+.inferiorPostagem,
+.divIcons {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -257,7 +258,7 @@ main {
         gap: 40px;
         border-top: none;
         border-right: 1px solid #dbdbdb;
-        padding-bottom: 10%;
+        padding-bottom: 15%;
     }
 
     .logoViajou {
@@ -266,7 +267,7 @@ main {
     }
 
     .divIconsHeader {
-        height: 80%;
+        height: 90%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -279,19 +280,23 @@ main {
         width: 32px;
     }
 
+    main {
+        margin-left: 100px;
+    }
+
     .input-container {
-        max-width: 700px;
+        max-width: 600px;
     }
 
     .postagem {
-        max-width: 700px;
+        max-width: 600px;
     }
 
     .superiorPostagem .nome {
         font-size: 1.5rem;
         font-weight: 600;
     }
-    
+
     .superiorPostagem .data {
         font-size: 1rem;
         margin-left: auto;
@@ -311,6 +316,11 @@ main {
 
     header {
         width: 100px;
+        padding-bottom: 10%;
+    }
+
+    .logoViajou {
+        height: 20%;
     }
 
     .input-container {

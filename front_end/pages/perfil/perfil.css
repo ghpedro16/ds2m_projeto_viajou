@@ -189,13 +189,15 @@ select option {
     display: flex;
     align-items: center;
 }
+
 .datas input {
     width: 100px;
     border-radius: 15px;
     background: #d2a59a;
 }
 
-.inicio, .final {
+.inicio,
+.final {
     width: 50%;
     display: flex;
     align-items: center;
@@ -203,7 +205,7 @@ select option {
     flex-direction: column;
 }
 
-.inicio{
+.inicio {
     border-right: solid 1px white;
 }
 
@@ -490,6 +492,39 @@ select option {
         padding-top: 24px;
     }
 
+    .dadosPerfil {
+        justify-content: center;
+        gap: 22px;
+    }
+
+    .dadosPerfil img {
+        height: 100px;
+        width: 100px;
+    }
+
+    .alinhamento {
+        font-size: 1.2rem;
+    }
+
+    .nomes .nomeExibicao {
+        font-size: 1.5rem;
+    }
+
+    .nomes .nomeUsuario {
+        font-size: 1rem;
+    }
+
+    .dadosPerfil .botoes {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .botoes button {
+        width: auto;
+        font-size: 1.2rem;
+    }
+
     .modal .informacoes {
         flex-direction: row;
         align-items: flex-start;
@@ -504,6 +539,10 @@ select option {
 @media (min-width: 1200px) {
     header {
         width: 100px;
+    }
+
+    .logoViajou {
+        height: 20%;
     }
 
     main {

@@ -43,13 +43,13 @@ header {
 
 .icons {
     display: flex;
-    align-items: center ;
+    align-items: center;
     height: 30px;
     width: auto;
     transition: 0.2s;
 }
 
-.icons:hover{
+.icons:hover {
     transform: scale(1.1);
 }
 
@@ -132,6 +132,18 @@ main {
     .icons {
         height: 32px;
         width: 32px;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+    header {
+        width: 100px;
+    }
+
+    .logoViajou {
+        height: 20%;
     }
 
 }

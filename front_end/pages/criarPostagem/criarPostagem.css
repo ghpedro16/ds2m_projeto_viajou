@@ -218,7 +218,8 @@ textarea:focus {
     overflow-x: scroll;
 }
 
-.escolhidoImagem, .escolhidoVideo {
+.escolhidoImagem,
+.escolhidoVideo {
     height: 100%;
     width: 50px;
     border-radius: 12px;
@@ -363,6 +364,18 @@ textarea:focus {
         width: 100%;
     }
 
+    .preview-container {
+        height: 450px;
+    }
+
+
+    input,
+    select,
+    textarea,
+    label {
+        font-size: 1rem;
+    }
+
     .botoes {
         justify-content: flex-end;
     }
@@ -371,6 +384,10 @@ textarea:focus {
 @media (min-width: 1200px) {
     header {
         width: 100px;
+    }
+
+    .logoViajou {
+        height: 20%;
     }
 
     main {

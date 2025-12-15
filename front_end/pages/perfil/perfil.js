@@ -296,6 +296,7 @@ function abrirModalEditar(user) {
 
     // Pegando a imagem se ela já existir
     function extrairNomeArquivo(url) {
+        if (!url) return null
         return url.split('/').pop()
     }
 

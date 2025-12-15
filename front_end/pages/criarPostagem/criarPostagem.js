@@ -316,7 +316,7 @@ botaoSalvar.addEventListener('click', async () => {
 
             if (ok) {
                 alert('Post atualizado com sucesso!')
-                window.location.href = `../postagem/postagem.html?idPostagem=${idPostagemParaEditar}`
+                window.location.href = `../postagem/postagem.html?id=${idPostagemParaEditar}`
             } else {
                 alert('Erro ao atualizar postagem.')
             }
